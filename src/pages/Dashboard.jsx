@@ -1,7 +1,8 @@
 // src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabase'; // 🚀 IMPORTED SUPABASE
 
-// 🚀 FIX: We place this OUTSIDE the component so it catches the event 
+// We place this OUTSIDE the component so it catches the event 
 // the exact millisecond the page loads, before React even finishes rendering!
 let globalDeferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -12,7 +13,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
-  isSupported // 🚀 Passed in from App.jsx to check department access
+  isSupported, session // 🚀 ADDED session to props to grab their email
 }) {
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
@@ -23,6 +24,7 @@ export default function Dashboard({
   const [streakAnimPercent, setStreakAnimPercent] = useState(0);
 
   const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [waitlistStatus, setWaitlistStatus] = useState('idle'); // 🚀 NEW: Waitlist state
 
   useEffect(() => {
     const timer = setTimeout(() => setStreakAnimPercent(calculatedStreakPercent), 300);
@@ -61,6 +63,25 @@ export default function Dashboard({
         alert("To install the app, tap the '3 dots' menu in your browser and select 'Install app' or 'Add to Home Screen'.");
       }
     }
+  };
+
+  // 🚀 NEW: HANDLE WAITLIST SUBMISSION
+  const handleJoinWaitlist = async () => {
+    if (!session?.user?.email) return;
+
+    setWaitlistStatus('loading');
+
+    // Upsert so if they change department and click again, it updates their record instead of crashing
+    await supabase.from('waitlist').upsert([
+      {
+        email: session.user.email,
+        department: department,
+        level: level
+      }
+    ], { onConflict: 'email' });
+
+    // Show success!
+    setWaitlistStatus('success');
   };
 
   // PERFECT SUN-SAT CALENDAR LOGIC
@@ -191,11 +212,26 @@ export default function Dashboard({
               <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 font-medium max-w-sm mx-auto leading-relaxed mb-8">
                 Recall's curriculum is currently strictly tailored for <span className="font-bold text-[#1A1A1A] dark:text-white">300L Law</span> students. We are working hard to bring {department} materials to you soon!
               </p>
+
+              {/* 🚀 FULLY FUNCTIONAL WAITLIST BUTTON */}
               <button
-                onClick={() => alert("You're on the waitlist! We'll email you when your department is ready.")}
-                className="bg-[#1A1A1A] dark:bg-white hover:bg-black dark:hover:bg-gray-200 text-white dark:text-[#1A1A1A] px-8 py-4 rounded-[16px] font-bold text-sm shadow-md transition-all active:scale-[0.98]"
+                onClick={handleJoinWaitlist}
+                disabled={waitlistStatus === 'loading' || waitlistStatus === 'success'}
+                className="bg-[#1A1A1A] dark:bg-white hover:bg-black dark:hover:bg-gray-200 text-white dark:text-[#1A1A1A] px-8 py-4 rounded-[16px] font-bold text-sm shadow-md transition-all active:scale-[0.98] disabled:opacity-80 flex items-center justify-center gap-2 mx-auto"
               >
-                Notify me when available
+                {waitlistStatus === 'idle' && 'Notify me when available'}
+
+                {waitlistStatus === 'loading' && (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white dark:text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Joining Waitlist...
+                  </>
+                )}
+
+                {waitlistStatus === 'success' && '✓ You\'re on the list!'}
               </button>
             </div>
           ) : (
