@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- 1. The small logo for the Web Browser Tab -->
+  <link rel="icon" type="image/png" href="/logo.png" />
+
+  <!-- 2. The square App Icon for iPhones/iPads -->
+  <link rel="apple-touch-icon" href="/app-icon.png" />
+
+  <!-- Link the Android installation manifest -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Theme & Mobile Optimization (Forces White Status Bar on Android/iOS) -->
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="color-scheme" content="light" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Recall" />
+
+  <!-- SEO & Social Sharing (Open Graph) -->
+  <title>Recall — Interactive Study & Quiz Platform</title>
+  <meta name="description"
+    content="Master your exams with interactive quizzes and smart study tools designed for Nigerian university and entrance examination students." />
+  <meta property="og:title" content="Recall — Interactive Study & Quiz Platform" />
+  <meta property="og:description" content="Master your exams with interactive quizzes and smart study tools." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Preconnect for Performance & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Prevent white flash on load and set default font */
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
