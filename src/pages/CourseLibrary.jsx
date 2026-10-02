@@ -24,8 +24,8 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
                     <button
                         onClick={() => setActiveTab('Courses')}
                         className={`flex-1 md:flex-none px-6 py-2.5 text-sm font-bold rounded-full transition-all ${activeTab === 'Courses'
-                                ? 'bg-[#FF6B00] text-white shadow-md shadow-[#FF6B00]/20'
-                                : 'text-gray-500 hover:text-[#1A1A1A] dark:hover:text-white'
+                            ? 'bg-[#FF6B00] text-white shadow-md shadow-[#FF6B00]/20'
+                            : 'text-gray-500 hover:text-[#1A1A1A] dark:hover:text-white'
                             }`}
                     >
                         Courses
@@ -33,8 +33,8 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
                     <button
                         onClick={() => setActiveTab('Library')}
                         className={`flex-1 md:flex-none px-6 py-2.5 text-sm font-bold rounded-full transition-all ${activeTab === 'Library'
-                                ? 'bg-[#FF6B00] text-white shadow-md shadow-[#FF6B00]/20'
-                                : 'text-gray-500 hover:text-[#1A1A1A] dark:hover:text-white'
+                            ? 'bg-[#FF6B00] text-white shadow-md shadow-[#FF6B00]/20'
+                            : 'text-gray-500 hover:text-[#1A1A1A] dark:hover:text-white'
                             }`}
                     >
                         Library
@@ -180,4 +180,4 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
             </div>
         </div>
     );
-}
+} 
