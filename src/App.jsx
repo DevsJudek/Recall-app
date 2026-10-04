@@ -1,6 +1,7 @@
-// src/App.jsx - Triggering PWA update 3
+// src/App.jsx - Triggering PWA update 4
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
+import { useRegisterSW } from 'virtual:pwa-register/react';
 import { supabase } from './supabase';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -61,6 +62,15 @@ function AppContent() {
   const { playSound } = useSound();
 
   const [session, setSession] = useState(null);
+
+  const {
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
+    onRegistered(r) { console.log('SW Registered: ', r); },
+    onRegisterError(error) { console.log('SW registration error', error); },
+  });
+
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
@@ -707,7 +717,7 @@ function AppContent() {
     streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported,
-    isDarkMode, setIsDarkMode, campus
+    isDarkMode, setIsDarkMode, campus, needRefresh, updateServiceWorker
 
   };
 

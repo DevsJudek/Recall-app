@@ -1,7 +1,6 @@
 // src/pages/Dashboard.jsx
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase'; // 🚀 IMPORTED SUPABASE
-import { useRegisterSW } from 'virtual:pwa-register/react';
 
 // We place this OUTSIDE the component so it catches the event 
 // the exact millisecond the page loads, before React even finishes rendering!
@@ -14,16 +13,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
 export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
-  isSupported, session // 🚀 ADDED session to props to grab their email
+  isSupported, session, needRefresh, updateServiceWorker
 }) {
-
-  const {
-    needRefresh: [needRefresh, setNeedRefresh],
-    updateServiceWorker,
-  } = useRegisterSW({
-    onRegistered(r) { console.log('SW Registered: ', r); },
-    onRegisterError(error) { console.log('SW registration error', error); },
-  });
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
   const safeProgress = dailyProgress || 0;
