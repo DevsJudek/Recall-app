@@ -160,6 +160,8 @@ function AppContent() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
   const [canClaimStreak, setCanClaimStreak] = useState(true);
+  const [lostStreak, setLostStreak] = useState(0);
+  const [restoresLeft, setRestoresLeft] = useState(4);
 
   const [editName, setEditName] = useState('');
   const [editDepartment, setEditDepartment] = useState('Law');
@@ -355,6 +357,18 @@ function AppContent() {
           } else if (diffDays === 1) canClaim = true;
         }
 
+        const currentMonth = new Date().getMonth();
+        let restores = userProfile.streak_restores || { count: 4, month: currentMonth };
+        if (typeof restores === 'string') restores = JSON.parse(restores);
+        if (restores.month !== currentMonth) restores = { count: 4, month: currentMonth };
+        
+        let lostStrk = 0;
+        if (actualStreak === 0 && userProfile.streak > 0) {
+          lostStrk = userProfile.streak;
+        }
+
+        setLostStreak(lostStrk);
+        setRestoresLeft(restores.count);
         setStreakCount(actualStreak); setCanClaimStreak(canClaim);
 
         const todayStr = new Date().toDateString();
@@ -558,8 +572,25 @@ function AppContent() {
     if (!canClaimStreak || !session || !currentUserDbId) return;
     playSound('success');
     const newStreak = streakCount + 1; const now = new Date().toISOString();
-    setStreakCount(newStreak); setCanClaimStreak(false);
+    setStreakCount(newStreak); setCanClaimStreak(false); setLostStreak(0);
     await supabase.from('profiles').update({ current_streak: newStreak, streak: newStreak, last_claim_timestamp: now }).eq('id', currentUserDbId).then();
+  };
+
+  const handleRestoreStreak = async () => {
+    if (lostStreak === 0 || restoresLeft <= 0 || !session || !currentUserDbId) return;
+    playSound('success');
+    const newRestoresLeft = restoresLeft - 1;
+    const currentMonth = new Date().getMonth();
+    const streakRestoresObj = { count: newRestoresLeft, month: currentMonth };
+    
+    setStreakCount(lostStreak); 
+    setLostStreak(0);
+    setRestoresLeft(newRestoresLeft);
+    
+    await supabase.from('profiles').update({ 
+      current_streak: lostStreak, 
+      streak_restores: streakRestoresObj 
+    }).eq('id', currentUserDbId).then();
   };
 
   const handleFollowToggle = async () => {
@@ -729,7 +760,7 @@ function AppContent() {
     session, setSession, currentView, setCurrentView: smartSetCurrentView, goBack, activeCourse, setActiveCourse, defaultCourses: processedCoursesList, courses: processedCoursesList,
     allCourses: coursesList, enrolledCourses: activeEnrolledCourses, setEnrolledCourses, currentSemester,
     topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, joinDate, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
-    streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion,
+    streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported,
     isDarkMode, setIsDarkMode, campus, needRefresh, updateServiceWorker

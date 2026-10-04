@@ -3,7 +3,8 @@
 export default function Profile({
   displayName, avatarUrl, followersCount, followingCount, streakCount,
   setCurrentView, claimStreak, canClaim, leaderboardData, currentUserDbId, openNetworkView,
-  bio, joinDate, session, department // 🚀 Added department here
+  bio, joinDate, session, department, lostStreak, restoresLeft, handleRestoreStreak
+
 }) {
 
   const sortedLeaderboard = [...(leaderboardData || [])].sort((a, b) => b.points - a.points);
@@ -75,21 +76,43 @@ export default function Profile({
           <div className="flex items-center gap-4 mb-8">
             <div className="w-14 h-14 bg-white dark:bg-[#242424] rounded-2xl flex items-center justify-center text-2xl shadow-sm border border-[#FFE8D6] dark:border-transparent">🔥</div>
             <div>
-              <p className="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest mb-1 text-left">Current Streak</p>
-              <p className="text-2xl md:text-3xl font-black text-[#1A1A1A] dark:text-white text-left">{streakCount} <span className="text-lg text-gray-500 font-bold">Days</span></p>
+              <p className="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest mb-1 text-left">
+                {lostStreak > 0 ? "Streak lost" : "Current Streak"}
+              </p>
+              <p className="text-2xl md:text-3xl font-black text-[#1A1A1A] dark:text-white text-left">
+                {lostStreak > 0 ? lostStreak : streakCount} <span className="text-lg text-gray-500 font-bold">Days</span>
+              </p>
             </div>
           </div>
 
-          <button
-            onClick={claimStreak}
-            disabled={!canClaim}
-            className={`w-full py-4 rounded-xl text-sm font-black tracking-wide uppercase transition-all shadow-sm ${canClaim
-              ? 'bg-[#FF6B00] text-white hover:bg-[#E05D00] hover:shadow-md border border-transparent'
-              : 'bg-white dark:bg-[#1A1A1A] text-gray-400 cursor-not-allowed border border-[#E5E5E5] dark:border-gray-800'
-              }`}
-          >
-            {canClaim ? 'Claim Daily Streak' : 'Streak Claimed! 🔥'}
-          </button>
+          {lostStreak > 0 ? (
+            <div>
+              <button
+                onClick={handleRestoreStreak}
+                disabled={restoresLeft <= 0}
+                className={`w-full py-4 rounded-xl text-sm font-black tracking-wide uppercase transition-all shadow-sm ${restoresLeft > 0
+                  ? 'bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md border border-transparent'
+                  : 'bg-white dark:bg-[#1A1A1A] text-gray-400 cursor-not-allowed border border-[#E5E5E5] dark:border-gray-800'
+                  }`}
+              >
+                Restore Streak
+              </button>
+              <p className="text-[10px] md:text-xs text-center font-bold text-gray-500 dark:text-gray-400 mt-3">
+                You have {restoresLeft} free restores left this month.
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={claimStreak}
+              disabled={!canClaim}
+              className={`w-full py-4 rounded-xl text-sm font-black tracking-wide uppercase transition-all shadow-sm ${canClaim
+                ? 'bg-[#FF6B00] text-white hover:bg-[#E05D00] hover:shadow-md border border-transparent'
+                : 'bg-white dark:bg-[#1A1A1A] text-gray-400 cursor-not-allowed border border-[#E5E5E5] dark:border-gray-800'
+                }`}
+            >
+              {canClaim ? 'Claim Daily Streak' : 'Streak Claimed! 🔥'}
+            </button>
+          )}
         </div>
 
         <div className="border border-[#E5E5E5] dark:border-gray-800 bg-white dark:bg-[#1A1A1A] rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col justify-center shadow-sm hover:shadow-md transition-shadow">
