@@ -1,4 +1,4 @@
-// src/App.jsx
+// src/App.jsx - Triggering PWA update
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
 import { supabase } from './supabase';
