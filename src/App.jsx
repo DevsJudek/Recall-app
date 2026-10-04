@@ -1,4 +1,4 @@
-// src/App.jsx - Triggering PWA update 4
+// src/App.jsx - Triggering PWA update 5
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
