@@ -1,5 +1,4 @@
 // src/components/HamsterLoader.jsx
-import React from 'react';
 
 export default function HamsterLoader() {
     return (

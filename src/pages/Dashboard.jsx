@@ -1,5 +1,5 @@
 // src/pages/Dashboard.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../supabase'; // 🚀 IMPORTED SUPABASE
 
 // We place this OUTSIDE the component so it catches the event 
@@ -23,16 +23,13 @@ export default function Dashboard({
   const calculatedStreakPercent = Math.round((Math.min(streakCount || 0, 30) / 30) * 100);
   const [streakAnimPercent, setStreakAnimPercent] = useState(0);
 
-  const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [isAppInstalled, setIsAppInstalled] = useState(() => {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  });
   const [waitlistStatus, setWaitlistStatus] = useState('idle'); // 🚀 NEW: Waitlist state
 
   useEffect(() => {
     const timer = setTimeout(() => setStreakAnimPercent(calculatedStreakPercent), 300);
-
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-      setIsAppInstalled(true);
-    }
 
     const handleAppInstalled = () => {
       setIsAppInstalled(true);

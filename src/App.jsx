@@ -1,6 +1,6 @@
 // src/App.jsx
 /* eslint-disable */
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
 import { supabase } from './supabase';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -21,15 +21,14 @@ import Followers from './pages/Followers';
 import Following from './pages/Following';
 import ShareTopic from './pages/ShareTopic';
 import Onboarding from './pages/Onboarding';
+import ManageCourses from './pages/ManageCourses';
 
 import HamsterLoader from './components/HamsterLoader';
 import PullToRefresh from './components/PullToRefresh';
 import PublicShareView from './pages/PublicShareView';
-
-// 🚀 IMPORT OUR NEW SOUND PROVIDER
 import { SoundProvider, useSound } from './contexts/SoundContext';
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { hasError: false, error: null, errorInfo: null }; }
   static getDerivedStateFromError(error) { return { hasError: true, error }; }
   componentDidCatch(error, errorInfo) { console.error("App Crashed:", error, errorInfo); this.setState({ errorInfo }); }
@@ -70,7 +69,6 @@ function AppContent() {
   const [isOnboarded, setIsOnboarded] = useState(true);
   const [isSupported, setIsSupported] = useState(true);
 
-  // 🌙 DARK MODE STATE
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
@@ -101,7 +99,10 @@ function AppContent() {
   const [shareTarget, setShareTarget] = useState({ course: '', topic: '' });
 
   const [coursesList, setCoursesList] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [courseLastStudied, setCourseLastStudied] = useState({});
+
+  const [currentSemester, setCurrentSemester] = useState('1st Semester');
 
   const [topicStatus, setTopicStatus] = useState({});
   const [readingData, setReadingData] = useState(null);
@@ -118,6 +119,7 @@ function AppContent() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [department, setDepartment] = useState('Law');
   const [level, setLevel] = useState('300L');
+  const [campus, setCampus] = useState('Obafemi Awolowo University (OAU)');
   const [bio, setBio] = useState('');
 
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -136,29 +138,107 @@ function AppContent() {
   const [editName, setEditName] = useState('');
   const [editDepartment, setEditDepartment] = useState('Law');
   const [editLevel, setEditLevel] = useState('300L');
+  const [editCampus, setEditCampus] = useState('Obafemi Awolowo University (OAU)');
   const [editAvatarUrl, setEditAvatarUrl] = useState(null);
   const [editBio, setEditBio] = useState('');
   const [isUploading, setIsUploading] = useState(false);
 
   const fetchCourses = useCallback(async () => {
     try {
+      const { data: settingsData } = await supabase.from('app_settings').select('current_semester').eq('id', 1).single();
+      if (settingsData && settingsData.current_semester) {
+        setCurrentSemester(settingsData.current_semester);
+      }
+
       const [{ data: coursesData }, { data: readingsData }] = await Promise.all([
         supabase.from('courses').select('*').order('level'),
         supabase.from('module_readings').select('course_code, topic')
       ]);
 
-      if (coursesData && coursesData.length > 0) {
-        const dynamicCourses = coursesData.map(c => {
-          const courseReadings = readingsData?.filter(r => r.course_code === c.code) || [];
-          const uniqueTopics = new Set(courseReadings.map(r => r.topic)).size;
-          return {
-            ...c,
-            is_available: c.is_available !== false,
-            topics_count: uniqueTopics > 0 ? uniqueTopics : (c.topics_count || 1)
-          };
-        });
-        setCoursesList(dynamicCourses);
-      }
+      const dummyCourses = [
+        { id: 901, code: 'BUL 301', title: 'Commercial Law I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
+        { id: 902, code: 'JPL 301', title: 'Law of Torts I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
+        { id: 903, code: 'PUL 301', title: 'Criminal Law I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
+        { id: 904, code: 'BUL 302', title: 'Commercial Law II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
+        { id: 905, code: 'JPL 302', title: 'Law of Torts II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
+        { id: 906, code: 'PUL 302', title: 'Criminal Law II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
+        { id: 907, code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { id: 908, code: 'PUL 303', title: 'Labor Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { id: 909, code: 'JPL 303', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { id: 910, code: 'BUL 304', title: 'Banking Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
+        { id: 911, code: 'PUL 304', title: 'Labor Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
+        { id: 912, code: 'JPL 304', title: 'Family Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
+        { id: 913, code: 'PHL 301', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 914, code: 'HIS 301', title: 'History of Nigeria I', level: '300L', department: 'History', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 915, code: 'PUB 301', title: 'Public Policy Analysis I', level: '300L', department: 'Public Admin', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 919, code: 'SEL 001', title: 'Introduction to Law I', level: 'Any', department: 'Law', type: 'Special Elective', semester: '1st Semester', is_available: true },
+        { id: 921, code: 'SEH 301', title: 'Humankind and Nutrition', level: 'Any', department: 'Health', type: 'Special Elective', semester: '1st Semester', is_available: true },
+        { id: 922, code: 'SEB 304', title: 'Basic Entrepreneurship', level: 'Any', department: 'Business', type: 'Special Elective', semester: '2nd Semester', is_available: true }
+      ];
+
+      let allRaw = [...(coursesData || [])];
+      dummyCourses.forEach(d => { if (!allRaw.find(c => c.code === d.code)) allRaw.push(d); });
+
+      // 🚀 Aggressive Data Cleaning: Forces the correct mapping even if your DB has dirty/old values
+      const dynamicCourses = allRaw.map(c => {
+        const courseReadings = readingsData?.filter(r => r.course_code === c.code) || [];
+        const uniqueTopics = new Set(courseReadings.map(r => r.topic)).size;
+
+        const code = c.code?.toUpperCase() || '';
+        let type = c.type;
+        let dept = c.department;
+        let semester = c.semester;
+        let levelAssigned = c.level;
+
+        // FORCE overrides to fix any dirty database rows
+        if (['BUL 301', 'JPL 301', 'PUL 301', 'PUL 201'].includes(code)) {
+          type = 'Main'; semester = '1st Semester';
+        } else if (['BUL 302', 'JPL 302', 'PUL 302'].includes(code)) {
+          type = 'Main'; semester = '2nd Semester';
+        } else if (['BUL 303', 'PUL 303', 'JPL 303'].includes(code)) {
+          type = 'Core Elective'; semester = '1st Semester';
+        } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
+          type = 'Core Elective'; semester = '2nd Semester';
+        } else if (['PHL 301', 'HIS 301', 'PUB 301'].includes(code)) {
+          type = 'Restricted Elective'; semester = '1st Semester';
+        } else if (['PHL 302', 'HIS 302', 'PUB 302'].includes(code)) {
+          type = 'Restricted Elective'; semester = '2nd Semester';
+        } else if (['SEL 001', 'SEH 301'].includes(code)) {
+          type = 'Special Elective'; semester = '1st Semester';
+        } else if (['SEL 002', 'SEB 304'].includes(code)) {
+          type = 'Special Elective'; semester = '2nd Semester';
+        } else {
+          // Apply standard fallback if not hardcoded
+          const dummyMatch = dummyCourses.find(d => d.code === code);
+          if (dummyMatch) {
+            type = type || dummyMatch.type;
+            dept = dept || dummyMatch.department;
+            semester = semester || dummyMatch.semester;
+            levelAssigned = levelAssigned || dummyMatch.level;
+          } else {
+            type = type || 'Main';
+            dept = dept || 'Law';
+            if (!semester) {
+              if (c.title?.includes(' II') || c.title?.includes('2nd') || code.endsWith('2') || code.endsWith('4') || code.endsWith('6')) {
+                semester = '2nd Semester';
+              } else {
+                semester = '1st Semester';
+              }
+            }
+          }
+        }
+
+        return {
+          ...c,
+          is_available: c.is_available !== false,
+          topics_count: uniqueTopics > 0 ? uniqueTopics : (c.topics_count || 5),
+          type,
+          department: dept,
+          semester,
+          level: levelAssigned
+        };
+      });
+      setCoursesList(dynamicCourses);
     } catch (e) {
       console.error("Error fetching courses", e);
     }
@@ -178,14 +258,14 @@ function AppContent() {
           name: authName, email: userEmail, points: 0, campus: 'OAU',
           avatar: '', bio: '', current_streak: 0, streak: 0, followers_count: 0, following_count: 0, department: 'Law', level: '300L',
           daily_progress: 0, daily_date: new Date().toDateString(), course_progress: {}, course_last_studied: {},
-          is_onboarded: false, daily_target: 25
+          is_onboarded: false, daily_target: 25, enrolled_courses: []
         }]).select();
         userProfile = created?.[0];
       }
 
       const { data: boardData } = await supabase
         .from('profiles')
-        .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio')
+        .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank')
         .eq('department', userProfile?.department || 'Law')
         .eq('level', userProfile?.level || '300L')
         .order('points', { ascending: false })
@@ -202,11 +282,15 @@ function AppContent() {
         setAvatarUrl(userProfile.avatar || null);
         setDepartment(userProfile.department || 'Law');
         setLevel(userProfile.level || '300L');
+        setCampus(userProfile.campus || 'Obafemi Awolowo University (OAU)');
         setBio(userProfile.bio || '');
         setTopicStatus(userProfile.course_progress || {});
         setCourseLastStudied(userProfile.course_last_studied || {});
         setFollowingCount(userProfile.following_count || 0);
         setFollowersCount(userProfile.followers_count || 0);
+
+        const fetchedEnrolled = Array.isArray(userProfile.enrolled_courses) ? userProfile.enrolled_courses : [];
+        setEnrolledCourses(fetchedEnrolled);
 
         setIsOnboarded(userProfile.is_onboarded);
         setDailyTarget(userProfile.daily_target || 25);
@@ -216,9 +300,8 @@ function AppContent() {
 
         if (userProfile.is_onboarded === false) {
           setCurrentView('onboarding');
-        } else if (currentView === 'onboarding') {
-          setCurrentView('dashboard');
         }
+
 
         let actualStreak = userProfile.current_streak || 0;
         let canClaim = true;
@@ -246,6 +329,27 @@ function AppContent() {
     } catch (error) { console.error("Data Fetch Error:", error); }
     finally { if (!isSilent) setIsLoading(false); }
   }, [currentView]);
+
+  // 🚀 Derived state: INSTANTLY injects mandatory Main courses for the current view
+  const activeEnrolledCourses = useMemo(() => {
+    if (!level || !department || coursesList.length === 0) return enrolledCourses;
+
+    const mandatoryMainCodes = coursesList
+      .filter(c => c.type === 'Main' && c.level === level && (c.department === department || c.department === 'Law') && c.semester === currentSemester)
+      .map(c => c.code);
+
+    return Array.from(new Set([...enrolledCourses, ...mandatoryMainCodes]));
+  }, [coursesList, enrolledCourses, level, department, currentSemester]);
+
+  // Silently save them if they are missing
+  useEffect(() => {
+    if (currentUserDbId && activeEnrolledCourses.length > enrolledCourses.length) {
+      setEnrolledCourses(activeEnrolledCourses);
+      supabase.from('profiles').update({ enrolled_courses: activeEnrolledCourses }).eq('id', currentUserDbId).then(({ error }) => {
+        if (error) console.error('Enrolled update fallback error:', error);
+      });
+    }
+  }, [activeEnrolledCourses, enrolledCourses.length, currentUserDbId]);
 
   const handleManualRefresh = async () => {
     if (session) {
@@ -299,16 +403,17 @@ function AppContent() {
 
   const handleCompleteOnboarding = async (data) => {
     setIsUploading(true);
-
     const isSupportCheck = (data.department.toUpperCase() === 'LAW') && data.level === '300L';
 
     await supabase.from('profiles').update({
       name: data.name,
       department: data.department,
       level: data.level,
+      campus: data.institution,
       daily_target: data.dailyTarget,
       is_onboarded: true
     }).eq('id', currentUserDbId);
+
 
     setDisplayName(data.name);
     setDepartment(data.department);
@@ -318,7 +423,6 @@ function AppContent() {
     setIsSupported(isSupportCheck);
 
     await handleManualRefresh();
-
     setIsUploading(false);
     setCurrentView('dashboard');
   };
@@ -328,7 +432,7 @@ function AppContent() {
       setCurrentView('onboarding');
       return;
     }
-    if (!isSupported && ['courses', 'course_topics', 'reading', 'practice_setup', 'quiz', 'leaderboard', 'share_topic'].includes(view)) {
+    if (!isSupported && ['courses', 'course_topics', 'reading', 'practice_setup', 'quiz', 'leaderboard', 'share_topic', 'manage_courses'].includes(view)) {
       setCurrentView('dashboard');
       return;
     }
@@ -351,13 +455,14 @@ function AppContent() {
     setCurrentUserDbId(null); setDisplayName(''); setAvatarUrl(null); setDepartment('Law'); setLevel('300L'); setBio('');
     setTopicStatus({}); setFollowingList([]); setFollowingCount(0); setFollowersCount(0); setStreakCount(0);
     setDailyProgress(0); setScore(0); setLeaderboardData([]); setCourseLastStudied({}); setIsOnboarded(true); setIsSupported(true);
+    setEnrolledCourses([]);
   };
 
   useEffect(() => {
     if (currentView === 'edit_profile') {
-      setEditName(displayName || ''); setEditDepartment(department || 'Law'); setEditLevel(level || '300L'); setEditAvatarUrl(avatarUrl); setEditBio(bio || '');
+      setEditName(displayName || ''); setEditDepartment(department || 'Law'); setEditLevel(level || '300L'); setEditCampus(campus || 'Obafemi Awolowo University (OAU)'); setEditAvatarUrl(avatarUrl); setEditBio(bio || '');
     }
-  }, [currentView, displayName, department, level, avatarUrl, bio]);
+  }, [currentView, displayName, department, level, avatarUrl, bio, campus]);
 
   const streakCalendar = useMemo(() => {
     const calendar = []; const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -381,11 +486,12 @@ function AppContent() {
     if (diffDays < 7) return `${diffDays} days ago`; return '7d ago';
   };
 
+  // 🚀 Force Library to ONLY show courses for the current app semester
   const processedCoursesList = useMemo(() => {
     return coursesList
-      .filter(c => c.level === level && c.department === department)
+      .filter(c => activeEnrolledCourses.includes(c.code) && c.semester === currentSemester)
       .map(c => ({ ...c, last_studied: formatLastStudied(courseLastStudied[c.code]) }));
-  }, [coursesList, courseLastStudied, level, department]);
+  }, [coursesList, activeEnrolledCourses, courseLastStudied, currentSemester]);
 
   const recordCourseActivity = (courseCode) => {
     if (!courseCode) return;
@@ -404,17 +510,15 @@ function AppContent() {
 
   const handleSaveProfile = async () => {
     if (!currentUserDbId) return;
-    setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio);
-    await supabase.from('profiles').update({ name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio }).eq('id', currentUserDbId);
+    setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus);
+    await supabase.from('profiles').update({ name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus }).eq('id', currentUserDbId);
     await handleManualRefresh();
     smartSetCurrentView('profile');
   };
 
   const handleClaimStreak = async () => {
     if (!canClaimStreak || !session || !currentUserDbId) return;
-
     playSound('success');
-
     const newStreak = streakCount + 1; const now = new Date().toISOString();
     setStreakCount(newStreak); setCanClaimStreak(false);
     await supabase.from('profiles').update({ current_streak: newStreak, streak: newStreak, last_claim_timestamp: now }).eq('id', currentUserDbId).then();
@@ -478,7 +582,7 @@ function AppContent() {
   useEffect(() => {
     if (currentView !== 'quiz' || practiceMode === 'normal') return;
     if (timeLeft > 0 && !isLocked) { const timerId = setInterval(() => setTimeLeft((t) => t - 1), 1000); return () => clearInterval(timerId); }
-    else if (timeLeft === 0 && practiceMode === 'ranked') { setIsLocked(true); }
+    else if (timeLeft === 0 && practiceMode === 'ranked' && !isLocked) { setSelectedOption(null); setIsLocked(true); }
   }, [timeLeft, isLocked, currentView, practiceMode]);
 
   const openCourseTopics = (course) => { setActiveCourse(course); smartSetCurrentView('course_topics'); };
@@ -511,15 +615,31 @@ function AppContent() {
   const startPractice = async (courseInput, mode = 'ranked') => {
     setPracticeMode(mode); setIsTransitioning(true);
     const questionLimit = mode === 'ranked' ? 15 : 30;
-    let query = supabase.from('questions').select('*');
-    if (courseInput === 'mixed' || courseInput === null) setActiveCourse(null);
-    else if (typeof courseInput === 'string') {
+
+    let targetCodes = [];
+    if (courseInput === 'mixed' || courseInput === null) {
+      setActiveCourse(null);
+      targetCodes = activeEnrolledCourses;
+      if (mode === 'ranked') {
+        targetCodes = targetCodes.filter(code => {
+          const c = coursesList.find(x => x.code === code);
+          return c && c.type === 'Main';
+        });
+      }
+    } else if (typeof courseInput === 'string') {
       const resolvedCode = courseInput.toUpperCase();
-      query = query.ilike('course_code', `%${courseInput.substring(0, 3)}%${courseInput.substring(courseInput.length - 3)}%`);
+      targetCodes = [resolvedCode];
       setActiveCourse({ code: resolvedCode }); recordCourseActivity(resolvedCode);
     } else if (courseInput && courseInput.code) {
-      setActiveCourse(courseInput); query = query.eq('course_code', courseInput.code); recordCourseActivity(courseInput.code);
+      targetCodes = [courseInput.code];
+      setActiveCourse(courseInput); recordCourseActivity(courseInput.code);
     }
+
+    let query = supabase.from('questions').select('*');
+    if (targetCodes.length > 0) {
+      query = query.in('course_code', targetCodes);
+    }
+
     let { data } = await query;
     if (!data || data.length === 0) { const fallback = await supabase.from('questions').select('*').limit(questionLimit * 2); data = fallback.data || []; }
     setQuestions(data.sort(() => 0.5 - Math.random()).slice(0, questionLimit));
@@ -536,9 +656,14 @@ function AppContent() {
 
   const handleSelect = async (index) => {
     if (isLocked) return;
-    setSelectedOption(index); setIsLocked(true);
+    setSelectedOption(index);
+  };
 
-    if (index === questions[currentIndex]?.correct_option_index) {
+  const handleLockAnswer = async () => {
+    if (selectedOption === null || isLocked) return;
+    setIsLocked(true);
+
+    if (selectedOption === questions[currentIndex]?.correct_option_index) {
       setScore((prev) => prev + 1); const newProg = dailyProgress + 1; setDailyProgress(newProg);
       if (currentUserDbId) supabase.from('profiles').update({ daily_progress: newProg }).eq('id', currentUserDbId).then();
     }
@@ -564,16 +689,18 @@ function AppContent() {
 
   const globalProps = {
     session, setSession, currentView, setCurrentView: smartSetCurrentView, goBack, activeCourse, setActiveCourse, defaultCourses: processedCoursesList, courses: processedCoursesList,
+    allCourses: coursesList, enrolledCourses: activeEnrolledCourses, setEnrolledCourses, currentSemester,
     topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
-    streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleNextQuestion,
-    firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
+    streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion,
+    firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported,
-    isDarkMode, setIsDarkMode
+    isDarkMode, setIsDarkMode, campus
+
   };
 
   const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin'].includes(currentView)
     ? 'p-0 pb-24 md:pb-8 bg-white dark:bg-[#121212]'
-    : ['reading', 'practice_setup', 'quiz', 'share_topic'].includes(currentView)
+    : ['reading', 'practice_setup', 'quiz', 'share_topic', 'manage_courses'].includes(currentView)
       ? 'p-0 bg-white dark:bg-[#121212]'
       : 'p-4 pb-28 md:p-8 md:pb-8';
 
@@ -666,6 +793,7 @@ function AppContent() {
               {currentView === 'followers' && <Followers {...globalProps} />}
               {currentView === 'following' && <Following {...globalProps} />}
               {currentView === 'share_topic' && <ShareTopic {...globalProps} sharedCourse={shareTarget.course} sharedTopic={shareTarget.topic} />}
+              {currentView === 'manage_courses' && <ManageCourses {...globalProps} />}
             </PullToRefresh>
           </main>
 
@@ -691,7 +819,6 @@ function AppContent() {
   );
 }
 
-// 🚀 WRAP THE ENTIRE EXPORT IN THE SOUND PROVIDER
 export default function App() {
   return (
     <SoundProvider>

@@ -10,6 +10,7 @@ export default function Quiz({
     selectedOption,
     isLocked,
     handleSelect,
+    handleLockAnswer,
     handleNextQuestion,
     practiceMode
 }) {
@@ -37,25 +38,27 @@ export default function Quiz({
     const getLetter = (index) => ['A', 'B', 'C', 'D'][index];
 
     return (
-        <div className="min-h-screen bg-[#F8F9FA] dark:bg-[#0a0a0a] flex flex-col font-sans transition-colors">
-            {practiceMode === 'ranked' && (
-                <div className="max-w-4xl mx-auto w-full px-6 pt-6 pb-2">
-                    <div className="flex justify-between items-end mb-2">
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Time Remaining</span>
-                        <span className={`text-xs font-black ${timeLeft <= 5 ? 'text-rose-500' : 'text-[#1A1A1A] dark:text-white'}`}>00:{String(timeLeft).padStart(2, '0')}s</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                        <div
-                            className={`h-full transition-all duration-1000 ease-linear rounded-full ${timeLeft <= 5 ? 'bg-rose-500' : 'bg-[#FF6B00]'}`}
-                            style={{ width: `${timerPercentage}%` }}
-                        ></div>
-                    </div>
-                </div>
-            )}
+        <div className="min-h-screen bg-[#F8F9FA] dark:bg-[#0a0a0a] flex flex-col font-sans transition-colors relative">
+            
+            {/* STICKY HEADER PART */}
+            <div className="sticky top-0 z-40 bg-[#F8F9FA]/95 dark:bg-[#0a0a0a]/95 backdrop-blur-md px-6 pt-4 pb-4 border-b border-[#E5E5E5] dark:border-gray-800 shadow-sm">
+                <div className="max-w-4xl mx-auto w-full space-y-4">
+                    {practiceMode === 'ranked' && (
+                        <div>
+                            <div className="flex justify-between items-end mb-2">
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Time Remaining</span>
+                                <span className={`text-xs font-black ${timeLeft <= 5 ? 'text-rose-500' : 'text-[#1A1A1A] dark:text-white'}`}>00:{String(timeLeft).padStart(2, '0')}s</span>
+                            </div>
+                            <div className="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                                <div
+                                    className={`h-full transition-all duration-1000 ease-linear rounded-full ${timeLeft <= 5 ? 'bg-rose-500' : 'bg-[#FF6B00]'}`}
+                                    style={{ width: `${timerPercentage}%` }}
+                                ></div>
+                            </div>
+                        </div>
+                    )}
 
-            <div className={`flex-1 overflow-y-auto ${practiceMode === 'normal' ? 'pt-12' : ''}`}>
-                <div className="max-w-4xl mx-auto px-6 pb-24 space-y-4">
-                    <div className="flex flex-col gap-4 mb-6">
+                    <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-2">
                             <span className="px-2.5 py-1 bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00] text-[10px] font-black uppercase tracking-widest rounded-md border border-[#FFD5C2] dark:border-orange-900/50">
                                 {courseCode}
@@ -75,7 +78,12 @@ export default function Quiz({
                             </span>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <div className="flex-1 overflow-y-auto">
+                <div className="max-w-4xl mx-auto px-6 py-8 pb-32 space-y-4">
+                    
                     <div className="bg-white dark:bg-[#1A1A1A] rounded-[32px] p-8 md:p-10 shadow-sm border border-[#E5E5E5] dark:border-gray-800 mb-6 transition-colors">
                         <h2 className="text-2xl md:text-3xl font-black text-[#1A1A1A] dark:text-white leading-snug">
                             {question.question_text}
@@ -116,6 +124,11 @@ export default function Quiz({
                                     letterStyle = "bg-gray-100 dark:bg-[#242424] text-gray-400 dark:text-gray-600";
                                     textStyle = "text-gray-400 dark:text-gray-500";
                                 }
+                            } else if (isThisSelected) {
+                                // NOT locked, but currently selected
+                                cardStyle = "bg-[#FFF9F5] dark:bg-orange-950/20 border-[#FF6B00] border-2 shadow-sm z-10";
+                                letterStyle = "bg-[#FF6B00] text-white";
+                                textStyle = "text-[#1A1A1A] dark:text-white font-bold";
                             }
 
                             return (
@@ -123,12 +136,7 @@ export default function Quiz({
                                     key={index}
                                     onClick={() => {
                                         handleSelect(index);
-                                        // 🔊 SOUND TRIGGER
-                                        if (correctIndex === index) {
-                                            playSound('correct');
-                                        } else {
-                                            playSound('wrong');
-                                        }
+                                        if (!isLocked) playSound('tap');
                                     }}
                                     disabled={isLocked}
                                     className={`w-full text-left p-4 md:p-5 rounded-[24px] border transition-all flex items-center justify-between gap-4 ${cardStyle}`}
@@ -146,6 +154,25 @@ export default function Quiz({
                             );
                         })}
                     </div>
+
+                    {/* Show "Check Answer" when an option is selected but NOT locked yet */}
+                    {!isLocked && selectedOption !== null && (
+                        <div className="mt-8 flex justify-end animate-fade-in-up">
+                            <button
+                                onClick={() => {
+                                    handleLockAnswer();
+                                    if (correctIndex === selectedOption) {
+                                        playSound('correct');
+                                    } else {
+                                        playSound('wrong');
+                                    }
+                                }}
+                                className="px-8 py-3.5 bg-[#FF6B00] text-white rounded-2xl font-bold text-sm shadow-md shadow-[#FF6B00]/20 hover:bg-[#E05D00] transition-colors flex items-center gap-2"
+                            >
+                                Check Answer →
+                            </button>
+                        </div>
+                    )}
 
                     {isLocked && (
                         <div className="mt-8 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-gray-800 rounded-[32px] p-8 shadow-sm animate-fade-in-up">

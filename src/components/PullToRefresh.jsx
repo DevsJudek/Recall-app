@@ -1,5 +1,5 @@
 // src/components/PullToRefresh.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function PullToRefresh({ onRefresh, children, className, scrollRef }) {
     const [startY, setStartY] = useState(0);

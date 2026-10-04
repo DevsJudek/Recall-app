@@ -1,5 +1,5 @@
 // src/pages/Auth.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../supabase';
 
 export default function Auth() {
@@ -15,14 +15,9 @@ export default function Auth() {
 
     // UI States
     const [showPassword, setShowPassword] = useState(false);
-    const [passwordStrength, setPasswordStrength] = useState(0);
-
     // Dynamic Password Strength Calculator
-    useEffect(() => {
-        if (!password) {
-            setPasswordStrength(0);
-            return;
-        }
+    const passwordStrength = useMemo(() => {
+        if (!password) return 0;
         let score = 0;
         if (password.length >= 6) score = 1;
 
@@ -36,7 +31,7 @@ export default function Auth() {
         if (password.length >= 8 && hasLetter && hasNumber && hasSymbol) {
             score = 3;
         }
-        setPasswordStrength(score);
+        return score;
     }, [password]);
 
     const handleAuth = async (e) => {
@@ -86,6 +81,9 @@ export default function Auth() {
 
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
+            options: {
+                redirectTo: window.location.origin
+            }
         });
 
         if (error) {

@@ -1,5 +1,4 @@
 // src/pages/Following.jsx
-import React from 'react';
 
 export default function Following({ networkUsers, viewPeerProfile, isOwnProfileNetwork }) {
     return (

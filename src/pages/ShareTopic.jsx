@@ -1,5 +1,5 @@
 // src/pages/ShareTopic.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function ShareTopic({ sharedCourse, sharedTopic, goBack }) {
     const [copied, setCopied] = useState(false);

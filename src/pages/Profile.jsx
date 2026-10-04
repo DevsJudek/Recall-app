@@ -1,5 +1,4 @@
 // src/pages/Profile.jsx
-import React from 'react';
 
 export default function Profile({
   displayName, avatarUrl, followersCount, followingCount, streakCount,

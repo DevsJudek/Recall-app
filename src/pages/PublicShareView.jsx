@@ -1,5 +1,5 @@
 // src/pages/PublicShareView.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import Reading from './Reading';
 import HamsterLoader from '../components/HamsterLoader';

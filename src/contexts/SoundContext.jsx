@@ -1,5 +1,5 @@
 // src/contexts/SoundContext.jsx
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 const SOUND_URLS = {
     correct: 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3',
@@ -14,7 +14,17 @@ const SoundContext = createContext();
 export const useSound = () => useContext(SoundContext);
 
 export function SoundProvider({ children }) {
-    const [audios, setAudios] = useState({});
+    const [audios] = useState(() => {
+        const loadedAudios = {};
+        if (typeof window !== 'undefined') {
+            Object.keys(SOUND_URLS).forEach(key => {
+                const audio = new Audio(SOUND_URLS[key]);
+                audio.volume = 0.5;
+                loadedAudios[key] = audio;
+            });
+        }
+        return loadedAudios;
+    });
 
     // Manage Mute State
     const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
@@ -28,17 +38,6 @@ export function SoundProvider({ children }) {
     useEffect(() => {
         localStorage.setItem('soundEnabled', isSoundEnabled);
     }, [isSoundEnabled]);
-
-    // Preload sounds efficiently
-    useEffect(() => {
-        const loadedAudios = {};
-        Object.keys(SOUND_URLS).forEach(key => {
-            const audio = new Audio(SOUND_URLS[key]);
-            audio.volume = 0.5;
-            loadedAudios[key] = audio;
-        });
-        setAudios(loadedAudios);
-    }, []);
 
     // The universal play function
     const playSound = (type) => {

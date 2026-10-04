@@ -1,5 +1,4 @@
 // src/pages/TestResult.jsx
-import React from 'react';
 
 export default function TestResult({ activeCourse, score, questions, practiceMode, startPractice }) {
 
