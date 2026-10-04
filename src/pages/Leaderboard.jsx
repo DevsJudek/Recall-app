@@ -103,7 +103,7 @@ const getRankTrend = (currentRank, previousRank) => {
                                     {renderAvatar(user)}
                                 </div>
                                 <div>
-                                    <p className="text-xs md:text-sm font-bold text-[#1A1A1A] dark:text-white leading-tight">{user.name}</p>
+                                    <p className="text-xs md:text-sm font-bold text-[#1A1A1A] dark:text-white leading-tight">{user.name?.split(' ')[0]}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 md:gap-12">
