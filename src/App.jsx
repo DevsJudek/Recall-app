@@ -1,4 +1,4 @@
-// src/App.jsx - Triggering PWA update 5
+// src/App.jsx - Triggering PWA update 6
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
@@ -67,7 +67,15 @@ function AppContent() {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) { console.log('SW Registered: ', r); },
+    onRegistered(r) { 
+      console.log('SW Registered: ', r); 
+      if (r) {
+        // Poll for updates every 30 seconds while the app is open
+        setInterval(() => {
+          r.update();
+        }, 30000);
+      }
+    },
     onRegisterError(error) { console.log('SW registration error', error); },
   });
 
