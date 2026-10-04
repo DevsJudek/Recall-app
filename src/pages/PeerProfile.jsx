@@ -71,7 +71,7 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                 )}
 
                 <p className="text-xs text-gray-400 font-bold tracking-widest uppercase mt-3 mb-8">
-                    Joined {selectedPeer.joinDate || "Sept 2026"}
+                    Joined {selectedPeer.created_at ? new Date(selectedPeer.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : "Sept 2026"}
                 </p>
 
                 {!isSelf ? (

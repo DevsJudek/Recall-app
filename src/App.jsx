@@ -121,6 +121,7 @@ function AppContent() {
   const [level, setLevel] = useState('300L');
   const [campus, setCampus] = useState('Obafemi Awolowo University (OAU)');
   const [bio, setBio] = useState('');
+  const [joinDate, setJoinDate] = useState('');
 
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [selectedPeer, setSelectedPeer] = useState(null);
@@ -267,7 +268,7 @@ function AppContent() {
       const fetchLeaderboard = async (dept, lvl, uProfile) => {
         const { data: boardData } = await supabase
           .from('profiles')
-          .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank')
+          .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank, created_at')
           .eq('department', dept)
           .eq('level', lvl)
           .order('points', { ascending: false })
@@ -292,6 +293,10 @@ function AppContent() {
         setLevel(userProfile.level || '300L');
         setCampus(userProfile.campus || 'Obafemi Awolowo University (OAU)');
         setBio(userProfile.bio || '');
+
+        const createdDate = new Date(activeSession.user.created_at);
+        const formattedJoinDate = createdDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        setJoinDate(formattedJoinDate);
         setTopicStatus(userProfile.course_progress || {});
         setCourseLastStudied(userProfile.course_last_studied || {});
         setFollowingCount(userProfile.following_count || 0);
@@ -698,7 +703,7 @@ function AppContent() {
   const globalProps = {
     session, setSession, currentView, setCurrentView: smartSetCurrentView, goBack, activeCourse, setActiveCourse, defaultCourses: processedCoursesList, courses: processedCoursesList,
     allCourses: coursesList, enrolledCourses: activeEnrolledCourses, setEnrolledCourses, currentSemester,
-    topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
+    topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, joinDate, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
     streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported,
