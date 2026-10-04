@@ -278,17 +278,24 @@ function AppContent() {
       const userEmail = activeSession.user.email;
       const authName = activeSession.user.user_metadata?.full_name || 'Student';
 
-      let { data: byEmail } = await supabase.from('profiles').select('*').eq('email', userEmail).order('id', { ascending: false }).limit(1);
+      let { data: byEmail } = await supabase.from('profiles').select('*').ilike('email', userEmail).order('id', { ascending: false }).limit(1);
       let userProfile = byEmail?.[0];
 
       if (!userProfile) {
-        const { data: created } = await supabase.from('profiles').insert([{
+        const { data: created, error } = await supabase.from('profiles').insert([{
           name: authName, email: userEmail, points: 0, campus: 'OAU',
           avatar: '', bio: '', current_streak: 0, streak: 0, followers_count: 0, following_count: 0, department: 'Law', level: '300L',
           daily_progress: 0, daily_date: new Date().toDateString(), course_progress: {}, course_last_studied: {},
           is_onboarded: false, daily_target: 25, enrolled_courses: []
         }]).select();
-        userProfile = created?.[0];
+        
+        if (error || !created || created.length === 0) {
+            console.error("Profile creation failed", error);
+            // Fallback so the app doesn't crash completely
+            userProfile = { id: 0, email: userEmail, name: authName, points: 0, is_onboarded: false };
+        } else {
+            userProfile = created[0];
+        }
       }
 
       // Non-blocking fetch for leaderboard
