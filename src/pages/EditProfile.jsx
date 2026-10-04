@@ -269,13 +269,6 @@ export default function EditProfile({
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleForceUpdate}
-                        disabled={isUpdating}
-                        className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 bg-[#FFF9F5] dark:bg-gray-800 text-[#FF6B00] border border-[#FFD5C2] dark:border-gray-700 rounded-xl text-xs font-bold hover:bg-[#FFD5C2] dark:hover:bg-gray-700 transition-colors disabled:opacity-50 shrink-0"
-                    >
-                        {isUpdating ? 'Updating...' : 'Check for Updates'}
-                    </button>
 
                     <button
                         onClick={handleSignOut}

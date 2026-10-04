@@ -1,6 +1,7 @@
 // src/pages/Dashboard.jsx
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase'; // 🚀 IMPORTED SUPABASE
+import { useRegisterSW } from 'virtual:pwa-register/react';
 
 // We place this OUTSIDE the component so it catches the event 
 // the exact millisecond the page loads, before React even finishes rendering!
@@ -15,6 +16,14 @@ export default function Dashboard({
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
   isSupported, session // 🚀 ADDED session to props to grab their email
 }) {
+
+  const {
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
+    onRegistered(r) { console.log('SW Registered: ', r); },
+    onRegisterError(error) { console.log('SW registration error', error); },
+  });
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
   const safeProgress = dailyProgress || 0;
@@ -146,6 +155,26 @@ export default function Dashboard({
 
         {/* LEFT COLUMN */}
         <div className="lg:col-span-8 flex flex-col gap-4 md:gap-6">
+        
+          {needRefresh && (
+            <div className="bg-[#FFF9F5] dark:bg-gray-800 border-2 border-[#FFD5C2] dark:border-gray-700 rounded-[24px] md:rounded-[32px] p-5 md:p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="w-10 h-10 bg-white dark:bg-gray-700 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                  <span className="text-xl">🚀</span>
+                </div>
+                <div className="text-left">
+                  <h3 className="text-sm md:text-base font-black text-[#1A1A1A] dark:text-white">Update Available</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">A new version of the app is ready!</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => updateServiceWorker(true)}
+                className="w-full sm:w-auto px-6 py-3 bg-[#FF6B00] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#e05d00] transition-all hover:scale-105 active:scale-95 shrink-0"
+              >
+                Update Now
+              </button>
+            </div>
+          )}
 
           {/* STUDY STREAK BLOCK (Always visible) */}
           <div className="bg-white dark:bg-[#121212] border border-[#E5E5E5] dark:border-gray-800 rounded-[24px] md:rounded-[32px] p-5 md:p-8 shadow-sm overflow-hidden">

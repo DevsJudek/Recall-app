@@ -7,12 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate', // 🚀 Forces the app to update automatically
+      registerType: 'prompt', // Prompt for update
       injectRegister: 'auto',
       workbox: {
-        cleanupOutdatedCaches: true, // 🚀 Deletes old cached files
-        clientsClaim: true,          // 🚀 Takes control of the app immediately
-        skipWaiting: true            // 🚀 Forces the new update to activate immediately
+        cleanupOutdatedCaches: true
       },
       // If you have a manifest.json in your public folder, VitePWA will automatically pick it up!
     })
