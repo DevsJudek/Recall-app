@@ -1,4 +1,4 @@
-// src/App.jsx - Triggering PWA update 7
+// src/App.jsx - Triggering PWA update 8
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
@@ -74,6 +74,13 @@ function AppContent() {
         setInterval(() => {
           r.update();
         }, 30000);
+
+        // Aggressively check for updates the exact moment the user focuses the app
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            r.update();
+          }
+        });
       }
     },
     onRegisterError(error) { console.log('SW registration error', error); },
