@@ -263,20 +263,28 @@ function AppContent() {
         userProfile = created?.[0];
       }
 
-      const { data: boardData } = await supabase
-        .from('profiles')
-        .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank')
-        .eq('department', userProfile?.department || 'Law')
-        .eq('level', userProfile?.level || '300L')
-        .order('points', { ascending: false })
-        .limit(20);
+      // Non-blocking fetch for leaderboard
+      const fetchLeaderboard = async (dept, lvl, uProfile) => {
+        const { data: boardData } = await supabase
+          .from('profiles')
+          .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank')
+          .eq('department', dept)
+          .eq('level', lvl)
+          .order('points', { ascending: false })
+          .limit(20);
 
-      if (userProfile && boardData) {
-        const isUserInBoard = boardData.some(u => u.id === userProfile.id);
-        let finalBoardData = boardData;
-        if (!isUserInBoard) finalBoardData = [...boardData, userProfile];
+        if (boardData) {
+          const isUserInBoard = boardData.some(u => u.id === uProfile.id);
+          let finalBoardData = boardData;
+          if (!isUserInBoard) finalBoardData = [...boardData, uProfile];
+          setLeaderboardData(finalBoardData.sort((a, b) => b.points - a.points));
+        }
+      };
 
-        setLeaderboardData(finalBoardData.sort((a, b) => b.points - a.points));
+      if (userProfile) {
+        // Kick off the leaderboard fetch in the background (DO NOT AWAIT)
+        fetchLeaderboard(userProfile.department || 'Law', userProfile.level || '300L', userProfile);
+
         setCurrentUserDbId(userProfile.id);
         setDisplayName(userProfile.name || 'Student');
         setAvatarUrl(userProfile.avatar || null);
