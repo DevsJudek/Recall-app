@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/pages/Reading.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useSound } from '../contexts/SoundContext';
@@ -41,6 +42,41 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
     const [chatInput, setChatInput] = useState('');
     const [isAiTyping, setIsAiTyping] = useState(false);
     const chatEndRef = useRef(null);
+
+    // --- TTS STATE ---
+    const [isAudioLoading, setIsAudioLoading] = useState(false);
+    const [audioUrl, setAudioUrl] = useState(null);
+
+    const handlePlayAudio = async () => {
+        if (audioUrl) return; // already loaded
+        
+        setIsAudioLoading(true);
+        try {
+            const fullTopicContext = (readingData && readingData.length > 0) ? readingData.map(data => {
+                const cleanContent = data.content_body ? data.content_body.replace(/<[^>]*>?/gm, '') : '';
+                return `Section ${data.subtopic}. ${cleanContent}`;
+            }).join('. ') : '';
+            
+            // Limit characters because Edge-TTS / Serverless functions might timeout on massive texts
+            const textToRead = fullTopicContext.substring(0, 4000); 
+            
+            const response = await fetch('/api/tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: textToRead, voice: 'en-NG-AbeoNeural' })
+            });
+            
+            if (!response.ok) throw new Error('Failed to load audio');
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            setAudioUrl(url);
+        } catch (e) {
+            console.error('Audio load error:', e);
+            alert("Failed to load audio for this module.");
+        } finally {
+            setIsAudioLoading(false);
+        }
+    };
 
     // 🚀 DATA VARIABLES
     const hasData = readingData && readingData.length > 0;
@@ -268,23 +304,23 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             components={{
-                                                p: ({ node, ...props }) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
-                                                strong: ({ node, ...props }) => <strong className="font-bold text-[#111827] dark:text-white" {...props} />,
-                                                ul: ({ node, ...props }) => <ul className="list-disc pl-5 mb-3 space-y-1.5" {...props} />,
-                                                ol: ({ node, ...props }) => <ol className="list-decimal pl-5 mb-3 space-y-1.5" {...props} />,
-                                                li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
-                                                h1: ({ node, ...props }) => <h1 className="text-lg font-black text-[#111827] dark:text-white mt-4 mb-2" {...props} />,
-                                                h2: ({ node, ...props }) => <h2 className="text-base font-black text-[#111827] dark:text-white mt-4 mb-2" {...props} />,
-                                                h3: ({ node, ...props }) => <h3 className="text-sm font-black text-[#111827] dark:text-white mt-3 mb-1 uppercase tracking-wider" {...props} />,
-                                                blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-[#FF6B00] pl-3 italic my-3 text-gray-500 dark:text-gray-400" {...props} />,
-                                                table: ({ node, ...props }) => (
+                                                p: ({   node, ...props }) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
+                                                strong: ({   node, ...props }) => <strong className="font-bold text-[#111827] dark:text-white" {...props} />,
+                                                ul: ({   node, ...props }) => <ul className="list-disc pl-5 mb-3 space-y-1.5" {...props} />,
+                                                ol: ({   node, ...props }) => <ol className="list-decimal pl-5 mb-3 space-y-1.5" {...props} />,
+                                                li: ({   node, ...props }) => <li className="leading-relaxed" {...props} />,
+                                                h1: ({   node, ...props }) => <h1 className="text-lg font-black text-[#111827] dark:text-white mt-4 mb-2" {...props} />,
+                                                h2: ({   node, ...props }) => <h2 className="text-base font-black text-[#111827] dark:text-white mt-4 mb-2" {...props} />,
+                                                h3: ({   node, ...props }) => <h3 className="text-sm font-black text-[#111827] dark:text-white mt-3 mb-1 uppercase tracking-wider" {...props} />,
+                                                blockquote: ({   node, ...props }) => <blockquote className="border-l-4 border-[#FF6B00] pl-3 italic my-3 text-gray-500 dark:text-gray-400" {...props} />,
+                                                table: ({   node, ...props }) => (
                                                     <div className="overflow-x-auto my-4 w-full">
                                                         <table className="min-w-full text-left border-collapse border border-[#E5E5E5] dark:border-gray-700 rounded-lg hidden-border" {...props} />
                                                     </div>
                                                 ),
-                                                thead: ({ node, ...props }) => <thead className="bg-[#F8F9FA] dark:bg-[#1A1A1A] border-b border-[#E5E5E5] dark:border-gray-700" {...props} />,
-                                                th: ({ node, ...props }) => <th className="px-4 py-2 font-bold text-[#111827] dark:text-white border-r border-[#E5E5E5] dark:border-gray-700 last:border-r-0" {...props} />,
-                                                td: ({ node, ...props }) => <td className="px-4 py-2 border-r border-t border-[#E5E5E5] dark:border-gray-700 last:border-r-0" {...props} />
+                                                thead: ({   node, ...props }) => <thead className="bg-[#F8F9FA] dark:bg-[#1A1A1A] border-b border-[#E5E5E5] dark:border-gray-700" {...props} />,
+                                                th: ({   node, ...props }) => <th className="px-4 py-2 font-bold text-[#111827] dark:text-white border-r border-[#E5E5E5] dark:border-gray-700 last:border-r-0" {...props} />,
+                                                td: ({   node, ...props }) => <td className="px-4 py-2 border-r border-t border-[#E5E5E5] dark:border-gray-700 last:border-r-0" {...props} />
                                             }}
                                         >
                                             {msg.text}
@@ -379,6 +415,33 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                         <h1 className="text-4xl md:text-5xl font-black text-[#1A1A1A] dark:text-white leading-tight mb-8">
                             {topicTitle}
                         </h1>
+                        
+                        {/* TTS AUDIO PLAYER */}
+                        <div className="mb-8">
+                            {!audioUrl ? (
+                                <button 
+                                    onClick={handlePlayAudio}
+                                    disabled={isAudioLoading}
+                                    className="px-4 py-2 bg-[#F8F9FA] dark:bg-gray-800 text-[#1A1A1A] dark:text-white rounded-full font-bold text-xs sm:text-sm shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 border border-gray-200 dark:border-gray-700"
+                                >
+                                    {isAudioLoading ? (
+                                        <>
+                                            <svg className="animate-spin h-4 w-4 text-[#FF6B00]" viewBox="0 0 24 24" fill="none">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                            </svg>
+                                            Generating Nigerian Audio...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>🔊</span> Read Module (Abeo - NG)
+                                        </>
+                                    )}
+                                </button>
+                            ) : (
+                                <audio controls src={audioUrl} className="w-full max-w-sm rounded-full h-10 shadow-sm" autoPlay />
+                            )}
+                        </div>
                     </div>
 
                     {readingData.map((data, index) => (
@@ -466,4 +529,4 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
             </div>
         </div>
     );
-}
+} 
