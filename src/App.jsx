@@ -242,8 +242,7 @@ function AppContent() {
         { id: 910, code: 'BUL 304', title: 'Banking Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
         { id: 911, code: 'PUL 304', title: 'Labor Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
         { id: 912, code: 'JPL 304', title: 'Family Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
-        { id: 913, code: 'PHL 301', title: 'Philosophy of Law I', units: 3, level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
-        { id: 914, code: 'HIS 301', title: 'History of Nigeria I', units: 3, level: '300L', department: 'History', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 913, code: 'PHL 319', title: 'Philosophy of Law I', units: 3, level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
         { id: 915, code: 'PUB 301', title: 'Public Policy Analysis I', units: 3, level: '300L', department: 'Public Admin', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
         { id: 919, code: 'SEL 001', title: 'Introduction to Law I', level: 'Any', department: 'Law', type: 'Special Elective', semester: '1st Semester', is_available: true },
         { id: 921, code: 'SEH 301', title: 'Humankind and Nutrition', level: 'Any', department: 'Health', type: 'Special Elective', semester: '1st Semester', is_available: true },
@@ -273,9 +272,9 @@ function AppContent() {
           type = 'Core Elective'; semester = '1st Semester';
         } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
           type = 'Core Elective'; semester = '2nd Semester';
-        } else if (['PHL 301', 'HIS 301', 'PUB 301'].includes(code)) {
+        } else if (['PHL 319', 'PUB 301'].includes(code)) {
           type = 'Restricted Elective'; semester = '1st Semester';
-        } else if (['PHL 302', 'HIS 302', 'PUB 302'].includes(code)) {
+        } else if (['PHL 320', 'PUB 302'].includes(code)) {
           type = 'Restricted Elective'; semester = '2nd Semester';
         } else if (['SEL 001', 'SEH 301'].includes(code)) {
           type = 'Special Elective'; semester = '1st Semester';
