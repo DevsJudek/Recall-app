@@ -5,6 +5,7 @@ import { useSound } from '../contexts/SoundContext';
 import FluidOrb from '../components/FluidOrb';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import YarnReader from '@yarngpt/reader/React';
 
 // 🚀 SECURE API CONNECTION
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -43,40 +44,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
     const [isAiTyping, setIsAiTyping] = useState(false);
     const chatEndRef = useRef(null);
 
-    // --- TTS STATE ---
-    const [isAudioLoading, setIsAudioLoading] = useState(false);
-    const [audioUrl, setAudioUrl] = useState(null);
 
-    const handlePlayAudio = async () => {
-        if (audioUrl) return; // already loaded
-        
-        setIsAudioLoading(true);
-        try {
-            const fullTopicContext = (readingData && readingData.length > 0) ? readingData.map(data => {
-                const cleanContent = data.content_body ? data.content_body.replace(/<[^>]*>?/gm, '') : '';
-                return `Section ${data.subtopic}. ${cleanContent}`;
-            }).join('. ') : '';
-            
-            // Limit characters because Edge-TTS / Serverless functions might timeout on massive texts
-            const textToRead = fullTopicContext.substring(0, 4000); 
-            
-            const response = await fetch('/api/tts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: textToRead, voice: 'en-NG-AbeoNeural' })
-            });
-            
-            if (!response.ok) throw new Error('Failed to load audio');
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            setAudioUrl(url);
-        } catch (e) {
-            console.error('Audio load error:', e);
-            alert("Failed to load audio for this module.");
-        } finally {
-            setIsAudioLoading(false);
-        }
-    };
 
     // 🚀 DATA VARIABLES
     const hasData = readingData && readingData.length > 0;
@@ -416,31 +384,9 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                             {topicTitle}
                         </h1>
                         
-                        {/* TTS AUDIO PLAYER */}
+                        {/* YARNGPT AUDIO PLAYER */}
                         <div className="mb-8">
-                            {!audioUrl ? (
-                                <button 
-                                    onClick={handlePlayAudio}
-                                    disabled={isAudioLoading}
-                                    className="px-4 py-2 bg-[#F8F9FA] dark:bg-gray-800 text-[#1A1A1A] dark:text-white rounded-full font-bold text-xs sm:text-sm shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 border border-gray-200 dark:border-gray-700"
-                                >
-                                    {isAudioLoading ? (
-                                        <>
-                                            <svg className="animate-spin h-4 w-4 text-[#FF6B00]" viewBox="0 0 24 24" fill="none">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                            </svg>
-                                            Generating Nigerian Audio...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span>🔊</span> Read Module (Abeo - NG)
-                                        </>
-                                    )}
-                                </button>
-                            ) : (
-                                <audio controls src={audioUrl} className="w-full max-w-sm rounded-full h-10 shadow-sm" autoPlay />
-                            )}
+                            <YarnReader readerId="your-reader-id-here" />
                         </div>
                     </div>
 
