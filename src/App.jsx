@@ -97,7 +97,7 @@ function AppContent() {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme) return savedTheme === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return false; // Default to light mode for all users
     }
     return false;
   });
