@@ -1,32 +1,12 @@
-// src/contexts/SoundContext.jsx
-import { createContext, useState, useEffect, useContext } from 'react';
-
-const SOUND_URLS = {
-    correct: 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3',
-    wrong: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_79ef94d6e9.mp3?filename=error-126627.mp3',
-    tap: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b81ceeb4.mp3?filename=pop-39222.mp3',
-    success: 'https://cdn.pixabay.com/download/audio/2021/08/09/audio_82c2a0142e.mp3?filename=success-fanfare-6776.mp3',
-    pop: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_247a8bcab2.mp3?filename=ui-click-43196.mp3',
-};
+import { createContext, useState, useEffect, useContext, useRef } from 'react';
+import { createUISFX } from 'uisfx';
 
 const SoundContext = createContext();
 
 export const useSound = () => useContext(SoundContext);
 
 export function SoundProvider({ children }) {
-    const [audios] = useState(() => {
-        const loadedAudios = {};
-        if (typeof window !== 'undefined') {
-            Object.keys(SOUND_URLS).forEach(key => {
-                const audio = new Audio(SOUND_URLS[key]);
-                audio.volume = 0.5;
-                loadedAudios[key] = audio;
-            });
-        }
-        return loadedAudios;
-    });
-
-    // Manage Mute State
+    // Manage Mute State to keep compatibility
     const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
         if (typeof window !== 'undefined') {
             return localStorage.getItem('soundEnabled') !== 'false';
@@ -34,17 +14,51 @@ export function SoundProvider({ children }) {
         return true;
     });
 
+    const uiRef = useRef(null);
+
+    useEffect(() => {
+        if (!uiRef.current && typeof window !== 'undefined') {
+            // Initialize uisfx
+            uiRef.current = createUISFX({
+                pack: 'minimal',
+                volume: 0.5,
+            });
+            // Attempt to unlock early
+            uiRef.current.unlock().catch(() => {});
+        }
+    }, []);
+
     // Save preference to local storage
     useEffect(() => {
         localStorage.setItem('soundEnabled', isSoundEnabled);
     }, [isSoundEnabled]);
 
+    // Attempt to unlock on any document click, to satisfy browser audio policies
+    useEffect(() => {
+        const unlockAudio = () => {
+             if (uiRef.current) uiRef.current.unlock();
+        };
+        document.addEventListener('click', unlockAudio, { once: true });
+        return () => document.removeEventListener('click', unlockAudio);
+    }, []);
+
     // The universal play function
     const playSound = (type) => {
-        if (!isSoundEnabled || !audios[type]) return;
+        if (!isSoundEnabled || !uiRef.current) return;
+        
+        // Map the old custom keys to uisfx standard semantic cues
+        const cueMap = {
+            'correct': 'success',
+            'wrong': 'error',
+            'tap': 'press',
+            'success': 'achievement',
+            'pop': 'select',
+        };
+        
+        const mappedCue = cueMap[type] || 'select';
+        
         try {
-            audios[type].currentTime = 0;
-            audios[type].play().catch(e => console.log('Audio blocked by browser:', e));
+            uiRef.current.play(mappedCue);
         } catch (err) {
             console.error("Sound play error:", err);
         }
