@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     }
 
     const hash = crypto.MD5(text + voice).toString();
-    const fileName = \\.mp3\;
+    const fileName = `${hash}.mp3`;
 
     const { data: publicUrlData } = supabase.storage.from('tts_cache').getPublicUrl(fileName);
     
