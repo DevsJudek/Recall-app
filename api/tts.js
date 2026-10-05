@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const prepRes = await fetch('https://api.yarngpt.ai/api/v1/tts/prepare', {
       method: 'POST',
       headers: {
-        'Authorization': \Bearer \\,
+        'Authorization': `Bearer ${process.env.YARNGPT_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ text, voice, output_format: 'mp3' })
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const { ticket, stream_url } = await prepRes.json();
     
     // 2. Fetch actual audio using stream_url
-    const audioRes = await fetch(\https://api.yarngpt.ai\\);
+    const audioRes = await fetch(`https://api.yarngpt.ai${stream_url}`);
     if (!audioRes.ok) throw new Error('Stream fetch failed');
     
     const arrayBuffer = await audioRes.arrayBuffer();
