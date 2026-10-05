@@ -1,23 +1,14 @@
 // src/pages/CourseLibrary.jsx
 import { useState } from 'react';
 import ResourceLibrary from './ResourceLibrary';
-import SuggestMaterial from './SuggestMaterial';
 
-export default function CourseLibrary({ courses, openCourseTopics, getCourseMastery, setCurrentView }) {
+export default function CourseLibrary({ courses, openCourseTopics, getCourseMastery, setCurrentView, department }) {
     const [activeTab, setActiveTab] = useState('Courses');
-    const [isSuggesting, setIsSuggesting] = useState(false);
 
     const enrolledCount = courses ? courses.filter(c => c.is_available).length : 0;
 
     return (
-        <>
-            {isSuggesting && (
-                <SuggestMaterial
-                    onBack={() => setIsSuggesting(false)}
-                />
-            )}
-
-            <div className="max-w-7xl mx-auto pb-16 font-sans">
+        <div className="max-w-7xl mx-auto pb-16 font-sans">
                 {/* 🖥️ DESKTOP HEADER */}
                 <div className="hidden md:flex flex-col mb-10">
                     <div className="flex justify-between items-center mb-8">
@@ -47,7 +38,7 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
                                 <>
                                     <button
                                         type="button"
-                                        onClick={(e) => { e.preventDefault(); setIsSuggesting(true); }}
+                                        onClick={(e) => { e.preventDefault(); setCurrentView('suggest_material'); }}
                                         className="px-5 py-2.5 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-gray-800 text-[#1A1A1A] dark:text-white rounded-[14px] text-sm font-bold flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-sm active:scale-95 transition-all"
                                     >
                                         <svg className="w-4 h-4 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"></path></svg>
@@ -60,16 +51,16 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
 
                     <div>
                         <h1 className="text-[40px] font-black text-[#1A1A1A] dark:text-white tracking-tight mb-2">
-                            {activeTab === 'Library' ? 'Resource Library' : 'Your courses'}
+                            {activeTab === 'Library' ? `${department ? department + ' Library' : 'Resource Library'}` : 'Your courses'}
                         </h1>
                         <p className="text-gray-500 dark:text-gray-400 font-medium text-[15px] max-w-2xl leading-relaxed">
-                            Master your syllabus topic by topic with curated resources, expert insights, and practice modules.
+                            {activeTab === 'Library' ? 'Access curated textbooks, past questions, and essential materials for your department.' : 'Master your syllabus topic by topic with curated resources, expert insights, and practice modules.'}
                         </p>
                     </div>
                 </div>
 
                 {/* 📱 MOBILE HEADER */}
-                <div className="md:hidden flex flex-col mb-8 px-4 pt-6">
+                <div className="md:hidden flex flex-col mb-8 pt-2">
                     <div className="relative flex bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-full border border-[#E5E5E5] dark:border-gray-800 w-[220px] mb-8 transition-colors">
                         <div className="absolute top-1 bottom-1 w-[105px] bg-white dark:bg-gray-800 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out" style={{ transform: activeTab === 'Library' ? 'translateX(107px)' : 'translateX(0)' }}></div>
                         <button type="button" onClick={() => setActiveTab('Courses')} className={`flex-1 relative z-10 py-2.5 text-xs font-bold rounded-full transition-colors ${activeTab === 'Courses' ? 'text-[#FF6B00]' : 'text-gray-500 dark:text-gray-400'}`}>Courses</button>
@@ -78,7 +69,7 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
 
                     <div className="flex justify-between items-center mb-3">
                         <h1 className="text-[32px] font-black text-[#1A1A1A] dark:text-white tracking-tight">
-                            {activeTab === 'Library' ? 'Resource Library' : 'Your courses'}
+                            {activeTab === 'Library' ? `${department ? department + ' Library' : 'Resource Library'}` : 'Your courses'}
                         </h1>
                         {activeTab === 'Courses' && (
                             <button
@@ -93,15 +84,15 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
                     </div>
 
                     <p className="text-gray-500 dark:text-gray-400 font-medium text-sm leading-relaxed mb-6">
-                        Master your syllabus topic by topic with curated resources, expert insights, and practice modules.
+                        {activeTab === 'Library' ? 'Access curated textbooks, past questions, and essential materials for your department.' : 'Master your syllabus topic by topic with curated resources, expert insights, and practice modules.'}
                     </p>
                 </div>
 
                 {/* 🚀 TAB CONTENT RENDERER */}
                 {activeTab === 'Library' ? (
-                    <ResourceLibrary onSuggestMaterial={() => setIsSuggesting(true)} />
+                    <ResourceLibrary onSuggestMaterial={() => setCurrentView('suggest_material')} />
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 animate-fade-in px-4 md:px-0">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 animate-fade-in">
                         {courses && courses.map((course) => {
                             const isAvailable = course.is_available;
                             const mastery = getCourseMastery ? getCourseMastery(course.code, course.topics_count) : 0;
@@ -146,6 +137,5 @@ export default function CourseLibrary({ courses, openCourseTopics, getCourseMast
                     </div>
                 )}
             </div>
-        </>
     );
 }
