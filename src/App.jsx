@@ -23,6 +23,8 @@ import Following from './pages/Following';
 import ShareTopic from './pages/ShareTopic';
 import Onboarding from './pages/Onboarding';
 import ManageCourses from './pages/ManageCourses';
+import SuggestMaterial from './pages/SuggestMaterial';
+import OneSignal from 'react-onesignal';
 
 import HamsterLoader from './components/HamsterLoader';
 import PullToRefresh from './components/PullToRefresh';
@@ -63,19 +65,16 @@ function AppContent() {
 
   const [session, setSession] = useState(null);
 
-  const {
-    needRefresh: [needRefresh, setNeedRefresh],
-    updateServiceWorker,
-  } = useRegisterSW({
+  useRegisterSW({
     onRegistered(r) { 
       console.log('SW Registered: ', r); 
       if (r) {
-        // Poll for updates every 30 seconds while the app is open
+        // Poll for updates every 60 seconds while the app is open
         setInterval(() => {
           r.update();
-        }, 30000);
+        }, 60000);
 
-        // Aggressively check for updates the exact moment the user focuses the app
+        // Check for updates when the user focuses the app
         document.addEventListener('visibilitychange', () => {
           if (document.visibilityState === 'visible') {
             r.update();
@@ -116,6 +115,45 @@ function AppContent() {
     }
   }, [isDarkMode]);
 
+  const [isPushEnabled, setIsPushEnabled] = useState(true);
+
+  useEffect(() => {
+    OneSignal.init({
+      appId: "008c9775-90dc-4631-b1c7-998af18061cd",
+      allowLocalhostAsSecureOrigin: true
+    }).then(() => {
+      if (OneSignal.User && OneSignal.User.PushSubscription) {
+        const checkPush = () => Boolean(OneSignal.User.PushSubscription.optedIn && OneSignal.Notifications.permission);
+        setIsPushEnabled(checkPush());
+        OneSignal.User.PushSubscription.addEventListener("change", () => setIsPushEnabled(checkPush()));
+        OneSignal.Notifications.addEventListener("permissionChange", () => setIsPushEnabled(checkPush()));
+      }
+    });
+  }, []);
+
+  const togglePush = async (enable) => {
+    try {
+      if (enable) {
+        const hasPermission = await OneSignal.Notifications.requestPermission();
+        
+        if (OneSignal.Notifications.permissionNative === 'denied' || !hasPermission) {
+          alert("Your browser is blocking notifications. Please click the lock icon in the URL bar (Site Settings) and set Notifications to 'Allow'.");
+        }
+        
+        await OneSignal.User.PushSubscription.optIn();
+        
+        // Force state update after action
+        setIsPushEnabled(Boolean(OneSignal.User.PushSubscription.optedIn && OneSignal.Notifications.permission));
+      } else {
+        await OneSignal.User.PushSubscription.optOut();
+        setIsPushEnabled(false);
+      }
+    } catch (err) {
+      alert("OneSignal Error: " + (err.message || err));
+      console.error(err);
+    }
+  };
+
   const [currentView, setCurrentView] = useState('dashboard');
   const [viewHistory, setViewHistory] = useState([]);
   const [activeCourse, setActiveCourse] = useState(null);
@@ -140,6 +178,14 @@ function AppContent() {
   const [practiceMode, setPracticeMode] = useState('ranked');
 
   const [currentUserDbId, setCurrentUserDbId] = useState(null);
+
+  useEffect(() => {
+    if (currentUserDbId) {
+      OneSignal.login(String(currentUserDbId)).catch(e => console.log(e));
+    } else {
+      OneSignal.logout().catch(e => console.log(e));
+    }
+  }, [currentUserDbId]);
   const [displayName, setDisplayName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [department, setDepartment] = useState('Law');
@@ -191,14 +237,14 @@ function AppContent() {
         { id: 905, code: 'JPL 302', title: 'Law of Torts II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
         { id: 906, code: 'PUL 302', title: 'Criminal Law II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
         { id: 907, code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { id: 908, code: 'PUL 303', title: 'Labor Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { id: 909, code: 'JPL 303', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { id: 908, code: 'BUL 305', title: 'Labor Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { id: 909, code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { id: 910, code: 'BUL 304', title: 'Banking Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
         { id: 911, code: 'PUL 304', title: 'Labor Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
         { id: 912, code: 'JPL 304', title: 'Family Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
-        { id: 913, code: 'PHL 301', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
-        { id: 914, code: 'HIS 301', title: 'History of Nigeria I', level: '300L', department: 'History', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
-        { id: 915, code: 'PUB 301', title: 'Public Policy Analysis I', level: '300L', department: 'Public Admin', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 913, code: 'PHL 301', title: 'Philosophy of Law I', units: 3, level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 914, code: 'HIS 301', title: 'History of Nigeria I', units: 3, level: '300L', department: 'History', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
+        { id: 915, code: 'PUB 301', title: 'Public Policy Analysis I', units: 3, level: '300L', department: 'Public Admin', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
         { id: 919, code: 'SEL 001', title: 'Introduction to Law I', level: 'Any', department: 'Law', type: 'Special Elective', semester: '1st Semester', is_available: true },
         { id: 921, code: 'SEH 301', title: 'Humankind and Nutrition', level: 'Any', department: 'Health', type: 'Special Elective', semester: '1st Semester', is_available: true },
         { id: 922, code: 'SEB 304', title: 'Basic Entrepreneurship', level: 'Any', department: 'Business', type: 'Special Elective', semester: '2nd Semester', is_available: true }
@@ -223,7 +269,7 @@ function AppContent() {
           type = 'Main'; semester = '1st Semester';
         } else if (['BUL 302', 'JPL 302', 'PUL 302'].includes(code)) {
           type = 'Main'; semester = '2nd Semester';
-        } else if (['BUL 303', 'PUL 303', 'JPL 303'].includes(code)) {
+        } else if (['BUL 303', 'BUL 305', 'JPL 305'].includes(code)) {
           type = 'Core Elective'; semester = '1st Semester';
         } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
           type = 'Core Elective'; semester = '2nd Semester';
@@ -305,13 +351,16 @@ function AppContent() {
           .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank, created_at')
           .eq('department', dept)
           .eq('level', lvl)
+          .gt('points', 0)
           .order('points', { ascending: false })
           .limit(20);
 
         if (boardData) {
           const isUserInBoard = boardData.some(u => u.id === uProfile.id);
           let finalBoardData = boardData;
-          if (!isUserInBoard) finalBoardData = [...boardData, uProfile];
+          if (!isUserInBoard && (uProfile.points || 0) > 0) {
+            finalBoardData = [...boardData, uProfile];
+          }
           setLeaderboardData(finalBoardData.sort((a, b) => b.points - a.points));
         }
       };
@@ -519,8 +568,13 @@ function AppContent() {
 
   useEffect(() => {
     if (currentView === 'edit_profile') {
+      if (editAvatarUrl && editAvatarUrl !== avatarUrl && editAvatarUrl.includes('/storage/v1/object/public/avatars/')) {
+        const orphaned = editAvatarUrl.split('/avatars/')[1];
+        if (orphaned) supabase.storage.from('avatars').remove([orphaned]).then();
+      }
       setEditName(displayName || ''); setEditDepartment(department || 'Law'); setEditLevel(level || '300L'); setEditCampus(campus || 'Obafemi Awolowo University (OAU)'); setEditAvatarUrl(avatarUrl); setEditBio(bio || '');
     }
+   
   }, [currentView, displayName, department, level, avatarUrl, bio, campus]);
 
   const streakCalendar = useMemo(() => {
@@ -561,6 +615,12 @@ function AppContent() {
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0]; if (!file) return; setIsUploading(true);
+
+    if (editAvatarUrl && editAvatarUrl !== avatarUrl && editAvatarUrl.includes('/storage/v1/object/public/avatars/')) {
+      const oldTempFileName = editAvatarUrl.split('/avatars/')[1];
+      if (oldTempFileName) supabase.storage.from('avatars').remove([oldTempFileName]).then();
+    }
+
     const fileName = `${currentUserDbId}-${Math.random()}.${file.name.split('.').pop()}`;
     const { error: uploadError } = await supabase.storage.from('avatars').upload(fileName, file);
     if (!uploadError) { const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(fileName); setEditAvatarUrl(publicUrl); }
@@ -569,6 +629,12 @@ function AppContent() {
 
   const handleSaveProfile = async () => {
     if (!currentUserDbId) return;
+
+    if (avatarUrl && avatarUrl !== editAvatarUrl && avatarUrl.includes('/storage/v1/object/public/avatars/')) {
+      const oldFileName = avatarUrl.split('/avatars/')[1];
+      if (oldFileName) supabase.storage.from('avatars').remove([oldFileName]).then();
+    }
+
     setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus);
     await supabase.from('profiles').update({ name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus }).eq('id', currentUserDbId);
     await handleManualRefresh();
@@ -699,7 +765,7 @@ function AppContent() {
       if (mode === 'ranked') {
         targetCodes = targetCodes.filter(code => {
           const c = coursesList.find(x => x.code === code);
-          return c && c.type === 'Main';
+          return c && c.type !== 'Special Elective';
         });
       }
     } else if (typeof courseInput === 'string') {
@@ -753,7 +819,14 @@ function AppContent() {
         const currentUser = leaderboardData.find(u => u.id === currentUserDbId);
         const currentPoints = currentUser ? (currentUser.points || 0) : 0;
         const newPoints = currentPoints + score;
-        setLeaderboardData(prev => prev.map(u => u.id === currentUserDbId ? { ...u, points: newPoints } : u));
+        setLeaderboardData(prev => {
+          const userExists = prev.some(u => u.id === currentUserDbId);
+          if (userExists) {
+            return prev.map(u => u.id === currentUserDbId ? { ...u, points: newPoints } : u).sort((a, b) => b.points - a.points);
+          } else {
+            return [...prev, { id: currentUserDbId, name: displayName, avatar: avatarUrl, department, level, points: newPoints }].sort((a, b) => b.points - a.points);
+          }
+        });
         supabase.from('profiles').update({ points: newPoints }).eq('id', currentUserDbId).then();
       }
       smartSetCurrentView('results');
@@ -769,8 +842,8 @@ function AppContent() {
     topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, joinDate, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
     streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
-    handleCompleteOnboarding, isSupported,
-    isDarkMode, setIsDarkMode, campus, needRefresh, updateServiceWorker
+    handleCompleteOnboarding, isSupported, isPushEnabled, togglePush,
+    isDarkMode, setIsDarkMode, campus
 
   };
 
@@ -834,18 +907,7 @@ function AppContent() {
               <div className="flex items-center gap-3">
                 <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest hidden sm:inline">{activeCourse?.code || 'RECALL'}</span>
 
-                {isSupported && (
-                  <button
-                    onClick={handleManualRefresh}
-                    disabled={isManualRefreshing}
-                    className="p-1.5 text-gray-400 dark:text-gray-500 hover:text-[#FF6B00] hover:bg-[#FFF2EC] dark:hover:bg-gray-800 rounded-full transition-colors focus:outline-none disabled:opacity-50"
-                    title="Refresh Data"
-                  >
-                    <svg className={`w-4 h-4 ${isManualRefreshing ? 'animate-spin text-[#FF6B00]' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </button>
-                )}
+
 
                 <div className="px-3 py-1.5 bg-[#FFF2EC] dark:bg-gray-800 text-[#FF6B00] text-xs font-extrabold rounded-full border border-[#FFD5C2] dark:border-gray-700">🔥 {streakCount}</div>
               </div>
@@ -870,6 +932,7 @@ function AppContent() {
               {currentView === 'following' && <Following {...globalProps} />}
               {currentView === 'share_topic' && <ShareTopic {...globalProps} sharedCourse={shareTarget.course} sharedTopic={shareTarget.topic} />}
               {currentView === 'manage_courses' && <ManageCourses {...globalProps} />}
+              {currentView === 'suggest_material' && <SuggestMaterial {...globalProps} onBack={goBack} />}
             </PullToRefresh>
           </main>
 
