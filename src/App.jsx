@@ -642,7 +642,7 @@ function AppContent() {
 
   const handleClaimStreak = async () => {
     if (!canClaimStreak || !session || !currentUserDbId) return;
-    playSound('success');
+    playSound('streak');
     const newStreak = streakCount + 1; const now = new Date().toISOString();
     setStreakCount(newStreak); setCanClaimStreak(false); setLostStreak(0);
     await supabase.from('profiles').update({ current_streak: newStreak, streak: newStreak, last_claim_timestamp: now }).eq('id', currentUserDbId).then();
@@ -650,7 +650,7 @@ function AppContent() {
 
   const handleRestoreStreak = async () => {
     if (lostStreak === 0 || restoresLeft <= 0 || !session || !currentUserDbId) return;
-    playSound('success');
+    playSound('streak');
     const newRestoresLeft = restoresLeft - 1;
     const currentMonth = new Date().getMonth();
     const streakRestoresObj = { count: newRestoresLeft, month: currentMonth };

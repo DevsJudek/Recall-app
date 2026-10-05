@@ -53,9 +53,10 @@ export function SoundProvider({ children }) {
             'tap': 'press',
             'success': 'achievement',
             'pop': 'select',
+            'streak': 'streak',
         };
         
-        const mappedCue = cueMap[type] || 'select';
+        const mappedCue = cueMap[type] || type;
         
         try {
             uiRef.current.play(mappedCue);
