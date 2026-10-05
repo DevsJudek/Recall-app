@@ -63,7 +63,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
             const response = await fetch('/api/tts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: textToRead, voice: 'en-NG-AbeoNeural' })
+                body: JSON.stringify({ text: textToRead, voice: 'en-US-ChristopherNeural' })
             });
             
             if (!response.ok) throw new Error('Failed to load audio');
@@ -434,7 +434,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                                         </>
                                     ) : (
                                         <>
-                                            <span>🔊</span> Read Module (Abeo - NG)
+                                            <span>🔊</span> Read Module (Christopher - US)
                                         </>
                                     )}
                                 </button>
