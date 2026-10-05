@@ -346,7 +346,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                             <input
                                 type="text"
                                 value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
+                                onChange={(e) => { setChatInput(e.target.value); playSound('typing'); }}
                                 onKeyDown={(e) => e.key === 'Enter' && !isAiTyping && cooldown === 0 && handleAskAi()}
                                 placeholder={cooldown > 0 ? `Cooling down for ${cooldown}s...` : "Ask Atlas a question..."}
                                 disabled={isAiTyping || cooldown > 0}

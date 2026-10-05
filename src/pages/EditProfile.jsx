@@ -1,3 +1,4 @@
+import { supabase } from '../supabase';
 // src/pages/EditProfile.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useSound } from '../contexts/SoundContext'; // 🚀 IMPORT CONTEXT
@@ -14,6 +15,7 @@ function SearchableDropdown({ options, value, onChange, placeholder, inputClassN
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const wrapperRef = useRef(null);
+    const { playSound } = useSound();
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -32,7 +34,7 @@ function SearchableDropdown({ options, value, onChange, placeholder, inputClassN
             <input
                 type="text"
                 value={isOpen ? search : value}
-                onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
+                onChange={(e) => { setSearch(e.target.value); setIsOpen(true); playSound('typing'); }}
                 onFocus={() => { setSearch(''); setIsOpen(true); }}
                 placeholder={placeholder || "Search..."}
                 className={inputClassName}
@@ -64,13 +66,12 @@ export default function EditProfile({
     editName, setEditName, editDepartment, setEditDepartment,
     editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, handleImageUpload,
     handleSignOut, editBio, setEditBio, session,
-    isDarkMode, setIsDarkMode
+    isDarkMode, setIsDarkMode, isPushEnabled, togglePush
 }) {
     // 🚀 USE CONTEXT FOR SOUNDS
     const { isSoundEnabled, setIsSoundEnabled } = useSound();
 
     const [isSaving, setIsSaving] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
 
     const userEmail = session?.user?.email || 'Loading email...';
 
@@ -89,23 +90,6 @@ export default function EditProfile({
         setIsSaving(true);
         await handleSaveProfile();
         setIsSaving(false);
-    };
-
-    const handleForceUpdate = () => {
-        setIsUpdating(true);
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-                for (let registration of registrations) registration.unregister();
-            });
-        }
-        if ('caches' in window) {
-            caches.keys().then((names) => {
-                for (let name of names) caches.delete(name);
-            });
-        }
-        setTimeout(() => {
-            window.location.href = window.location.origin + '?updated=true';
-        }, 500);
     };
 
     return (
@@ -148,7 +132,7 @@ export default function EditProfile({
                         </label>
                         {editAvatarUrl && editAvatarUrl.startsWith('http') && (
                             <button
-                                onClick={() => setEditAvatarUrl(null)}
+                                onClick={() => { if (editAvatarUrl && editAvatarUrl.includes('/storage/v1/object/public/avatars/')) { const old = editAvatarUrl.split('/avatars/')[1]; if (old) supabase.storage.from('avatars').remove([old]).then(); } setEditAvatarUrl(null); }}
                                 className="absolute bottom-1 left-1 w-8 h-8 md:w-10 md:h-10 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-900 rounded-full flex items-center justify-center cursor-pointer shadow-md hover:scale-105 transition-transform text-red-500 text-sm md:text-base z-10"
                                 title="Remove Avatar"
                             >
@@ -267,6 +251,7 @@ export default function EditProfile({
                                 🔇 Muted
                             </button>
                         </div>
+
                     </div>
 
 
