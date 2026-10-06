@@ -513,14 +513,20 @@ function AppContent() {
     setIsUploading(true);
     const isSupportCheck = (data.department.toUpperCase() === 'LAW');
 
-    await supabase.from('profiles').update({
+    let payload = {
       name: data.name,
       department: data.department,
       level: data.level,
       campus: data.institution,
       daily_target: data.dailyTarget,
       is_onboarded: true
-    }).eq('id', currentUserDbId);
+    };
+    if (data.level !== level || data.department !== department) {
+      payload.enrolled_courses = [];
+      setEnrolledCourses([]);
+    }
+
+    await supabase.from('profiles').update(payload).eq('id', currentUserDbId);
 
 
     setDisplayName(data.name);
@@ -635,8 +641,15 @@ function AppContent() {
       if (oldFileName) supabase.storage.from('avatars').remove([oldFileName]).then();
     }
 
+    let updatePayload = { name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus };
+    
+    if (editLevel !== level || editDepartment !== department) {
+      updatePayload.enrolled_courses = [];
+      setEnrolledCourses([]);
+    }
+
     setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus);
-    await supabase.from('profiles').update({ name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus }).eq('id', currentUserDbId);
+    await supabase.from('profiles').update(updatePayload).eq('id', currentUserDbId);
     await handleManualRefresh();
     smartSetCurrentView('profile');
   };
