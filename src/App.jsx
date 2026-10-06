@@ -959,9 +959,9 @@ function AppContent() {
         )}
 
         <div className="flex-1 flex flex-col h-full w-full relative overflow-hidden bg-[#f8fafc] dark:bg-[#0a0a0a]">
-          {!['onboarding', 'practice_setup'].includes(currentView) && (
+          {!['onboarding'].includes(currentView) && (
             <header className="flex-none shrink-0 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-[#E5E5E5] dark:border-gray-800 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm z-50 touch-none select-none">
-              <button onClick={goBack} disabled={viewHistory.length === 0} className={`text-sm font-bold transition-colors flex items-center gap-2 ${viewHistory.length > 0 ? 'text-[#666666] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white' : 'text-transparent cursor-default select-none'}`}>← Back</button>
+              <button onClick={goBack} disabled={viewHistory.length === 0 || currentView === 'practice_setup'} className={`text-sm font-bold transition-colors flex items-center gap-2 ${(viewHistory.length > 0 && currentView !== 'practice_setup') ? 'text-[#666666] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white' : 'text-transparent cursor-default select-none pointer-events-none'}`}>{(currentView !== 'practice_setup') ? '← Back' : ' '}</button>
 
               <div className="flex items-center gap-3">
                 <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest hidden sm:inline">{activeCourse?.code || 'RECALL'}</span>

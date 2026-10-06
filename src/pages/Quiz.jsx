@@ -21,8 +21,12 @@ export default function Quiz({
     const scrollRef = useRef(null);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        document.querySelectorAll('.scrollable-content, .overflow-y-auto').forEach(el => {
+            el.scrollTop = 0;
+        });
         if (scrollRef.current) {
-            scrollRef.current.scrollTo({ top: 0, behavior: 'instant' });
+            scrollRef.current.scrollTop = 0;
         }
     }, [currentIndex]);
 
