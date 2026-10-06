@@ -477,13 +477,7 @@ function AppContent() {
   };
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && session) {
-        handleManualRefresh();
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    // visibilitychange listener removed to prevent PWA refresh loops
   }, [session, fetchUserData, fetchCourses]);
 
   useEffect(() => { if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0; }, [currentView, activeCourse]);
@@ -730,7 +724,6 @@ function AppContent() {
 
   const openLeaderboard = async () => {
     setIsTransitioning(true);
-    await handleManualRefresh();
     smartSetCurrentView('leaderboard');
     setTimeout(() => setIsTransitioning(false), 200);
   };
