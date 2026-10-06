@@ -18,6 +18,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
     }, [level, department]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedCourseCodes(prev => {
             const lockedMainCourses = allCourses
                 .filter(c => isCourseLocked(c))
@@ -80,7 +81,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
             }
             return a.code.localeCompare(b.code);
         });
-    }, [allCourses, department, level, activeLevel, activeSemester, searchQuery, isCourseLocked]);
+    }, [allCourses, department, activeLevel, activeSemester, searchQuery, isCourseLocked]);
 
     const groupedCourses = {
         'Core Electives': filteredCourses.filter(c => c.type === 'Core Elective'),

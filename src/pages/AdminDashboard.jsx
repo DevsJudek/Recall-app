@@ -16,10 +16,6 @@ export default function AdminDashboard({ goBack }) {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedTopic, setSelectedTopic] = useState(null);
 
-    useEffect(() => {
-        fetchAllData();
-    }, []);
-
     const fetchAllData = async () => {
         setIsLoading(true);
         const [
@@ -41,6 +37,11 @@ export default function AdminDashboard({ goBack }) {
 
         setIsLoading(false);
     };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchAllData();
+    }, []);
 
     // Derive unique topics for the selected course
     const courseReadings = readings.filter(r => r.course_code === selectedCourse?.code);

@@ -15,6 +15,7 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                 .select('id, points')
                 .eq('department', selectedPeer.department || 'Law')
                 .eq('level', selectedPeer.level || '300L')
+                .gt('points', 0)
                 .order('points', { ascending: false });
 
             if (data) {

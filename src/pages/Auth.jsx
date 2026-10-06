@@ -1,5 +1,5 @@
 // src/pages/Auth.jsx
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { supabase } from '../supabase';
 
 export default function Auth() {

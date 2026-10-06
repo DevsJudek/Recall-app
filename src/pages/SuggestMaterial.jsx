@@ -1,38 +1,59 @@
+import { supabase } from '../supabase';
 // src/pages/SuggestMaterial.jsx
 import { useState } from 'react';
 
-export default function SuggestMaterial({ onBack }) {
+export default function SuggestMaterial({ onBack, session }) {
     const [shareMethod, setShareMethod] = useState('cloud');
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('Textbook');
     const [link, setLink] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleSubmit = async () => {
+        if (!title.trim()) return alert("Please enter a title.");
+        if (shareMethod === 'cloud' && !link.trim()) return alert("Please provide a public link to the material.");
+
+        setIsSubmitting(true);
+        const { error } = await supabase.from('suggested_materials').insert([
+            { title, category, link: link || 'N/A', status: 'pending', user_id: session?.user?.id }
+        ]);
+        setIsSubmitting(false);
+
+        if (error) {
+            console.error(error);
+            return alert("Failed to submit material. Please try again.");
+        }
+
+        if (shareMethod === 'whatsapp') {
+            window.open('https://wa.me/judekolawole?s=t', '_blank');
+        }
+
+        setSubmitted(true);
+    };
+
+    if (submitted) {
+        return (
+            <div className="flex-1 w-full flex flex-col items-center justify-center p-6 animate-fade-in">
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6">
+                    <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <h1 className="text-2xl font-black text-[#111827] dark:text-white text-center mb-2">Material Submitted!</h1>
+                <p className="text-gray-500 dark:text-gray-400 text-center max-w-sm mb-8 leading-relaxed">
+                    <span className="font-bold text-[#111827] dark:text-white">"{title}"</span> has been submitted for review. Thank you for contributing to the library.
+                </p>
+                <button onClick={onBack} className="px-8 py-3 bg-[#111827] dark:bg-white text-white dark:text-[#111827] rounded-full font-bold shadow-md hover:scale-105 transition-transform">
+                    Back to Library
+                </button>
+            </div>
+        );
+    }
 
     return (
-        // 🚀 FORCE FULL SCREEN OVER THE NAV BAR
-        <div className="!fixed !top-0 !left-0 !w-screen !h-[100dvh] z-[99999] bg-[#FAFAFA] dark:bg-[#121212] font-sans animate-fade-in flex flex-col !m-0 !p-0 overflow-y-auto">
-
-            {/* 📱 MOBILE HEADER (Hidden on Desktop) */}
-            <div className="md:hidden flex items-center px-5 pt-6 pb-4 bg-white dark:bg-[#1A1A1A] border-b border-[#E5E5E5] dark:border-gray-800 sticky top-0 z-10 shrink-0">
-                <button onClick={onBack} className="mr-4 text-[#111827] dark:text-white shrink-0">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-                </button>
-                <h1 className="text-xl font-black text-[#111827] dark:text-white tracking-tight">Suggest Material</h1>
-            </div>
-
-            {/* 🖥️ DESKTOP NAV (Hidden on Mobile) */}
-            <div className="hidden md:flex items-center justify-between px-10 py-6 max-w-7xl mx-auto w-full shrink-0">
-                <div className="flex items-center gap-6">
-                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-[#111827] dark:hover:text-white transition-colors font-bold">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-                        Back to Library
-                    </button>
-                    <span className="text-gray-300 dark:text-gray-700">•</span>
-                    <span className="font-bold text-[#FF6B00]">Contribute</span>
-                </div>
-            </div>
+        <div className="flex-1 w-full flex flex-col pb-16 animate-fade-in">
 
             {/* MAIN CONTENT */}
-            <div className="flex-1 max-w-7xl mx-auto w-full px-5 py-8 md:py-12 grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16">
+            <div className="flex-1 w-full px-4 py-6 md:py-12 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 max-w-7xl mx-auto">
 
                 {/* LEFT COLUMN (Text & Info Cards) */}
                 <div className="lg:col-span-5 flex flex-col">
@@ -175,6 +196,11 @@ export default function SuggestMaterial({ onBack }) {
                                     />
                                 </div>
                             </div>
+                            {shareMethod === 'cloud' && (
+                                <p className="text-[11px] text-red-500 font-bold mt-2">
+                                    ⚠️ Please ensure your link is set to "Public" (Anyone with the link can view).
+                                </p>
+                            )}
                         </div>
 
                         {/* Submit Footer */}
@@ -186,8 +212,8 @@ export default function SuggestMaterial({ onBack }) {
                                 <div className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse"></div>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">AWAITING SUBMISSION</span>
                             </div>
-                            <button type="button" className="w-full md:w-auto px-10 py-4 bg-[#FF6B00] text-white rounded-[16px] text-sm font-bold shadow-[0_8px_24px_rgba(255,107,0,0.25)] hover:bg-[#E05D00] hover:shadow-[0_8px_24px_rgba(224,93,0,0.35)] active:scale-95 transition-all">
-                                Send for Review
+                            <button disabled={isSubmitting} onClick={handleSubmit} type="button" className="w-full md:w-auto px-10 py-4 bg-[#FF6B00] text-white rounded-[16px] text-sm font-bold shadow-[0_8px_24px_rgba(255,107,0,0.25)] hover:bg-[#E05D00] hover:shadow-[0_8px_24px_rgba(224,93,0,0.35)] active:scale-95 transition-all">
+                                {isSubmitting ? 'Sending...' : 'Send for Review'}
                             </button>
                         </div>
 

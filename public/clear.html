@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Updating Recall...</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100dvh; padding: 20px; }
+    .card { background: white; border-radius: 24px; padding: 40px 32px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .spinner { width: 48px; height: 48px; border: 4px solid #FFE0CC; border-top-color: #FF6B00; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    h1 { font-size: 20px; font-weight: 900; color: #1A1A1A; margin-bottom: 8px; }
+    p { font-size: 14px; color: #666; line-height: 1.5; }
+    .done { color: #22c55e; }
+    .step { font-size: 12px; color: #999; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="spinner" id="spinner"></div>
+    <h1 id="title">Updating Recall...</h1>
+    <p id="msg">Clearing old cache and fetching the latest version.</p>
+    <p class="step" id="step">Starting...</p>
+  </div>
+  <script>
+    (async function() {
+      const step = document.getElementById('step');
+      const title = document.getElementById('title');
+      const msg = document.getElementById('msg');
+      const spinner = document.getElementById('spinner');
+
+      try {
+        // Step 1: Unregister all service workers
+        step.textContent = 'Removing old service workers...';
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const r of regs) { await r.unregister(); }
+        }
+
+        // Step 2: Delete all caches
+        step.textContent = 'Clearing cached files...';
+        if ('caches' in window) {
+          const names = await caches.keys();
+          for (const n of names) { await caches.delete(n); }
+        }
+
+        // Step 3: Clear other storage
+        step.textContent = 'Almost done...';
+
+        // Done
+        spinner.style.borderTopColor = '#22c55e';
+        spinner.style.animation = 'none';
+        spinner.style.borderColor = '#22c55e';
+        spinner.innerHTML = '&#10003;';
+        spinner.style.display = 'flex';
+        spinner.style.alignItems = 'center';
+        spinner.style.justifyContent = 'center';
+        spinner.style.fontSize = '24px';
+        spinner.style.color = '#22c55e';
+        spinner.style.fontWeight = 'bold';
+        title.textContent = 'Updated!';
+        title.classList.add('done');
+        msg.textContent = 'Redirecting to the app...';
+        step.textContent = '';
+
+        // Redirect after a moment
+        setTimeout(() => {
+          window.location.replace('/?freshstart=' + Date.now());
+        }, 1200);
+      } catch (e) {
+        step.textContent = 'Error: ' + e.message + ' — redirecting anyway...';
+        setTimeout(() => {
+          window.location.replace('/?freshstart=' + Date.now());
+        }, 2000);
+      }
+    })();
+  </script>
+</body>
+</html>

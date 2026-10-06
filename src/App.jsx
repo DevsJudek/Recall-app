@@ -24,6 +24,7 @@ import ShareTopic from './pages/ShareTopic';
 import Onboarding from './pages/Onboarding';
 import ManageCourses from './pages/ManageCourses';
 import SuggestMaterial from './pages/SuggestMaterial';
+import TestHistory from './pages/TestHistory';
 import OneSignal from 'react-onesignal';
 
 import HamsterLoader from './components/HamsterLoader';
@@ -822,6 +823,19 @@ function AppContent() {
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex((prev) => prev + 1); setTimeLeft(practiceMode === 'normal' ? 999 : 15); setSelectedOption(null); setIsLocked(false);
     } else {
+      if (currentUserDbId) {
+        const courseCode = activeCourse ? activeCourse.code : 'mixed';
+        supabase.from('test_history').insert({
+          user_id: currentUserDbId,
+          mode: practiceMode,
+          course_code: courseCode,
+          score: score,
+          total_questions: questions.length
+        }).then(res => {
+          if (res.error) console.error("Error saving test history", res.error);
+        });
+      }
+
       if (practiceMode === 'ranked' && currentUserDbId) {
         const currentUser = leaderboardData.find(u => u.id === currentUserDbId);
         const currentPoints = currentUser ? (currentUser.points || 0) : 0;
@@ -854,7 +868,7 @@ function AppContent() {
 
   };
 
-  const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin'].includes(currentView)
+  const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin', 'test_history'].includes(currentView)
     ? 'p-0 pb-24 md:pb-8 bg-white dark:bg-[#121212]'
     : ['reading', 'practice_setup', 'quiz', 'share_topic', 'manage_courses'].includes(currentView)
       ? 'p-0 bg-white dark:bg-[#121212]'
@@ -956,6 +970,7 @@ function AppContent() {
               {currentView === 'share_topic' && <ShareTopic {...globalProps} sharedCourse={shareTarget.course} sharedTopic={shareTarget.topic} />}
               {currentView === 'manage_courses' && <ManageCourses {...globalProps} />}
               {currentView === 'suggest_material' && <SuggestMaterial {...globalProps} onBack={goBack} />}
+              {currentView === 'test_history' && <TestHistory {...globalProps} />}
             </PullToRefresh>
           </main>
 
