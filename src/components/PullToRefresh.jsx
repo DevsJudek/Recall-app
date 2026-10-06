@@ -1,8 +1,8 @@
 // src/components/PullToRefresh.jsx
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export default function PullToRefresh({ onRefresh, children, className, scrollRef }) {
-    const [startY, setStartY] = useState(0);
+    const startYRef = useRef(0);
     const [pullDistance, setPullDistance] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -11,14 +11,14 @@ export default function PullToRefresh({ onRefresh, children, className, scrollRe
 
     const handleTouchStart = (e) => {
         if (scrollRef.current && scrollRef.current.scrollTop <= 0) {
-            setStartY(e.touches[0].clientY);
+            startYRef.current = e.touches[0].clientY;
         }
     };
 
     const handleTouchMove = (e) => {
-        if (startY > 0 && scrollRef.current && scrollRef.current.scrollTop <= 0) {
+        if (startYRef.current > 0 && scrollRef.current && scrollRef.current.scrollTop <= 0) {
             const currentY = e.touches[0].clientY;
-            const pull = currentY - startY;
+            const pull = currentY - startYRef.current;
             if (pull > 0) {
                 setPullDistance(Math.min(pull * 0.4, MAX_PULL));
             }
@@ -33,7 +33,12 @@ export default function PullToRefresh({ onRefresh, children, className, scrollRe
             setIsRefreshing(false);
         }
         setPullDistance(0);
-        setStartY(0);
+        startYRef.current = 0;
+    };
+
+    const handleTouchCancel = () => {
+        setPullDistance(0);
+        startYRef.current = 0;
     };
 
     return (
@@ -43,6 +48,7 @@ export default function PullToRefresh({ onRefresh, children, className, scrollRe
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchCancel}
         >
             <div
                 className="w-full flex justify-center items-end overflow-hidden transition-all duration-200 ease-out"
