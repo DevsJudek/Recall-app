@@ -1,4 +1,5 @@
 // src/pages/Quiz.jsx
+import { useEffect, useRef } from 'react';
 import { useSound } from '../contexts/SoundContext';
 
 export default function Quiz({
@@ -17,6 +18,13 @@ export default function Quiz({
     streakCount
 }) {
     const { playSound } = useSound(); 
+    const scrollRef = useRef(null);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    }, [currentIndex]);
 
     const question = questions[currentIndex];
     if (!question) return null;
@@ -73,7 +81,7 @@ export default function Quiz({
                 )}
             </div>
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto" ref={scrollRef}>
                 <div className="max-w-4xl mx-auto px-6 py-6 pb-32 space-y-4">
                     
                     <div className="bg-white dark:bg-[#1A1A1A] rounded-[24px] p-6 md:p-8 shadow-sm border border-[#E5E5E5] dark:border-gray-800 mb-6 transition-colors">

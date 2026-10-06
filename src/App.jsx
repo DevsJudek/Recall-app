@@ -557,6 +557,25 @@ function AppContent() {
   };
 
   const goBack = () => {
+    // Log incomplete test if leaving quiz mid-session
+    if (currentView === 'quiz' && session?.user?.id && questions.length > 0) {
+      const courseCode = activeCourse ? activeCourse.code : 'mixed';
+      supabase.from('test_history').insert({
+        user_id: session.user.id,
+        mode: practiceMode,
+        course_code: courseCode,
+        score: score,
+        total_questions: questions.length,
+        completed: false
+      }).then(async (res) => {
+        if (res.error) console.error("Error saving incomplete test history", res.error);
+        const { data: allHistory } = await supabase.from('test_history').select('id').eq('user_id', session.user.id).order('created_at', { ascending: false });
+        if (allHistory && allHistory.length > 30) {
+          const idsToDelete = allHistory.slice(30).map(h => h.id);
+          await supabase.from('test_history').delete().in('id', idsToDelete);
+        }
+      });
+    }
     if (viewHistory.length > 0) { const newHistory = [...viewHistory]; const prevView = newHistory.pop(); setViewHistory(newHistory); setCurrentView(prevView); }
     else { setCurrentView('dashboard'); }
   };
@@ -823,16 +842,23 @@ function AppContent() {
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex((prev) => prev + 1); setTimeLeft(practiceMode === 'normal' ? 999 : 15); setSelectedOption(null); setIsLocked(false);
     } else {
-      if (currentUserDbId) {
+      if (session?.user?.id) {
         const courseCode = activeCourse ? activeCourse.code : 'mixed';
         supabase.from('test_history').insert({
-          user_id: currentUserDbId,
+          user_id: session.user.id,
           mode: practiceMode,
           course_code: courseCode,
           score: score,
-          total_questions: questions.length
-        }).then(res => {
+          total_questions: questions.length,
+          completed: true
+        }).then(async (res) => {
           if (res.error) console.error("Error saving test history", res.error);
+          // Wipe oldest entries beyond 30
+          const { data: allHistory } = await supabase.from('test_history').select('id').eq('user_id', session.user.id).order('created_at', { ascending: false });
+          if (allHistory && allHistory.length > 30) {
+            const idsToDelete = allHistory.slice(30).map(h => h.id);
+            await supabase.from('test_history').delete().in('id', idsToDelete);
+          }
         });
       }
 
@@ -933,7 +959,7 @@ function AppContent() {
         )}
 
         <div className="flex-1 flex flex-col h-full w-full relative overflow-hidden bg-[#f8fafc] dark:bg-[#0a0a0a]">
-          {!['onboarding'].includes(currentView) && (
+          {!['onboarding', 'practice_setup'].includes(currentView) && (
             <header className="flex-none shrink-0 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-[#E5E5E5] dark:border-gray-800 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm z-50 touch-none select-none">
               <button onClick={goBack} disabled={viewHistory.length === 0} className={`text-sm font-bold transition-colors flex items-center gap-2 ${viewHistory.length > 0 ? 'text-[#666666] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white' : 'text-transparent cursor-default select-none'}`}>← Back</button>
 
