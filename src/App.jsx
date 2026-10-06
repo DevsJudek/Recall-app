@@ -68,19 +68,6 @@ function AppContent() {
   useRegisterSW({
     onRegistered(r) { 
       console.log('SW Registered: ', r); 
-      if (r) {
-        // Poll for updates every 60 seconds while the app is open
-        setInterval(() => {
-          r.update();
-        }, 60000);
-
-        // Check for updates when the user focuses the app
-        document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'visible') {
-            r.update();
-          }
-        });
-      }
     },
     onRegisterError(error) { console.log('SW registration error', error); },
   });
@@ -449,7 +436,7 @@ function AppContent() {
       }
     } catch (error) { console.error("Data Fetch Error:", error); }
     finally { if (!isSilent) setIsLoading(false); }
-  }, [currentView]);
+  }, []);
 
   // 🚀 Derived state: INSTANTLY injects mandatory Main courses for the current view
   const activeEnrolledCourses = useMemo(() => {
