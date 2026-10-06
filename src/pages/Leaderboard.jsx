@@ -1,5 +1,6 @@
 // src/pages/Leaderboard.jsx
 import { useState, useEffect } from 'react';
+import { supabase } from '../supabase';
 
 const formatPoints = (points) => (points || 0).toLocaleString();
 
@@ -32,8 +33,11 @@ const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
 };
 
     
-export default function Leaderboard({ leaderboardData, currentUserDbId, viewPeerProfile, startPractice }) {
+export default function Leaderboard({ leaderboardData, currentUserDbId, viewPeerProfile, startPractice, department, campus }) {
     const [resetString, setResetString] = useState('');
+    const [scope, setScope] = useState('class'); 
+    const [fetchedData, setFetchedData] = useState({ department: null, campus: null });
+    const [isLoadingScope, setIsLoadingScope] = useState(false);
 
     useEffect(() => {
         const calculateReset = () => {
@@ -44,7 +48,6 @@ export default function Leaderboard({ leaderboardData, currentUserDbId, viewPeer
             const diffMs = nextSunday - now;
             const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            // Removed "Resets in " to save space
             setResetString(`${diffDays}d ${diffHours}h`);
         };
         calculateReset();
@@ -52,12 +55,44 @@ export default function Leaderboard({ leaderboardData, currentUserDbId, viewPeer
         return () => clearInterval(interval);
     }, []);
 
-    const sortedData = [...leaderboardData].sort((a, b) => (b.points || 0) - (a.points || 0));
+    const handleScopeChange = async (newScope) => {
+        setScope(newScope);
+        if (newScope === 'class') return;
+        
+        if (!fetchedData[newScope]) {
+            setIsLoadingScope(true);
+            try {
+                let query = supabase
+                    .from('profiles')
+                    .select('id, name, avatar, points, department, level, followers_count, following_count, current_streak, bio, previous_rank, created_at')
+                    .gt('points', 0)
+                    .order('points', { ascending: false })
+                    .limit(20);
+
+                if (newScope === 'department') {
+                    query = query.eq('department', department || 'Law');
+                } else if (newScope === 'campus') {
+                    query = query.eq('campus', campus || 'Obafemi Awolowo University (OAU)');
+                }
+
+                const { data } = await query;
+                if (data) {
+                    setFetchedData(prev => ({ ...prev, [newScope]: data }));
+                }
+            } catch (err) {
+                console.error(err);
+            }
+            setIsLoadingScope(false);
+        }
+    };
+
+    const activeData = scope === 'class' ? leaderboardData : (fetchedData[scope] || []);
+    const sortedData = [...activeData].sort((a, b) => (b.points || 0) - (a.points || 0));
     const top3 = sortedData.slice(0, 3);
     const restOfTop12 = sortedData.slice(3, 12);
     const currentUserIndex = sortedData.findIndex(u => u.id === currentUserDbId);
-    const currentUser = currentUserIndex !== -1 ? sortedData[currentUserIndex] : null;
-    const currentUserRank = currentUserIndex !== -1 ? currentUserIndex + 1 : 'Unranked';
+    const currentUser = currentUserIndex !== -1 ? sortedData[currentUserIndex] : leaderboardData.find(u => u.id === currentUserDbId);
+    const currentUserRank = currentUserIndex !== -1 ? currentUserIndex + 1 : '20+';
 
 const getRankTrend = (currentRank, previousRank) => {
         if (!previousRank || currentRank === previousRank) {
@@ -72,24 +107,52 @@ const getRankTrend = (currentRank, previousRank) => {
 
     return (
         <div className="max-w-4xl mx-auto pt-4 pb-48 md:pb-36 font-sans relative">
-            {/* Forced flex-row and slightly scaled down for mobile to fit perfectly side-by-side */}
-            <div className="flex flex-row justify-center items-center gap-2 md:gap-4 px-2 md:px-8 mb-10 scale-[0.95] md:scale-100">
-                <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1.5 rounded-2xl flex border border-[#E5E5E5] dark:border-gray-800 shrink-0">
-                    <button className="px-5 md:px-6 py-2 bg-white dark:bg-[#333333] text-[#1A1A1A] dark:text-white text-[11px] font-bold rounded-xl shadow-sm">Weekly</button>
-                    <button disabled className="px-3 md:px-6 py-2 text-gray-400 dark:text-gray-600 text-[11px] font-bold rounded-xl cursor-not-allowed opacity-60 flex items-center gap-1.5">Semester <span>🔒</span></button>
+            
+            {/* SCOPE & TIME CONTROLS */}
+            <div className="flex flex-col items-center gap-4 px-4 md:px-8 mb-10 w-full">
+                
+                {/* SCOPE TOGGLE */}
+                <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1.5 rounded-full flex border border-[#E5E5E5] dark:border-gray-800 w-full max-w-[320px] justify-between shadow-inner relative">
+                    <button onClick={() => handleScopeChange('class')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'class' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Class</button>
+                    <button onClick={() => handleScopeChange('department')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'department' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Department</button>
+                    <button onClick={() => handleScopeChange('campus')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'campus' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Campus</button>
+                    
+                    {/* Animated Indicator */}
+                    <div className="absolute top-1.5 bottom-1.5 w-[calc(33.33%-4px)] bg-white dark:bg-[#333333] rounded-full shadow-sm border border-gray-100 dark:border-gray-700 transition-transform duration-300 ease-out" style={{ transform: `translateX(${scope === 'class' ? '4px' : scope === 'department' ? 'calc(100% + 4px)' : 'calc(200% + 4px)'})` }}></div>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF9F5] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-3.5 py-2.5 rounded-full shadow-sm whitespace-nowrap">
-                    <span className="text-sm">⏱</span> {resetString}
+
+                {/* TIME & RESET */}
+                <div className="flex flex-row justify-center items-center gap-2 md:gap-4 w-full scale-[0.95] md:scale-100">
+                    <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1.5 rounded-2xl flex border border-[#E5E5E5] dark:border-gray-800 shrink-0">
+                        <button className="px-5 md:px-6 py-1.5 bg-white dark:bg-[#333333] text-[#1A1A1A] dark:text-white text-[11px] font-bold rounded-xl shadow-sm">Weekly</button>
+                        <button disabled className="px-3 md:px-6 py-1.5 text-gray-400 dark:text-gray-600 text-[11px] font-bold rounded-xl cursor-not-allowed opacity-60 flex items-center gap-1.5">Semester <span>🔒</span></button>
+                    </div>
+                    <div className="flex items-center gap-1 text-[10px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF9F5] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-3.5 py-2.5 rounded-full shadow-sm whitespace-nowrap">
+                        <span className="text-sm">⏰</span> {resetString}
+                    </div>
                 </div>
             </div>
 
-            <div className="flex justify-center items-end px-4 mb-8">
-                <PodiumCard user={top3[1]} rank={2} isFirst={false} viewPeerProfile={viewPeerProfile} />
-                <PodiumCard user={top3[0]} rank={1} isFirst={true} viewPeerProfile={viewPeerProfile} />
-                <PodiumCard user={top3[2]} rank={3} isFirst={false} viewPeerProfile={viewPeerProfile} />
-            </div>
+            {isLoadingScope ? (
+                <div className="flex flex-col items-center justify-center py-20 opacity-50">
+                    <div className="w-8 h-8 rounded-full border-4 border-gray-200 dark:border-gray-800 border-t-[#FF6B00] animate-spin mb-4"></div>
+                    <p className="text-xs font-bold text-gray-400">Loading {scope} leaderboard...</p>
+                </div>
+            ) : sortedData.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 text-center px-6">
+                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-2xl mb-4">🏆</div>
+                    <h3 className="text-[#1A1A1A] dark:text-white font-black mb-2">No data yet</h3>
+                    <p className="text-xs text-gray-400 font-medium">Be the first to practice and climb the {scope} leaderboard!</p>
+                </div>
+            ) : (
+                <>
+                    <div className="flex justify-center items-end px-4 mb-8 animate-fade-in-up">
+                        <PodiumCard user={top3[1]} rank={2} isFirst={false} viewPeerProfile={viewPeerProfile} />
+                        <PodiumCard user={top3[0]} rank={1} isFirst={true} viewPeerProfile={viewPeerProfile} />
+                        <PodiumCard user={top3[2]} rank={3} isFirst={false} viewPeerProfile={viewPeerProfile} />
+                    </div>
 
-            <div className="px-4 md:px-8 space-y-1 mb-8">
+                    <div className="px-4 md:px-8 space-y-1 mb-8">
                 {restOfTop12.map((user, index) => {
                     const actualRank = index + 4;
                     return (
@@ -114,6 +177,8 @@ const getRankTrend = (currentRank, previousRank) => {
                     );
                 })}
             </div>
+            </>
+            )}
 
             {/* Adjusted bottom margin by 3px (bottom-[93px]) and reduced padding on the inner card */}
             <div className="fixed bottom-[93px] md:bottom-[21px] left-0 w-full px-4 z-40 pointer-events-none">
