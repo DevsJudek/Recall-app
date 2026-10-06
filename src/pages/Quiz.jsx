@@ -22,6 +22,8 @@ export default function Quiz({
     if (!question) return null;
 
     const courseCode = question.course_code || activeCourse?.code || "MIXED";
+    const matchedCourse = courses?.find(c => c.code === courseCode);
+    const courseTitle = activeCourse?.title || matchedCourse?.title || "Course Name";
     const totalQuestions = questions.length || 10;
     const currentQNum = currentIndex + 1;
 
