@@ -12,22 +12,30 @@ const renderAvatar = (user) => {
 };
 
 const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
-    if (!user) return <div className="w-24 md:w-32" />;
-    const height = isFirst ? "h-48 md:h-52" : "h-36 md:h-40";
-    const bg = isFirst ? "bg-[#FFF9F5] dark:bg-orange-950/20 shadow-sm" : "bg-gray-100 dark:bg-[#1A1A1A]";
-
+    if (!user) return <div className="w-24 md:w-28" />;
     return (
-        <div className="flex flex-col items-center justify-end w-24 md:w-28 relative group cursor-pointer mx-1 md:mx-2" onClick={() => viewPeerProfile(user)}>
-            <div className={`absolute -top-5 md:-top-7 z-10 w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-white dark:border-[#121212] overflow-hidden shadow-md flex items-center justify-center font-black text-white text-lg ${isFirst ? 'bg-gradient-to-br from-[#FFD5C2] to-[#FF6B00]' : 'bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800'}`}>
-                {renderAvatar(user)}
+        <div className={`flex flex-col items-center justify-end w-24 md:w-28 relative group cursor-pointer mx-1 md:mx-2 pb-2 ${isFirst ? 'mb-4' : 'mb-0'}`} onClick={() => viewPeerProfile(user)}>
+            {/* Avatar floating */}
+            <div className="relative mb-3">
+                <div className={`z-10 w-16 h-16 md:w-20 md:h-20 rounded-full border-4 ${isFirst ? 'border-[#FF6B00]' : 'border-gray-200 dark:border-gray-800'} overflow-hidden shadow-sm flex items-center justify-center font-black text-white text-xl bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800`}>
+                    {renderAvatar(user)}
+                </div>
+                {isFirst && <div className="absolute -top-3 -right-2 text-2xl drop-shadow-md z-20">👑</div>}
+                {!isFirst && <div className="absolute -top-2 -right-1 w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 border-2 border-white dark:border-[#121212] flex items-center justify-center text-[10px] font-black text-gray-500 z-20 shadow-sm">{rank}</div>}
             </div>
-            <div className={`w-full ${height} ${bg} rounded-t-3xl flex flex-col items-center pt-8 md:pt-10 pb-4 px-2 text-center transition-transform group-hover:-translate-y-1`}>
-                {isFirst ? <span className="text-xl mb-1 mt-1">👑</span> : <span className="text-2xl font-black text-gray-300 dark:text-gray-700 mb-1">{rank}</span>}
-                <p className="text-[11px] md:text-xs font-black text-[#1A1A1A] dark:text-white truncate w-full">{user.name.split(' ')[0]}</p>
-                <p className="text-[8px] md:text-[9px] text-gray-400 font-bold mb-auto tracking-widest uppercase mt-0.5">{formatPoints(user.points)} PTS</p>
-                {/* Background matches theme */}
-                <div className="text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded-lg shadow-sm mt-2 flex items-center gap-1 bg-white dark:bg-[#242424] text-[#FF6B00]">🔥 {user.current_streak || 0}</div>
+            
+            {/* Inline metadata underneath */}
+            <div className="flex flex-col items-center text-center w-full z-10">
+                <p className="text-xs md:text-sm font-black text-[#1A1A1A] dark:text-white truncate w-full mb-1">{user.name.split(' ')[0]}</p>
+                <div className="flex items-center justify-center gap-1.5 text-[9px] md:text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-full">
+                    <span>{formatPoints(user.points)} pts</span>
+                    <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700 shrink-0"></span>
+                    <span className="text-[#FF6B00] flex items-center gap-0.5 shrink-0">🔥 {user.current_streak || 0}</span>
+                </div>
             </div>
+
+            {/* Subtle Pedestal Base */}
+            <div className={`absolute bottom-0 w-full rounded-t-[12px] ${isFirst ? 'h-8 bg-gradient-to-t from-[#FF6B00]/10 to-transparent' : 'h-6 bg-gradient-to-t from-gray-200/50 dark:from-gray-800/50 to-transparent'} -z-10`} />
         </div>
     );
 };
@@ -108,27 +116,33 @@ const getRankTrend = (currentRank, previousRank) => {
     return (
         <div className="max-w-4xl mx-auto pt-4 pb-48 md:pb-36 font-sans relative">
             
-            {/* SCOPE & TIME CONTROLS */}
-            <div className="flex flex-col items-center gap-4 px-4 md:px-8 mb-10 w-full">
+            {/* INLINE FILTERS ROW */}
+            <div className="flex flex-row justify-between items-center px-4 md:px-8 mb-10 w-full">
                 
-                {/* SCOPE TOGGLE */}
-                <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1.5 rounded-full flex border border-[#E5E5E5] dark:border-gray-800 w-full max-w-[320px] justify-between shadow-inner relative">
-                    <button onClick={() => handleScopeChange('class')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'class' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Class</button>
-                    <button onClick={() => handleScopeChange('department')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'department' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Department</button>
-                    <button onClick={() => handleScopeChange('campus')} className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-300 z-10 ${scope === 'campus' ? 'text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}>Campus</button>
-                    
-                    {/* Animated Indicator */}
-                    <div className="absolute top-1.5 bottom-1.5 w-[calc(33.33%-4px)] bg-white dark:bg-[#333333] rounded-full shadow-sm border border-gray-100 dark:border-gray-700 transition-transform duration-300 ease-out" style={{ transform: `translateX(${scope === 'class' ? '4px' : scope === 'department' ? 'calc(100% + 4px)' : 'calc(200% + 4px)'})` }}></div>
+                {/* SCOPE DROPDOWN */}
+                <div className="relative shrink-0">
+                    <select 
+                        value={scope} 
+                        onChange={(e) => handleScopeChange(e.target.value)}
+                        className="appearance-none bg-white dark:bg-[#1A1A1A] text-[#1A1A1A] dark:text-white border border-[#E5E5E5] dark:border-gray-800 text-[11px] font-black py-1.5 pl-3 pr-7 rounded-xl outline-none focus:ring-1 focus:ring-[#FF6B00] cursor-pointer shadow-sm capitalize"
+                    >
+                        <option value="class">Class</option>
+                        <option value="department">Department</option>
+                        <option value="campus">Campus</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
                 </div>
 
-                {/* TIME & RESET */}
-                <div className="flex flex-row justify-center items-center gap-2 md:gap-4 w-full scale-[0.95] md:scale-100">
-                    <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1.5 rounded-2xl flex border border-[#E5E5E5] dark:border-gray-800 shrink-0">
-                        <button className="px-5 md:px-6 py-1.5 bg-white dark:bg-[#333333] text-[#1A1A1A] dark:text-white text-[11px] font-bold rounded-xl shadow-sm">Weekly</button>
-                        <button disabled className="px-3 md:px-6 py-1.5 text-gray-400 dark:text-gray-600 text-[11px] font-bold rounded-xl cursor-not-allowed opacity-60 flex items-center gap-1.5">Semester <span>🔒</span></button>
+                {/* TIMER & WEEKLY */}
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 text-[9px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF2EC] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-2 py-1.5 rounded-lg shadow-sm">
+                        <span className="text-[10px]">⏰</span> {resetString}
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF9F5] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-3.5 py-2.5 rounded-full shadow-sm whitespace-nowrap">
-                        <span className="text-sm">⏰</span> {resetString}
+                    <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-lg flex border border-[#E5E5E5] dark:border-gray-800 shrink-0 shadow-inner">
+                        <button className="px-3 py-1 bg-white dark:bg-[#333333] text-[#1A1A1A] dark:text-white text-[10px] font-bold rounded shadow-sm">Weekly</button>
+                        <button disabled className="px-2 py-1 text-gray-400 dark:text-gray-600 text-[10px] font-bold rounded cursor-not-allowed opacity-60 flex items-center gap-1">Semester <span>🔒</span></button>
                     </div>
                 </div>
             </div>
