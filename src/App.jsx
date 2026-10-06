@@ -576,6 +576,14 @@ function AppContent() {
         }
       });
     }
+
+    if (currentView === 'results') {
+        const newHistory = viewHistory.filter(v => v !== 'quiz' && v !== 'results');
+        setViewHistory(newHistory);
+        setCurrentView('practice_setup');
+        return;
+    }
+
     if (viewHistory.length > 0) { const newHistory = [...viewHistory]; const prevView = newHistory.pop(); setViewHistory(newHistory); setCurrentView(prevView); }
     else { setCurrentView('dashboard'); }
   };
