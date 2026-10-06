@@ -14,7 +14,7 @@ const renderAvatar = (user) => {
 const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
     if (!user) return <div className="w-24 md:w-28" />;
     return (
-        <div className={`flex flex-col items-center justify-end w-24 md:w-28 relative group cursor-pointer mx-1 md:mx-2 pb-2 ${isFirst ? 'mb-4' : 'mb-0'}`} onClick={() => viewPeerProfile(user)}>
+        <div className={`flex flex-col items-center justify-end w-24 md:w-28 relative group cursor-pointer mx-1 md:mx-2 pb-2 ${isFirst ? 'mb-8' : 'mb-0'}`} onClick={() => viewPeerProfile(user)}>
             {/* Avatar floating */}
             <div className="relative mb-3">
                 <div className={`z-10 w-16 h-16 md:w-20 md:h-20 rounded-full border-4 ${isFirst ? 'border-[#FF6B00]' : 'border-gray-200 dark:border-gray-800'} overflow-hidden shadow-sm flex items-center justify-center font-black text-white text-xl bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800`}>
@@ -35,7 +35,7 @@ const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
             </div>
 
             {/* Subtle Pedestal Base */}
-            <div className={`absolute bottom-0 w-full rounded-t-[12px] ${isFirst ? 'h-8 bg-gradient-to-t from-[#FF6B00]/10 to-transparent' : 'h-6 bg-gradient-to-t from-gray-200/50 dark:from-gray-800/50 to-transparent'} -z-10`} />
+            <div className={`absolute bottom-0 w-full rounded-t-[12px] ${isFirst ? 'h-10 bg-gradient-to-t from-[#FF6B00]/15 to-transparent' : 'h-6 bg-gradient-to-t from-gray-200/50 dark:from-gray-800/50 to-transparent'} -z-10`} />
         </div>
     );
 };
@@ -140,7 +140,7 @@ const getRankTrend = (currentRank, previousRank) => {
                 </div>
             ) : (
                 <>
-                    <div className="flex justify-center items-end px-4 mb-8 animate-fade-in-up">
+                    <div className="flex justify-center items-end px-4 mb-3 animate-fade-in-up">
                         <PodiumCard user={top3[1]} rank={2} isFirst={false} viewPeerProfile={viewPeerProfile} />
                         <PodiumCard user={top3[0]} rank={1} isFirst={true} viewPeerProfile={viewPeerProfile} />
                         <PodiumCard user={top3[2]} rank={3} isFirst={false} viewPeerProfile={viewPeerProfile} />
