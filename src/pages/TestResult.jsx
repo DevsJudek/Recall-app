@@ -1,12 +1,10 @@
 // src/pages/TestResult.jsx
 
-export default function TestResult({ activeCourse, score, questions, practiceMode, startPractice }) {
+export default function TestResult({ activeCourse, score, questions, practiceMode, setCurrentView }) {
 
     // Dynamically set subtitle
     const subtitle = practiceMode === 'ranked' ? 'MIXED' : (activeCourse?.code || 'PRACTICE MODULE');
 
-    // Dynamically set button text
-    const buttonText = practiceMode === 'ranked' ? 'Take another ranked test' : 'Take another unranked test';
 
     return (
         <div className="max-w-2xl mx-auto flex flex-col items-center justify-center py-16 px-4 animate-fade-in text-center h-full min-h-[70vh]">
@@ -35,12 +33,11 @@ export default function TestResult({ activeCourse, score, questions, practiceMod
                 )}
             </div>
 
-            {/* The button inverts nicely in dark mode (white background, dark text) */}
             <button
-                onClick={() => startPractice(activeCourse, practiceMode)}
+                onClick={() => setCurrentView('practice_setup')}
                 className="w-full bg-[#1A1A1A] dark:bg-gray-200 text-white dark:text-[#1A1A1A] py-4 rounded-xl text-sm font-black tracking-wide uppercase hover:bg-black dark:hover:bg-white shadow-md transition-all"
             >
-                {buttonText}
+                Return to Practice Setup
             </button>
         </div>
     );
