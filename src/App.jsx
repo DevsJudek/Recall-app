@@ -246,6 +246,7 @@ function AppContent() {
 
         const code = c.code?.toUpperCase() || '';
         let type = c.type;
+        if (type === 'Core' || type === 'core') type = 'Main';
         let dept = c.department;
         let semester = c.semester;
         let levelAssigned = c.level;
