@@ -950,7 +950,8 @@ function AppContent() {
             </PullToRefresh>
           </main>
 
-          <div className="md:hidden flex-none shrink-0 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] pb-[env(safe-area-inset-bottom)] z-[100] touch-none select-none">
+          {!['reading', 'quiz', 'results'].includes(currentView) && (
+            <div className="md:hidden flex-none shrink-0 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] pb-[env(safe-area-inset-bottom)] z-[100] touch-none select-none">
             {isSupported ? (
               <MobileNav {...globalProps} />
             ) : (
@@ -966,6 +967,7 @@ function AppContent() {
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
     </div>
