@@ -301,6 +301,14 @@ function AppContent() {
           }
         }
 
+        // Automatically group to accurate level based on course code if missing
+        if (!levelAssigned && code) {
+          const match = code.match(/(\d)\d{2}/);
+          if (match) {
+            levelAssigned = match[1] + '00L';
+          }
+        }
+
         return {
           ...c,
           is_available: c.is_available !== false,

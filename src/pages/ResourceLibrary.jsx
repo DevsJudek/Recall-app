@@ -1,31 +1,38 @@
+import { supabase } from '../supabase';
 // src/pages/ResourceLibrary.jsx
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
-const MOCK_RESOURCES = [
-    { id: 1, type: 'Textbook', title: 'Nigerian Land Law', author: 'Prof. Nwogugu • 5th Edition', bgClass: 'bg-[#FFF5F0] dark:bg-orange-950/30', textClass: 'text-[#FF6B00]' },
-    { id: 2, type: 'Statute', title: '1999 Constitution (Amended)', author: 'Federal Republic of Nigeria', bgClass: 'bg-[#F0F6FF] dark:bg-blue-950/30', textClass: 'text-[#3B82F6]' },
-    { id: 3, type: 'Authority Book', title: 'The Laws of Evidence', author: 'Justice Philip Nnaemeka', bgClass: 'bg-[#F9F5FF] dark:bg-purple-950/30', textClass: 'text-[#A855F7]' }
-];
-
-const FILTERS = ['All', 'Textbooks', 'Authority Books', 'Statutes / Constitution', '100L', '200L', '300L'];
+const FILTERS = ['All', 'Textbooks', 'Authority Books', 'Statutes / Constitution', '100L', '200L', '300L', '400L', '500L'];
 
 export default function ResourceLibrary({ onSuggestMaterial }) {
     const [activeFilter, setActiveFilter] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const [materials, setMaterials] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchMaterials = async () => {
+            const { data } = await supabase.from('materials').select('*');
+            if (data) setMaterials(data);
+            setLoading(false);
+        };
+        fetchMaterials();
+    }, []);
 
     const filteredResources = useMemo(() => {
-        return MOCK_RESOURCES.filter(resource => {
+        return materials.filter(resource => {
             const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 resource.author.toLowerCase().includes(searchQuery.toLowerCase());
 
             let matchesFilter = true;
             if (activeFilter === 'Textbooks') matchesFilter = resource.type === 'Textbook';
-            if (activeFilter === 'Authority Books') matchesFilter = resource.type === 'Authority Book';
-            if (activeFilter === 'Statutes / Constitution') matchesFilter = resource.type === 'Statute';
+            else if (activeFilter === 'Authority Books') matchesFilter = resource.type === 'Authority Book';
+            else if (activeFilter === 'Statutes / Constitution') matchesFilter = resource.type === 'Statute';
+            else if (activeFilter.endsWith('L')) matchesFilter = resource.level === activeFilter;
 
             return matchesSearch && matchesFilter;
         });
-    }, [searchQuery, activeFilter]);
+    }, [searchQuery, activeFilter, materials]);
 
     return (
         <div className="w-full animate-fade-in">
@@ -67,10 +74,15 @@ export default function ResourceLibrary({ onSuggestMaterial }) {
             </div>
 
             {/* 4. RESOURCES GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10">
+            {loading ? (
+                <div className="flex justify-center items-center py-20 w-full text-[#FF6B00] animate-pulse font-bold">
+                    Loading Library...
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10">
                 {filteredResources.map((resource) => (
-                    <div key={resource.id} className="bg-white dark:bg-[#1A1A1A] rounded-[20px] p-4 border border-[#E5E5E5] dark:border-gray-800 flex flex-row gap-4 hover:shadow-[0_4px_12px_rgba(0,0,0,0.03)] transition-all cursor-pointer">
-                        <div className={`w-[72px] h-[72px] rounded-[16px] flex items-center justify-center shrink-0 ${resource.bgClass} ${resource.textClass}`}>
+                    <div onClick={() => resource.url && window.open(resource.url, '_blank')} key={resource.id} className="bg-white dark:bg-[#1A1A1A] rounded-[20px] p-4 border border-[#E5E5E5] dark:border-gray-800 flex flex-row gap-4 hover:shadow-[0_4px_12px_rgba(0,0,0,0.03)] transition-all cursor-pointer">
+                        <div className={`w-[72px] h-[72px] rounded-[16px] flex items-center justify-center shrink-0 ${resource.bgClass || 'bg-[#F0F6FF] dark:bg-blue-950/30'} ${resource.textClass || 'text-[#3B82F6]'}`}>
                             {resource.type === 'Textbook' && <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4v16a2 2 0 002 2h14V2H6a2 2 0 00-2 2zm10 2h4v2h-4V6zm0 4h4v2h-4v-2z" /></svg>}
                             {resource.type === 'Statute' && <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 7.5L5 6.25l7-3.5 7 3.5-7 3.25zM3 10v6c0 3 4 5 9 5s9-2 9-5v-6M12 19c-3 0-7-1-7-3v-3.5l7 3.5 7-3.5V16c0 2-4 3-7 3z" /></svg>}
                             {resource.type === 'Authority Book' && <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2.5L17.5 9H13V4.5zM6 20V4h5v6h6v10H6z" /></svg>}
@@ -92,7 +104,6 @@ export default function ResourceLibrary({ onSuggestMaterial }) {
                         No resources found matching your search.
                     </div>
                 )}
-
                 {/* 5. DESKTOP SUGGEST CARD */}
                 <div
                     onClick={(e) => { e.preventDefault(); onSuggestMaterial(); }}
@@ -105,6 +116,7 @@ export default function ResourceLibrary({ onSuggestMaterial }) {
                     <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Know a useful case law or textbook?<br />Share a link and our team will review it.</p>
                 </div>
             </div>
+            )}
 
             {/* FOOTER ALERT */}
             <div className="hidden md:flex bg-[#F8F9FA] dark:bg-[#1A1A1A] rounded-2xl p-4 border border-[#E5E5E5] dark:border-gray-800 items-start gap-3">
