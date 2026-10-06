@@ -37,18 +37,14 @@ export default function Quiz({
             {/* COMPACT STICKY HEADER */}
             <div className="sticky top-0 z-40 bg-[#F8F9FA]/95 dark:bg-[#0a0a0a]/95 backdrop-blur-md pt-4 pb-0 shadow-sm border-b border-[#E5E5E5] dark:border-gray-800">
                 <div className="max-w-4xl mx-auto w-full px-6 flex flex-col gap-3">
-                    {/* Row 1 */}
-                    <div className="flex justify-between items-center">
-                        <button onClick={goBack} className="text-sm font-bold text-gray-500 dark:text-gray-400 flex items-center gap-1 hover:text-[#1A1A1A] dark:hover:text-white transition-colors">
-                            ← Back
-                        </button>
-                        <span className="px-3 py-1 bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00] text-[10px] font-black uppercase tracking-widest rounded-full border border-[#FFD5C2] dark:border-orange-900/50">
+                    {/* Row 1: Course Info */}
+                    <div className="flex justify-between items-center pb-1">
+                        <span className="px-2.5 py-1 bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00] text-[10px] font-black uppercase tracking-widest rounded-md border border-[#FFD5C2] dark:border-orange-900/50">
                             {courseCode}
                         </span>
-                        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#FFF9F5] dark:bg-orange-950/20 text-[#FF6B00] rounded-full text-xs font-black border border-[#FFD5C2] dark:border-orange-900/30 shadow-sm">
-                            <span className="text-sm">🔥</span>
-                            <span>{streakCount || 0}</span>
-                        </div>
+                        <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right line-clamp-1 max-w-[60%]">
+                            {courseTitle}
+                        </span>
                     </div>
 
                     {/* Row 2 */}
