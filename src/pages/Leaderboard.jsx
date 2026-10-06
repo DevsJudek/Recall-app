@@ -42,26 +42,9 @@ const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
 
     
 export default function Leaderboard({ leaderboardData, currentUserDbId, viewPeerProfile, startPractice, department, campus }) {
-    const [resetString, setResetString] = useState('');
     const [scope, setScope] = useState('class'); 
     const [fetchedData, setFetchedData] = useState({ department: null, campus: null });
     const [isLoadingScope, setIsLoadingScope] = useState(false);
-
-    useEffect(() => {
-        const calculateReset = () => {
-            const now = new Date();
-            const dayOfWeek = now.getDay();
-            const daysUntilSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
-            const nextSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 59);
-            const diffMs = nextSunday - now;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            setResetString(`${diffDays}d ${diffHours}h`);
-        };
-        calculateReset();
-        const interval = setInterval(calculateReset, 1000 * 60 * 60);
-        return () => clearInterval(interval);
-    }, []);
 
     const handleScopeChange = async (newScope) => {
         setScope(newScope);
@@ -135,11 +118,8 @@ const getRankTrend = (currentRank, previousRank) => {
                     </div>
                 </div>
 
-                {/* TIMER & WEEKLY */}
+                {/* WEEKLY */}
                 <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1 text-[9px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF2EC] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-2 py-1.5 rounded-lg shadow-sm">
-                        <span className="text-[10px]">⏰</span> {resetString}
-                    </div>
                     <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-lg flex border border-[#E5E5E5] dark:border-gray-800 shrink-0 shadow-inner">
                         <button className="px-3 py-1 bg-white dark:bg-[#333333] text-[#1A1A1A] dark:text-white text-[10px] font-bold rounded shadow-sm">Weekly</button>
                         <button disabled className="px-2 py-1 text-gray-400 dark:text-gray-600 text-[10px] font-bold rounded cursor-not-allowed opacity-60 flex items-center gap-1">Semester <span>🔒</span></button>
