@@ -13,7 +13,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
-  isSupported, session, needRefresh, updateServiceWorker
+  isSupported, session, isPushEnabled, togglePush
 }) {
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
@@ -26,7 +26,8 @@ export default function Dashboard({
   const [isAppInstalled, setIsAppInstalled] = useState(() => {
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   });
-  const [waitlistStatus, setWaitlistStatus] = useState('idle'); // 🚀 NEW: Waitlist state
+  const [hidePushBanner, setHidePushBanner] = useState(() => localStorage.getItem('hidePushBanner') === 'true');
+  const [waitlistStatus, setWaitlistStatus] = useState('idle');
 
   useEffect(() => {
     const timer = setTimeout(() => setStreakAnimPercent(calculatedStreakPercent), 300);
@@ -119,6 +120,7 @@ export default function Dashboard({
 
   useEffect(() => {
     if (practiceMode === 'ranked') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedTopic('mixed');
     }
   }, [practiceMode]);
@@ -142,30 +144,28 @@ export default function Dashboard({
         <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400">Ready to ace your exams today?</p>
       </div>
 
+          {!isPushEnabled && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm relative mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800/50 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-blue-900 dark:text-blue-100">New: Push Notifications!</h4>
+                  <p className="text-xs text-blue-700 dark:text-blue-300 mt-0.5 pr-4">Get reminded about your streak and when you're overtaken.</p>
+                </div>
+              </div>
+              <button onClick={() => togglePush(true)} className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0">
+                Tap to Enable
+              </button>
+            </div>
+          )}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
 
         {/* LEFT COLUMN */}
         <div className="lg:col-span-8 flex flex-col gap-4 md:gap-6">
         
-          {needRefresh && (
-            <div className="bg-[#FFF9F5] dark:bg-gray-800 border-2 border-[#FFD5C2] dark:border-gray-700 rounded-[24px] md:rounded-[32px] p-5 md:p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-              <div className="flex items-center gap-3 w-full sm:w-auto">
-                <div className="w-10 h-10 bg-white dark:bg-gray-700 rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                  <span className="text-xl">🚀</span>
-                </div>
-                <div className="text-left">
-                  <h3 className="text-sm md:text-base font-black text-[#1A1A1A] dark:text-white">Update Available</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">A new version of the app is ready!</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => updateServiceWorker(true)}
-                className="w-full sm:w-auto px-6 py-3 bg-[#FF6B00] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#e05d00] transition-all hover:scale-105 active:scale-95 shrink-0"
-              >
-                Update Now
-              </button>
-            </div>
-          )}
+
 
           {/* STUDY STREAK BLOCK (Always visible) */}
           <div className="bg-white dark:bg-[#121212] border border-[#E5E5E5] dark:border-gray-800 rounded-[24px] md:rounded-[32px] p-5 md:p-8 shadow-sm overflow-hidden">
@@ -227,7 +227,7 @@ export default function Dashboard({
               <div className="text-5xl mb-4">🚧</div>
               <h2 className="text-2xl md:text-3xl font-black text-[#1A1A1A] dark:text-white mb-3">Not available yet</h2>
               <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 font-medium max-w-sm mx-auto leading-relaxed mb-8">
-                Recall's curriculum is currently strictly tailored for <span className="font-bold text-[#1A1A1A] dark:text-white">300L Law</span> students. We are working hard to bring {department} materials to you soon!
+                Recall's curriculum is currently strictly tailored for <span className="font-bold text-[#1A1A1A] dark:text-white">Law</span> students. We are working hard to bring {department} materials to you soon!
               </p>
 
               {/* 🚀 FULLY FUNCTIONAL WAITLIST BUTTON */}

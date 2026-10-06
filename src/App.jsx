@@ -398,7 +398,7 @@ function AppContent() {
         setIsOnboarded(userProfile.is_onboarded);
         setDailyTarget(userProfile.daily_target || 25);
 
-        const checkSupport = (userProfile.department?.toUpperCase() === 'LAW' || userProfile.department === 'Law') && userProfile.level === '300L';
+        const checkSupport = (userProfile.department?.toUpperCase() === 'LAW' || userProfile.department === 'Law');
         setIsSupported(checkSupport);
 
         if (userProfile.is_onboarded === false) {
@@ -524,7 +524,7 @@ function AppContent() {
 
   const handleCompleteOnboarding = async (data) => {
     setIsUploading(true);
-    const isSupportCheck = (data.department.toUpperCase() === 'LAW') && data.level === '300L';
+    const isSupportCheck = (data.department.toUpperCase() === 'LAW');
 
     await supabase.from('profiles').update({
       name: data.name,
