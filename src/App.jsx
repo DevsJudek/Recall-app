@@ -272,6 +272,8 @@ function AppContent() {
           type = 'Special Elective'; semester = '1st Semester';
         } else if (['SEL 002', 'SEB 304'].includes(code)) {
           type = 'Special Elective'; semester = '2nd Semester';
+        } else if (c.title?.toLowerCase().includes('human rights i')) {
+          type = 'Core Elective'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
         } else {
           // Apply standard fallback if not hardcoded
           const dummyMatch = dummyCourses.find(d => d.code === code);
