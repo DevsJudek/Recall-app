@@ -18,16 +18,30 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
 
     const userLevelNum = useMemo(() => parseLevelNum(level), [level]);
 
-    // Available level pills: Only show up to student's current level + Special
+    // Available level pills: strictly ONLY levels <= student's level + Special. 
+    // Higher levels (e.g. 300L, 400L, 500L for a 200L student) are NEVER rendered.
     const availableLevels = useMemo(() => {
         const lvls = [];
         ['100L', '200L', '300L', '400L', '500L'].forEach(l => {
-            if (parseLevelNum(l) <= userLevelNum) {
+            if (userLevelNum > 0 && parseLevelNum(l) <= userLevelNum) {
                 lvls.push(l);
             }
         });
         return ['All', ...lvls, 'Special'];
     }, [userLevelNum]);
+
+    // Keep activeLevel in sync if level prop changes or is higher than user level
+    useEffect(() => {
+        if (level) {
+            setActiveLevel(level);
+        }
+    }, [level]);
+
+    useEffect(() => {
+        if (userLevelNum > 0 && parseLevelNum(activeLevel) > userLevelNum) {
+            setActiveLevel(level);
+        }
+    }, [activeLevel, userLevelNum, level]);
 
     const isCourseLocked = useCallback((course) => {
         return course.type === 'Main' && course.level === level && (course.department === department || course.department === 'Law');
@@ -71,6 +85,11 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
             if (isCourseLocked(course)) return false;
 
             const courseLevelNum = parseLevelNum(course.level);
+
+            // 🚫 ABSOLUTE RULE: A student can NEVER see ANY course of a higher level (300L/400L/500L for 200L)!
+            if (userLevelNum > 0 && courseLevelNum > userLevelNum) {
+                return false;
+            }
 
             // 1. Electives (Core and Restricted) must ONLY be for the student's current level!
             // A 200L student can NEVER take 300L electives.
