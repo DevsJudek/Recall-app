@@ -108,7 +108,7 @@ export default function Dashboard({
   });
 
   const fallbackCourse = {
-    id: 'mock-comm-law', code: 'PUL 301', title: 'Commercial Law',
+    id: 'default-course', code: 'BUL 301', title: 'Commercial Law',
     topics_count: 4, last_studied: 'Just now', units: 4, is_available: true
   };
 
@@ -126,13 +126,7 @@ export default function Dashboard({
     }
   }, [practiceMode]);
 
-  const fallbackTopStudents = [
-    { id: 1, name: 'Tobi Adeyemi', points: '1,840', avatar: 'https://i.pravatar.cc/150?u=1' },
-    { id: 2, name: 'Emeka J.', points: '1,420', avatar: 'https://i.pravatar.cc/150?u=2' },
-    { id: 3, name: 'Aisha Bello', points: '1,210', avatar: 'https://i.pravatar.cc/150?u=3' },
-  ];
-
-  const displayStudents = topStudents && topStudents.length > 0 ? topStudents.slice(0, 3) : fallbackTopStudents;
+  const displayStudents = topStudents && topStudents.length > 0 ? topStudents.slice(0, 3) : [];
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 md:space-y-8 animate-fade-in pb-16">

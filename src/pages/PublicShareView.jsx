@@ -1,6 +1,6 @@
-// src/pages/PublicShareView.jsx
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
+import { getLookupCourseCodes } from '../utils/courseAliases';
 import Reading from './Reading';
 import HamsterLoader from '../components/HamsterLoader';
 
@@ -8,7 +8,7 @@ export default function PublicShareView({ course, topic }) {
     const [readingData, setReadingData] = useState(null);
 
     useEffect(() => {
-        supabase.from('module_readings').select('*').eq('course_code', course).eq('topic', topic).then(({ data }) => {
+        supabase.from('module_readings').select('*').in('course_code', getLookupCourseCodes(course)).eq('topic', topic).then(({ data }) => {
             setReadingData(data || []);
         });
     }, [course, topic]);

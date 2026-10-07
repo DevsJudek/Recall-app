@@ -26,6 +26,7 @@ import ManageCourses from './pages/ManageCourses';
 import SuggestMaterial from './pages/SuggestMaterial';
 import TestHistory from './pages/TestHistory';
 import OneSignal from 'react-onesignal';
+import { getLookupCourseCodes, expandCourseCodes } from './utils/courseAliases';
 
 import HamsterLoader from './components/HamsterLoader';
 import PullToRefresh from './components/PullToRefresh';
@@ -70,8 +71,16 @@ function AppContent() {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
+    onRegisteredSW(swUrl, r) {
+      if (r) {
+        if (navigator.onLine) r.update().catch(() => {});
+        setInterval(() => {
+          if (navigator.onLine) r.update().catch(() => {});
+        }, 15 * 60 * 1000);
+      }
+    },
     onRegistered(r) { 
-      console.log('SW Registered: ', r); 
+      if (r && navigator.onLine) r.update().catch(() => {});
     },
     onRegisterError(error) { console.log('SW registration error', error); },
   });
@@ -234,7 +243,8 @@ function AppContent() {
 
       // 🚀 Aggressive Data Cleaning: Forces the correct mapping even if your DB has dirty/old values
       const dynamicCourses = allRaw.map(c => {
-        const courseReadings = readingsData?.filter(r => r.course_code === c.code) || [];
+        const lookupCodes = getLookupCourseCodes(c.code);
+        const courseReadings = readingsData?.filter(r => lookupCodes.includes(r.course_code)) || [];
         const uniqueTopics = new Set(courseReadings.map(r => r.topic)).size;
 
         const code = c.code?.toUpperCase() || '';
@@ -249,7 +259,7 @@ function AppContent() {
           type = 'Main'; semester = '1st Semester';
         } else if (['BUL 302', 'JPL 302', 'PUL 302'].includes(code)) {
           type = 'Main'; semester = '2nd Semester';
-        } else if (['BUL 303', 'BUL 305', 'JPL 305'].includes(code)) {
+        } else if (['BUL 303', 'BUL 305', 'JPL 305', 'PUL 303', 'JPL 303'].includes(code)) {
           type = 'Core Elective'; semester = '1st Semester';
         } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
           type = 'Core Elective'; semester = '2nd Semester';
@@ -261,7 +271,7 @@ function AppContent() {
           type = 'Special Elective'; semester = '1st Semester';
         } else if (['SEL 002', 'SEB 304'].includes(code)) {
           type = 'Special Elective'; semester = '2nd Semester';
-        } else if (c.title?.toLowerCase().includes('human rights i')) {
+        } else if (code === 'PUL 205' || c.title?.toLowerCase().includes('human rights')) {
           type = 'Core Elective'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
         } else {
           type = type || 'Main';
@@ -449,6 +459,12 @@ function AppContent() {
   const handleManualRefresh = async () => {
     if (session) {
       setIsManualRefreshing(true);
+      if (navigator.onLine && 'serviceWorker' in navigator) {
+        try {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const r of regs) { await r.update().catch(() => {}); }
+        } catch (e) { console.error(e); }
+      }
       await Promise.all([
         fetchUserData(session, true),
         fetchCourses()
@@ -458,8 +474,13 @@ function AppContent() {
   };
 
   useEffect(() => {
-    // visibilitychange listener removed to prevent PWA refresh loops
-  }, [session, fetchUserData, fetchCourses]);
+    // Check for SW updates on load if online
+    if (navigator.onLine && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => r.update().catch(() => {}));
+      }).catch(() => {});
+    }
+  }, []);
 
   useEffect(() => { if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0; }, [currentView, activeCourse]);
 
@@ -757,7 +778,8 @@ function AppContent() {
       if (currentUserDbId) await supabase.from('profiles').update({ course_progress: newStatus }).eq('id', currentUserDbId);
     }
     setIsTransitioning(true);
-    const { data } = await supabase.from('module_readings').select('*').eq('course_code', course.code).eq('topic', topicTitle);
+    const lookupCodes = getLookupCourseCodes(course.code);
+    const { data } = await supabase.from('module_readings').select('*').in('course_code', lookupCodes).eq('topic', topicTitle);
     if (data && data.length > 0) { setReadingData(data); smartSetCurrentView('reading'); } else alert("Content not uploaded yet!");
     setIsTransitioning(false);
   };
@@ -794,7 +816,8 @@ function AppContent() {
 
     let query = supabase.from('questions').select('*');
     if (targetCodes.length > 0) {
-      query = query.in('course_code', targetCodes);
+      const expandedCodes = expandCourseCodes(targetCodes);
+      query = query.in('course_code', expandedCodes);
     }
 
     let { data } = await query;

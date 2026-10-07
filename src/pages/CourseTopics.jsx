@@ -1,6 +1,7 @@
 // src/pages/CourseTopics.jsx
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
+import { getLookupCourseCodes } from '../utils/courseAliases';
 
 export default function CourseTopics({ activeCourse, setCurrentView, openReadingScreen, topicStatus, openShareTopic }) {
     const [topics, setTopics] = useState([]);
@@ -12,7 +13,8 @@ export default function CourseTopics({ activeCourse, setCurrentView, openReading
     useEffect(() => {
         async function fetchTopics() {
             setIsLoading(true);
-            const { data, error } = await supabase.from('module_readings').select('topic, subtopic').eq('course_code', courseCode);
+            const lookupCodes = getLookupCourseCodes(courseCode);
+            const { data, error } = await supabase.from('module_readings').select('topic, subtopic').in('course_code', lookupCodes);
 
             if (data && !error) {
                 const topicGroups = {};
