@@ -223,9 +223,8 @@ function AppContent() {
       // These courses are missing from your Supabase 'courses' table but have content in questions/notes!
       const contentFallbackCourses = [
         { code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'JPL 303', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'PUL 303', title: 'Labour Law I (Alt)', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true }
       ];
