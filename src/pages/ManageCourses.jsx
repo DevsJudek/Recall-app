@@ -10,8 +10,24 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
     const [activeLevel, setActiveLevel] = useState(level);
     const [isSaving, setIsSaving] = useState(false);
 
-    // 🚀 Changed 'Electives' to 'Special'
-    const LEVELS = ['All', '100L', '200L', '300L', '400L', '500L', 'Special'];
+    const parseLevelNum = (lvl) => {
+        if (!lvl) return 0;
+        const m = String(lvl).match(/\d+/);
+        return m ? parseInt(m[0], 10) : 0;
+    };
+
+    const userLevelNum = useMemo(() => parseLevelNum(level), [level]);
+
+    // Available level pills: Only show up to student's current level + Special
+    const availableLevels = useMemo(() => {
+        const lvls = [];
+        ['100L', '200L', '300L', '400L', '500L'].forEach(l => {
+            if (parseLevelNum(l) <= userLevelNum) {
+                lvls.push(l);
+            }
+        });
+        return ['All', ...lvls, 'Special'];
+    }, [userLevelNum]);
 
     const isCourseLocked = useCallback((course) => {
         return course.type === 'Main' && course.level === level && (course.department === department || course.department === 'Law');
@@ -54,6 +70,24 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
         const visible = allCourses.filter(course => {
             if (isCourseLocked(course)) return false;
 
+            const courseLevelNum = parseLevelNum(course.level);
+
+            // 1. Electives (Core and Restricted) must ONLY be for the student's current level!
+            // A 200L student can NEVER take 300L electives.
+            if (course.type === 'Core Elective' || course.type === 'Restricted Elective') {
+                if (courseLevelNum > 0 && userLevelNum > 0 && courseLevelNum !== userLevelNum) {
+                    return false;
+                }
+            }
+
+            // 2. Carryovers (Main courses): Can ONLY be from strictly LOWER levels!
+            // A 300L carryover is NOT possible in 200L!
+            if (course.type === 'Main') {
+                if (userLevelNum > 0 && (courseLevelNum >= userLevelNum || courseLevelNum === 0)) {
+                    return false;
+                }
+            }
+
             // Special electives shouldn't be seen by students of the originating department
             if (course.type === 'Special Elective' && (course.department === department || course.department === 'Law')) return false;
 
@@ -63,7 +97,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
             if (course.type === 'Main' && !isOwnDept) return false;
             if (course.semester !== activeSemester) return false;
 
-            // 🚀 Special pill logic: Only show 'Special Elective' types
+            // Pill filter
             if (activeLevel === 'Special' && course.type !== 'Special Elective') return false;
             if (activeLevel !== 'All' && activeLevel !== 'Special' && course.level !== activeLevel && course.level !== 'Any') return false;
 
@@ -81,13 +115,13 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
             }
             return a.code.localeCompare(b.code);
         });
-    }, [allCourses, department, activeLevel, activeSemester, searchQuery, isCourseLocked]);
+    }, [allCourses, department, activeLevel, activeSemester, searchQuery, isCourseLocked, userLevelNum]);
 
     const groupedCourses = {
         'Core Electives': filteredCourses.filter(c => c.type === 'Core Elective'),
         'Restricted Electives': filteredCourses.filter(c => c.type === 'Restricted Elective'),
         'Special Electives': filteredCourses.filter(c => c.type === 'Special Elective'),
-        'Carryovers / Other Main Courses': filteredCourses.filter(c => c.type === 'Main')
+        'Carryovers': filteredCourses.filter(c => c.type === 'Main')
     };
 
     const handleSave = async () => {
@@ -191,7 +225,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                 </div>
 
                 <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4 md:px-0 md:mx-0">
-                    {LEVELS.map(lvl => (
+                    {availableLevels.map(lvl => (
                         <button
                             key={lvl}
                             onClick={() => setActiveLevel(lvl)}
