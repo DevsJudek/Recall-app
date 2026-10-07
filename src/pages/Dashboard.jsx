@@ -13,7 +13,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
 export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
-  isSupported, session, isPushEnabled, togglePush
+  isSupported, session, isPushEnabled, togglePush,
+  needRefresh, updateServiceWorker
 }) {
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
@@ -220,6 +221,24 @@ export default function Dashboard({
               </div>
             </div>
           </div>
+
+          {/* UPDATE AVAILABLE BANNER */}
+          {needRefresh && (
+            <div className="bg-[#FFF2EC] dark:bg-orange-950/20 border border-[#FFD5C2] dark:border-orange-900/50 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#FF6B00]/10 dark:bg-[#FF6B00]/20 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-[#FF6B00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[#1A1A1A] dark:text-white">Update Available</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">A new version of Recall is ready.</p>
+                </div>
+              </div>
+              <button onClick={() => updateServiceWorker(true)} className="px-5 py-2.5 bg-[#FF6B00] hover:bg-[#E05D00] text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0">
+                Update
+              </button>
+            </div>
+          )}
 
           {/* 🚀 UNSUPPORTED DEPARTMENT VIEW */}
           {!isSupported ? (

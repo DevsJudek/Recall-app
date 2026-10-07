@@ -66,7 +66,10 @@ function AppContent() {
 
   const [session, setSession] = useState(null);
 
-  useRegisterSW({
+  const {
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
     onRegistered(r) { 
       console.log('SW Registered: ', r); 
     },
@@ -893,7 +896,8 @@ function AppContent() {
     streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported, isPushEnabled, togglePush,
-    isDarkMode, setIsDarkMode, campus
+    isDarkMode, setIsDarkMode, campus,
+    needRefresh, updateServiceWorker
 
   };
 
