@@ -435,26 +435,37 @@ function AppContent() {
     finally { if (!isSilent) setIsLoading(false); }
   }, []);
 
-  // 🚀 Derived state: INSTANTLY injects mandatory Main courses for the current view
+  // 🚀 Derived state: INSTANTLY injects mandatory Main courses and PRUNES higher-level courses
   const activeEnrolledCourses = useMemo(() => {
     if (!level || !department || coursesList.length === 0) return enrolledCourses;
+
+    const userLevelNum = parseInt(level, 10) || 0;
+
+    // Filter enrolled courses so a 200L student never has 300L+ courses in their active list!
+    const validEnrolled = enrolledCourses.filter(code => {
+      const c = coursesList.find(x => x.code === code);
+      if (!c) return true;
+      const cLvlNum = parseInt(c.level, 10) || 0;
+      if (userLevelNum > 0 && cLvlNum > userLevelNum) return false;
+      return true;
+    });
 
     const mandatoryMainCodes = coursesList
       .filter(c => c.type === 'Main' && c.level === level && (c.department === department || c.department === 'Law') && c.semester === currentSemester)
       .map(c => c.code);
 
-    return Array.from(new Set([...enrolledCourses, ...mandatoryMainCodes]));
+    return Array.from(new Set([...validEnrolled, ...mandatoryMainCodes]));
   }, [coursesList, enrolledCourses, level, department, currentSemester]);
 
-  // Silently save them if they are missing
+  // Silently save them if they are missing or if invalid higher-level courses need to be pruned
   useEffect(() => {
-    if (currentUserDbId && activeEnrolledCourses.length > enrolledCourses.length) {
+    if (currentUserDbId && (activeEnrolledCourses.length !== enrolledCourses.length || activeEnrolledCourses.some((c, i) => c !== enrolledCourses[i]))) {
       setEnrolledCourses(activeEnrolledCourses);
       supabase.from('profiles').update({ enrolled_courses: activeEnrolledCourses }).eq('id', currentUserDbId).then(({ error }) => {
         if (error) console.error('Enrolled update fallback error:', error);
       });
     }
-  }, [activeEnrolledCourses, enrolledCourses.length, currentUserDbId]);
+  }, [activeEnrolledCourses, enrolledCourses, currentUserDbId]);
 
   const handleManualRefresh = async () => {
     if (session) {

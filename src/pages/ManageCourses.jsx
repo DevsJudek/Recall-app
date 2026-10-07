@@ -54,13 +54,27 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                 .filter(c => isCourseLocked(c))
                 .map(c => c.code);
 
-            const combined = Array.from(new Set([...prev, ...enrolledCourses, ...lockedMainCourses]));
-            if (combined.length !== prev.length) {
+            // Filter out any courses higher than the student's level
+            const sanitizedPrev = prev.filter(code => {
+                const c = allCourses.find(x => x.code === code);
+                if (!c) return true;
+                const cLvlNum = parseLevelNum(c.level);
+                return !(userLevelNum > 0 && cLvlNum > userLevelNum);
+            });
+
+            const combined = Array.from(new Set([...sanitizedPrev, ...enrolledCourses, ...lockedMainCourses])).filter(code => {
+                const c = allCourses.find(x => x.code === code);
+                if (!c) return true;
+                const cLvlNum = parseLevelNum(c.level);
+                return !(userLevelNum > 0 && cLvlNum > userLevelNum);
+            });
+
+            if (combined.length !== prev.length || combined.some((c, i) => c !== prev[i])) {
                 return combined;
             }
             return prev;
         });
-    }, [enrolledCourses, allCourses, isCourseLocked]);
+    }, [enrolledCourses, allCourses, isCourseLocked, userLevelNum]);
 
     const toggleCourse = (course) => {
         if (isCourseLocked(course)) return;
