@@ -220,28 +220,7 @@ function AppContent() {
         supabase.from('module_readings').select('course_code, topic')
       ]);
 
-      const dummyCourses = [
-        { id: 901, code: 'BUL 301', title: 'Commercial Law I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
-        { id: 902, code: 'JPL 301', title: 'Law of Torts I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
-        { id: 903, code: 'PUL 301', title: 'Criminal Law I', level: '300L', department: 'Law', type: 'Main', semester: '1st Semester', is_available: true },
-        { id: 904, code: 'BUL 302', title: 'Commercial Law II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
-        { id: 905, code: 'JPL 302', title: 'Law of Torts II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
-        { id: 906, code: 'PUL 302', title: 'Criminal Law II', level: '300L', department: 'Law', type: 'Main', semester: '2nd Semester', is_available: true },
-        { id: 907, code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { id: 908, code: 'BUL 305', title: 'Labor Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { id: 909, code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { id: 910, code: 'BUL 304', title: 'Banking Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
-        { id: 911, code: 'PUL 304', title: 'Labor Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
-        { id: 912, code: 'JPL 304', title: 'Family Law II', level: '300L', department: 'Law', type: 'Core Elective', semester: '2nd Semester', is_available: true },
-        { id: 913, code: 'PHL 319', title: 'Philosophy of Law I', units: 3, level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
-        { id: 915, code: 'PUB 301', title: 'Public Policy Analysis I', units: 3, level: '300L', department: 'Public Admin', type: 'Restricted Elective', semester: '1st Semester', is_available: true },
-        { id: 919, code: 'SEL 001', title: 'Introduction to Law I', level: 'Any', department: 'Law', type: 'Special Elective', semester: '1st Semester', is_available: true },
-        { id: 921, code: 'SEH 301', title: 'Humankind and Nutrition', level: 'Any', department: 'Health', type: 'Special Elective', semester: '1st Semester', is_available: true },
-        { id: 922, code: 'SEB 304', title: 'Basic Entrepreneurship', level: 'Any', department: 'Business', type: 'Special Elective', semester: '2nd Semester', is_available: true }
-      ];
-
-      let allRaw = [...(coursesData || [])];
-      dummyCourses.forEach(d => { if (!allRaw.find(c => c.code === d.code)) allRaw.push(d); });
+      const allRaw = [...(coursesData || [])];
 
       // 🚀 Aggressive Data Cleaning: Forces the correct mapping even if your DB has dirty/old values
       const dynamicCourses = allRaw.map(c => {
@@ -275,22 +254,13 @@ function AppContent() {
         } else if (c.title?.toLowerCase().includes('human rights i')) {
           type = 'Core Elective'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
         } else {
-          // Apply standard fallback if not hardcoded
-          const dummyMatch = dummyCourses.find(d => d.code === code);
-          if (dummyMatch) {
-            type = type || dummyMatch.type;
-            dept = dept || dummyMatch.department;
-            semester = semester || dummyMatch.semester;
-            levelAssigned = levelAssigned || dummyMatch.level;
-          } else {
-            type = type || 'Main';
-            dept = dept || 'Law';
-            if (!semester) {
-              if (c.title?.includes(' II') || c.title?.includes('2nd') || code.endsWith('2') || code.endsWith('4') || code.endsWith('6')) {
-                semester = '2nd Semester';
-              } else {
-                semester = '1st Semester';
-              }
+          type = type || 'Main';
+          dept = dept || 'Law';
+          if (!semester) {
+            if (c.title?.includes(' II') || c.title?.includes('2nd') || code.endsWith('2') || code.endsWith('4') || code.endsWith('6')) {
+              semester = '2nd Semester';
+            } else {
+              semester = '1st Semester';
             }
           }
         }
