@@ -44,6 +44,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
     }, [activeLevel, userLevelNum, level]);
 
     const isCourseLocked = useCallback((course) => {
+        if (course.code === 'JPL 203' || course.code === 'PUL 205') return false;
         return course.type === 'Main' && course.level === level && (course.department === department || course.department === 'Law');
     }, [level, department]);
 
