@@ -88,12 +88,12 @@ export default function AdminDashboard({ goBack }) {
 
             // 3. Known fallback courses that have active content
             const fallbackCourses = [
-                { id: 'fallback-pul-205', code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-                { id: 'fallback-jpl-203', code: 'JPL 203', title: 'Islamic Law I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-                { id: 'fallback-jpl-305', code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true, alias_code: 'JPL 303' },
-                { id: 'fallback-bul-305', code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true, alias_code: 'PUL 303' },
-                { id: 'fallback-bul-303', code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-                { id: 'fallback-phl-319', code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true }
+                { id: 'fallback-pul-205', code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+                { id: 'fallback-jpl-203', code: 'JPL 203', title: 'Islamic Law I', level: '200L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+                { id: 'fallback-jpl-305', code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true, alias_code: 'JPL 303' },
+                { id: 'fallback-bul-305', code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true, alias_code: 'PUL 303' },
+                { id: 'fallback-bul-303', code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+                { id: 'fallback-phl-319', code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted', semester: '1st Semester', is_available: true }
             ];
 
             const mergedRaw = [...(coursesData || [])];

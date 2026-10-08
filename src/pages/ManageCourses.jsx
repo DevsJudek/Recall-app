@@ -91,8 +91,8 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
         .filter(Boolean)
         .filter(c => c.semester === activeSemester);
 
-    const coreSelectedCount = selectedCoursesData.filter(c => c.type === 'Core Elective').length;
-    const restrictedSelectedCount = selectedCoursesData.filter(c => c.type === 'Restricted Elective').length;
+    const coreSelectedCount = selectedCoursesData.filter(c => c.type === 'Core').length;
+    const restrictedSelectedCount = selectedCoursesData.filter(c => c.type === 'Restricted').length;
 
     const filteredCourses = useMemo(() => {
         const visible = allCourses.filter(course => {
@@ -107,7 +107,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
 
             // 1. Electives (Core and Restricted) must ONLY be for the student's current level!
             // A 200L student can NEVER take 300L electives.
-            if (course.type === 'Core Elective' || course.type === 'Restricted Elective') {
+            if (course.type === 'Core' || course.type === 'Restricted') {
                 if (courseLevelNum > 0 && userLevelNum > 0 && courseLevelNum !== userLevelNum) {
                     return false;
                 }
@@ -142,7 +142,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
         });
 
         return visible.sort((a, b) => {
-            const typeWeight = { 'Core Elective': 1, 'Restricted Elective': 2, 'Special Elective': 3, 'Main': 4 };
+            const typeWeight = { 'Core': 1, 'Restricted': 2, 'Special Elective': 3, 'Main': 4 };
             if (typeWeight[a.type] !== typeWeight[b.type]) {
                 return typeWeight[a.type] - typeWeight[b.type];
             }
@@ -151,8 +151,8 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
     }, [allCourses, department, activeLevel, activeSemester, searchQuery, isCourseLocked, userLevelNum]);
 
     const groupedCourses = {
-        'Core Electives': filteredCourses.filter(c => c.type === 'Core Elective'),
-        'Restricted Electives': filteredCourses.filter(c => c.type === 'Restricted Elective'),
+        'Core Electives': filteredCourses.filter(c => c.type === 'Core'),
+        'Restricted Electives': filteredCourses.filter(c => c.type === 'Restricted'),
         'Special Electives': filteredCourses.filter(c => c.type === 'Special Elective'),
         'Carryovers': filteredCourses.filter(c => c.type === 'Main')
     };
@@ -291,8 +291,8 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                                     let isDisabled = false;
 
                                     if (!isSelected) {
-                                        if (course.type === 'Core Elective' && coreSelectedCount >= 1) isDisabled = true;
-                                        if (course.type === 'Restricted Elective' && restrictedSelectedCount >= 1) isDisabled = true;
+                                        if (course.type === 'Core' && coreSelectedCount >= 1) isDisabled = true;
+                                        if (course.type === 'Restricted' && restrictedSelectedCount >= 1) isDisabled = true;
                                     }
 
                                     return (
@@ -303,12 +303,12 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                                                     <span className={`px-2.5 py-1 rounded-[6px] text-[10px] font-black uppercase tracking-wider bg-[#F3F4F6] dark:bg-gray-800 text-gray-500 dark:text-gray-400`}>
                                                         {course.code}
                                                     </span>
-                                                    {course.type === 'Core Elective' && (
+                                                    {course.type === 'Core' && (
                                                         <span className="px-2.5 py-1 rounded-[6px] text-[10px] font-black uppercase tracking-wider bg-[#FFF5F0] dark:bg-[#FF6B00]/10 text-[#FF6B00]">
-                                                            CORE ELECTIVE
+                                                            Core
                                                         </span>
                                                     )}
-                                                    {course.type === 'Restricted Elective' && (
+                                                    {course.type === 'Restricted' && (
                                                         <span className="px-2.5 py-1 rounded-[6px] text-[10px] font-black uppercase tracking-wider bg-[#F0F4FF] dark:bg-blue-900/20 text-[#3B82F6]">
                                                             RESTRICTED
                                                         </span>

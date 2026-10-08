@@ -193,12 +193,12 @@ function AppContent() {
 
       // These courses are missing from your Supabase 'courses' table but have content in questions/notes!
       const contentFallbackCourses = [
-        { code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'JPL 203', title: 'Islamic Law I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
-        { code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted Elective', semester: '1st Semester', is_available: true }
+        { code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+        { code: 'JPL 203', title: 'Islamic Law I', level: '200L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+        { code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+        { code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+        { code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
+        { code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted', semester: '1st Semester', is_available: true }
       ];
 
       const allRaw = [...(coursesData || [])];
@@ -212,7 +212,12 @@ function AppContent() {
 
         const code = c.code?.toUpperCase() || '';
         let type = c.type;
+        
+        // Map types according to new conventions
         if (type === 'Core' || type === 'core') type = 'Main';
+        if (type === 'Core Elective' || type === 'core elective') type = 'Core';
+        if (type === 'Restricted Elective' || type === 'restricted elective') type = 'Restricted';
+
         let dept = c.department;
         let semester = c.semester;
         let levelAssigned = c.level;
@@ -223,19 +228,19 @@ function AppContent() {
         } else if (['BUL 302', 'JPL 302', 'PUL 302'].includes(code)) {
           type = 'Main'; semester = '2nd Semester';
         } else if (['BUL 303', 'BUL 305', 'JPL 305', 'PUL 303', 'JPL 303'].includes(code)) {
-          type = 'Core Elective'; semester = '1st Semester';
+          type = 'Core'; semester = '1st Semester';
         } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
-          type = 'Core Elective'; semester = '2nd Semester';
+          type = 'Core'; semester = '2nd Semester';
         } else if (['PHL 319', 'PUB 301'].includes(code)) {
-          type = 'Restricted Elective'; semester = '1st Semester';
+          type = 'Restricted'; semester = '1st Semester';
         } else if (['PHL 320', 'PUB 302'].includes(code)) {
-          type = 'Restricted Elective'; semester = '2nd Semester';
+          type = 'Restricted'; semester = '2nd Semester';
         } else if (['SEL 001', 'SEH 301'].includes(code)) {
           type = 'Special Elective'; semester = '1st Semester';
         } else if (['SEL 002', 'SEB 304'].includes(code)) {
           type = 'Special Elective'; semester = '2nd Semester';
         } else if (code === 'PUL 205' || code === 'JPL 203' || c.title?.toLowerCase().includes('human rights') || c.title?.toLowerCase().includes('islamic law')) {
-          type = 'Core Elective'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
+          type = 'Core'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
         } else {
           type = type || 'Main';
           dept = dept || 'Law';
