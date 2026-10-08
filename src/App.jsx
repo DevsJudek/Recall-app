@@ -1,7 +1,7 @@
 // src/App.jsx - Triggering PWA update 9
 /* eslint-disable */
 import { useState, useEffect, useMemo, useRef, useCallback, Component } from 'react';
-import { useRegisterSW } from 'virtual:pwa-register/react';
+import { usePwaUpdate } from './hooks/usePwaUpdate';
 import { supabase } from './supabase';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -25,7 +25,6 @@ import Onboarding from './pages/Onboarding';
 import ManageCourses from './pages/ManageCourses';
 import SuggestMaterial from './pages/SuggestMaterial';
 import TestHistory from './pages/TestHistory';
-import OneSignal from 'react-onesignal';
 import { getLookupCourseCodes, expandCourseCodes } from './utils/courseAliases';
 
 import HamsterLoader from './components/HamsterLoader';
@@ -68,22 +67,11 @@ function AppContent() {
   const [session, setSession] = useState(null);
 
   const {
-    needRefresh: [needRefresh, setNeedRefresh],
+    needRefresh,
+    setNeedRefresh,
     updateServiceWorker,
-  } = useRegisterSW({
-    onRegisteredSW(swUrl, r) {
-      if (r) {
-        if (navigator.onLine) r.update().catch(() => {});
-        setInterval(() => {
-          if (navigator.onLine) r.update().catch(() => {});
-        }, 15 * 60 * 1000);
-      }
-    },
-    onRegistered(r) { 
-      if (r && navigator.onLine) r.update().catch(() => {});
-    },
-    onRegisterError(error) { console.log('SW registration error', error); },
-  });
+    isUpdating: isSwUpdating
+  } = usePwaUpdate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -115,43 +103,25 @@ function AppContent() {
     }
   }, [isDarkMode]);
 
-  const [isPushEnabled, setIsPushEnabled] = useState(true);
+  const [isPushEnabled, setIsPushEnabled] = useState(false);
 
   useEffect(() => {
-    OneSignal.init({
-      appId: "008c9775-90dc-4631-b1c7-998af18061cd",
-      allowLocalhostAsSecureOrigin: true
-    }).then(() => {
-      if (OneSignal.User && OneSignal.User.PushSubscription) {
-        const checkPush = () => Boolean(OneSignal.User.PushSubscription.optedIn && OneSignal.Notifications.permission);
-        setIsPushEnabled(checkPush());
-        OneSignal.User.PushSubscription.addEventListener("change", () => setIsPushEnabled(checkPush()));
-        OneSignal.Notifications.addEventListener("permissionChange", () => setIsPushEnabled(checkPush()));
-      }
-    });
+    // Actively clean up any legacy OneSignal worker on client browsers
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => {
+          const script = r.active?.scriptURL || r.installing?.scriptURL || r.waiting?.scriptURL || '';
+          if (script.toLowerCase().includes('onesignal')) {
+            r.unregister().catch(() => {});
+          }
+        });
+      }).catch(() => {});
+    }
   }, []);
 
   const togglePush = async (enable) => {
-    try {
-      if (enable) {
-        const hasPermission = await OneSignal.Notifications.requestPermission();
-        
-        if (OneSignal.Notifications.permissionNative === 'denied' || !hasPermission) {
-          alert("Your browser is blocking notifications. Please click the lock icon in the URL bar (Site Settings) and set Notifications to 'Allow'.");
-        }
-        
-        await OneSignal.User.PushSubscription.optIn();
-        
-        // Force state update after action
-        setIsPushEnabled(Boolean(OneSignal.User.PushSubscription.optedIn && OneSignal.Notifications.permission));
-      } else {
-        await OneSignal.User.PushSubscription.optOut();
-        setIsPushEnabled(false);
-      }
-    } catch (err) {
-      alert("OneSignal Error: " + (err.message || err));
-      console.error(err);
-    }
+    alert("Push notifications are temporarily disabled for system maintenance.");
+    setIsPushEnabled(false);
   };
 
   const [currentView, setCurrentView] = useState('dashboard');
@@ -178,14 +148,6 @@ function AppContent() {
   const [practiceMode, setPracticeMode] = useState('ranked');
 
   const [currentUserDbId, setCurrentUserDbId] = useState(null);
-
-  useEffect(() => {
-    if (currentUserDbId) {
-      OneSignal.login(String(currentUserDbId)).catch(e => console.log(e));
-    } else {
-      OneSignal.logout().catch(e => console.log(e));
-    }
-  }, [currentUserDbId]);
   const [displayName, setDisplayName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [department, setDepartment] = useState('Law');
@@ -232,6 +194,7 @@ function AppContent() {
       // These courses are missing from your Supabase 'courses' table but have content in questions/notes!
       const contentFallbackCourses = [
         { code: 'PUL 205', title: 'Human Rights I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
+        { code: 'JPL 203', title: 'Islamic Law I', level: '200L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
         { code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core Elective', semester: '1st Semester', is_available: true },
@@ -271,7 +234,7 @@ function AppContent() {
           type = 'Special Elective'; semester = '1st Semester';
         } else if (['SEL 002', 'SEB 304'].includes(code)) {
           type = 'Special Elective'; semester = '2nd Semester';
-        } else if (code === 'PUL 205' || c.title?.toLowerCase().includes('human rights')) {
+        } else if (code === 'PUL 205' || code === 'JPL 203' || c.title?.toLowerCase().includes('human rights') || c.title?.toLowerCase().includes('islamic law')) {
           type = 'Core Elective'; semester = '1st Semester'; levelAssigned = '200L'; dept = 'Law';
         } else {
           type = type || 'Main';
@@ -472,8 +435,8 @@ function AppContent() {
       setIsManualRefreshing(true);
       if (navigator.onLine && 'serviceWorker' in navigator) {
         try {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          for (const r of regs) { await r.update().catch(() => {}); }
+          const reg = await navigator.serviceWorker.getRegistration('/sw.js');
+          if (reg) await reg.update().catch(() => {});
         } catch (e) { console.error(e); }
       }
       await Promise.all([
@@ -485,10 +448,10 @@ function AppContent() {
   };
 
   useEffect(() => {
-    // Check for SW updates on load if online
+    // Check for SW updates on load if online (specifically /sw.js)
     if (navigator.onLine && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(regs => {
-        regs.forEach(r => r.update().catch(() => {}));
+      navigator.serviceWorker.getRegistration('/sw.js').then(reg => {
+        if (reg) reg.update().catch(() => {});
       }).catch(() => {});
     }
   }, []);
@@ -913,7 +876,7 @@ function AppContent() {
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported, isPushEnabled, togglePush,
     isDarkMode, setIsDarkMode, campus,
-    needRefresh, updateServiceWorker
+    needRefresh, updateServiceWorker, isUpdating: isSwUpdating
 
   };
 
