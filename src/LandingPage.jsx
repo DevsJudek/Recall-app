@@ -213,12 +213,36 @@ export default function LandingPage({ onLoginClick }) {
             </p>
             </FadeIn>
             <FadeIn delay={400}>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 ">
               <button onClick={onLoginClick} className="w-full sm:w-max flex items-center justify-center gap-2 bg-[#FF6B00] text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-[#E56000] transition-colors shadow-sm">
                 Start studying for free <ArrowUpRight />
               </button>
               
             </div>
+              {stats.students > 0 && (
+                  <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm text-gray-500 dark:text-gray-400 font-medium mb-16 mt-6">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-1.5 mr-1">
+                        <div className="w-6 h-6 rounded-full bg-blue-100 border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center text-[10px]">🎓</div>
+                        <div className="w-6 h-6 rounded-full bg-orange-100 border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center text-[10px]">💼</div>
+                        <div className="w-6 h-6 rounded-full bg-green-100 border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center text-[10px]">📚</div>
+                      </div>
+                      <span className="font-bold text-gray-900 dark:text-white">{stats.students.toLocaleString()}</span> Students
+                    </div>
+                    
+                    <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                    
+                    <div className="flex items-center gap-1.5">
+                       <span className="font-bold text-gray-900 dark:text-white">{stats.courses.toLocaleString()}</span> Courses
+                    </div>
+                    
+                    <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                    
+                    <div className="flex items-center gap-1.5">
+                       <span className="font-bold text-gray-900 dark:text-white">{stats.questions.toLocaleString()}</span> Questions
+                    </div>
+                  </div>
+              )}
             </FadeIn>
           </div>
 
