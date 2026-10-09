@@ -14,7 +14,7 @@ export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
   isSupported, session, isPushEnabled, togglePush,
-  needRefresh, updateServiceWorker
+  needRefresh, updateServiceWorker, isUpdating
 }) {
 
   const safeDailyTarget = dailyTarget > 0 ? dailyTarget : 30;
@@ -27,7 +27,6 @@ export default function Dashboard({
   const [isAppInstalled, setIsAppInstalled] = useState(() => {
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   });
-  const [hidePushBanner, setHidePushBanner] = useState(() => localStorage.getItem('hidePushBanner') === 'true');
   const [waitlistStatus, setWaitlistStatus] = useState('idle');
 
   useEffect(() => {
@@ -139,22 +138,6 @@ export default function Dashboard({
         <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400">Ready to ace your exams today?</p>
       </div>
 
-          {!isPushEnabled && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm relative mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800/50 flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-blue-900 dark:text-blue-100">New: Push Notifications!</h4>
-                  <p className="text-xs text-blue-700 dark:text-blue-300 mt-0.5 pr-4">Get reminded about your streak and when you're overtaken.</p>
-                </div>
-              </div>
-              <button onClick={() => togglePush(true)} className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0">
-                Tap to Enable
-              </button>
-            </div>
-          )}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
 
         {/* LEFT COLUMN */}
@@ -228,8 +211,19 @@ export default function Dashboard({
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">A new version of Recall is ready.</p>
                 </div>
               </div>
-              <button onClick={() => updateServiceWorker(true)} className="px-5 py-2.5 bg-[#FF6B00] hover:bg-[#E05D00] text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0">
-                Update
+              <button
+                onClick={updateServiceWorker}
+                disabled={isUpdating}
+                className="px-5 py-2.5 bg-[#FF6B00] hover:bg-[#E05D00] text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0 flex items-center gap-2 cursor-pointer disabled:opacity-75"
+              >
+                {isUpdating ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Updating...</span>
+                  </>
+                ) : (
+                  <span>Update</span>
+                )}
               </button>
             </div>
           )}
