@@ -64,7 +64,7 @@ function SearchableDropdown({ options, value, onChange, placeholder, inputClassN
 export default function EditProfile({
     setCurrentView, handleSaveProfile, isUploading,
     editName, setEditName, editDepartment, setEditDepartment,
-    editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, handleImageUpload,
+    editLevel, setEditLevel, editDailyTarget, setEditDailyTarget, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, handleImageUpload,
     handleSignOut, editBio, setEditBio, session,
     isDarkMode, setIsDarkMode, isPushEnabled, togglePush
 }) {

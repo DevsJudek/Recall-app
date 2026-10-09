@@ -174,6 +174,7 @@ function AppContent() {
   const [editName, setEditName] = useState('');
   const [editDepartment, setEditDepartment] = useState('Law');
   const [editLevel, setEditLevel] = useState('300L');
+  const [editDailyTarget, setEditDailyTarget] = useState(25);
   const [editCampus, setEditCampus] = useState('Obafemi Awolowo University (OAU)');
   const [editAvatarUrl, setEditAvatarUrl] = useState(null);
   const [editBio, setEditBio] = useState('');
@@ -349,6 +350,7 @@ function AppContent() {
 
         setIsOnboarded(userProfile.is_onboarded);
         setDailyTarget(userProfile.daily_target || 25);
+        setEditDailyTarget(userProfile.daily_target || 25);
 
         const checkSupport = (userProfile.department?.toUpperCase() === 'LAW' || userProfile.department === 'Law');
         setIsSupported(checkSupport);
@@ -652,14 +654,14 @@ function AppContent() {
       if (oldFileName) supabase.storage.from('avatars').remove([oldFileName]).then();
     }
 
-    let updatePayload = { name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus };
+    let updatePayload = { name: editName, avatar: editAvatarUrl, department: editDepartment, level: editLevel, bio: editBio, campus: editCampus, daily_target: editDailyTarget };
     
     if (editLevel !== level || editDepartment !== department) {
       updatePayload.enrolled_courses = [];
       setEnrolledCourses([]);
     }
 
-    setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus);
+    setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus); setDailyTarget(editDailyTarget);
     await supabase.from('profiles').update(updatePayload).eq('id', currentUserDbId);
     await handleManualRefresh();
     smartSetCurrentView('profile');
@@ -886,7 +888,7 @@ function AppContent() {
     allCourses: coursesList, enrolledCourses: activeEnrolledCourses, setEnrolledCourses, currentSemester,
     topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, joinDate, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
     streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
-    firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
+    firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editDailyTarget, setEditDailyTarget, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported, isPushEnabled, togglePush,
     isDarkMode, setIsDarkMode, campus,
     needRefresh, updateServiceWorker, isUpdating: isSwUpdating
