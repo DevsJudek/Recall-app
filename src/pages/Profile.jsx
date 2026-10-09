@@ -136,13 +136,13 @@ export default function Profile({
             proximity={64}
             inactiveZone={0.01}
           />
-          <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[24px] bg-[#0a0a0a] p-5 md:p-6 shadow-lg">
+          <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[24px] bg-[#0a0a0a] p-4 md:p-5 shadow-lg">
             <div className="flex items-center justify-between relative z-20">
               <div className="text-[11px] font-bold tracking-[0.15em] uppercase text-gray-500">Subscription</div>
               <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Active</div>
             </div>
             <div className="relative z-20">
-              <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white mb-2 flex items-center gap-3">Super Recall <span className="text-[10px] md:text-xs font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-1 rounded-md uppercase">BETA</span></h3>
+              <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white mb-2 flex items-center gap-2 md:gap-3">Super Recall <span className="text-[8px] md:text-xs font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-1.5 py-0.5 md:px-2 md:py-1 rounded-md uppercase mt-0.5 md:mt-0">BETA</span></h3>
               <p className="text-sm md:text-base font-medium text-gray-400">
                 You have full access to unlimited practice, deep explanations, and the complete course library.
               </p>
