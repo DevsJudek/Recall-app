@@ -249,7 +249,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
             {/* FLUID ORB BUTTON */}
             <button
                 onClick={handleOpenAiSheet}
-                className={`fixed bottom-28 md:bottom-10 right-6 z-40 rounded-full shadow-[0_8px_30px_rgb(255,107,0,0.5)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 overflow-hidden ${isAiSheetOpen ? 'opacity-0 scale-50 pointer-events-none' : 'opacity-100'}`}
+                className={`fixed bottom-27 md:bottom-10 right-6 z-40 rounded-full shadow-[0_8px_30px_rgb(255,107,0,0.5)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 overflow-hidden ${isAiSheetOpen ? 'opacity-0 scale-50 pointer-events-none' : 'opacity-100'}`}
                 style={{ padding: 0, border: 'none', background: 'transparent', width: '60px', height: '60px' }}
             >
                 <FluidOrb size={60} color="#FF6B00" />
