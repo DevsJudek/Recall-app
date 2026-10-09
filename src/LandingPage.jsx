@@ -190,7 +190,7 @@ export default function LandingPage({ onLoginClick }) {
         <section className="flex flex-col items-center text-center mt-8">
           <div className="max-w-4xl">
             <FadeIn delay={100}>
-            <p className="text-sm font-semibold tracking-wider text-[#FF6B00] uppercase mb-6">Interactive Study & Quiz Platform</p>
+            <p className="text-[15px] font-medium tracking-tight text-[#FF6B00] mb-6">Interactive Study & Quiz Platform</p>
             </FadeIn>
             <FadeIn delay={200}>
               <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
