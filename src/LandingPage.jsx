@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { supabase } from './supabase';
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 ml-2 shrink-0">
@@ -86,6 +87,33 @@ const FadeIn = ({ children, delay = 0, className = "", threshold = 0.1 }) => {
 };
 
 export default function LandingPage({ onLoginClick }) {
+
+  const [stats, setStats] = useState({ students: 0, courses: 0, questions: 0 });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const [
+          { count: studentsCount },
+          { count: coursesCount },
+          { count: questionsCount }
+        ] = await Promise.all([
+          supabase.from('profiles').select('*', { count: 'exact', head: true }),
+          supabase.from('courses').select('*', { count: 'exact', head: true }),
+          supabase.from('questions').select('*', { count: 'exact', head: true })
+        ]);
+        setStats({
+          students: studentsCount || 0,
+          courses: coursesCount || 0,
+          questions: questionsCount || 0
+        });
+      } catch (e) {
+        console.error('Failed to fetch stats', e);
+      }
+    }
+    fetchStats();
+  }, []);
+
   const [scrolled, setScrolled] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [isDark, setIsDark] = useState(true);
@@ -175,7 +203,7 @@ export default function LandingPage({ onLoginClick }) {
             </p>
             </FadeIn>
             <FadeIn delay={400}>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg">
                 Start studying for free <ArrowUpRight />
               </button>
