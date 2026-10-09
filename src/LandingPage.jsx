@@ -275,7 +275,7 @@ export default function LandingPage({ onLoginClick }) {
                 <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study right. Test yourself. Dominate.</h2>
               </div>
               <div className="flex-[2]">
-                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff, save you from the night before panic, and help you secure your admission, grades, or professional license.</p>
+                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff and save you from the night before panic. Scattered handouts, missing PDFs, and unorganized Google Drive links are now a thing of the past.</p>
               </div>
             </div>
           </FadeIn>
