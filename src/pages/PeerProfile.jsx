@@ -30,7 +30,7 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
     const isSelf = selectedPeer.id === currentUserDbId;
 
     return (
-        <div className="max-w-4xl mx-auto pt-10 pb-32 font-sans px-4">
+        <div className="max-w-4xl mx-auto pt-4 md:pt-8 pb-32 font-sans px-4 animate-fade-in">
 
             <div className="flex flex-col items-center text-center">
 
@@ -71,15 +71,15 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                     </p>
                 )}
 
-                <p className="text-xs text-gray-400 font-bold tracking-widest uppercase mt-3 mb-8">
+                <p className="text-xs text-gray-400 font-bold tracking-widest uppercase mt-3 mb-6">
                     Joined {selectedPeer.created_at ? new Date(selectedPeer.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : "Sept 2026"}
                 </p>
 
                 {!isSelf ? (
-                    <button onClick={handleFollowToggle} className={`w-full max-w-[280px] py-3 rounded-[14px] text-sm font-bold shadow-sm transition-all mb-12 ${isFollowing ? 'bg-gray-100 dark:bg-[#242424] text-[#1A1A1A] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-[#FF6B00] text-white hover:bg-[#e05d00]'}`}>
+                    <button onClick={handleFollowToggle} className={`w-full max-w-[280px] py-3 rounded-[14px] text-sm font-bold shadow-sm transition-all mb-6 md:mb-8 ${isFollowing ? 'bg-gray-100 dark:bg-[#242424] text-[#1A1A1A] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-[#FF6B00] text-white hover:bg-[#e05d00]'}`}>
                         {isFollowing ? 'Following ✓' : 'Follow'}
                     </button>
-                ) : <div className="mb-12"></div>}
+                ) : <div className="mb-2"></div>}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
                     <div className="bg-[#FFF9F5] dark:bg-orange-950/20 border border-[#FFD5C2] dark:border-orange-900/50 rounded-[32px] p-6 md:p-8 flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
