@@ -588,7 +588,11 @@ export default function AdminDashboard({ goBack }) {
                             </div>
                             <div className="space-y-3">
                                 {Object.entries(profiles.reduce((acc, user) => {
-                                    const group = `${user.campus || 'Unknown School'} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
+                                    let rawCampus = user.campus || 'Unknown School';
+                                      if (rawCampus.toLowerCase().includes('oau') || rawCampus.toLowerCase().includes('obafemi')) {
+                                          rawCampus = 'Obafemi Awolowo University (OAU)';
+                                      }
+                                      const group = `${rawCampus} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
                                     if (!acc[group]) acc[group] = [];
                                     acc[group].push(user);
                                     return acc;
