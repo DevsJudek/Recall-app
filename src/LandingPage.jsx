@@ -156,7 +156,7 @@ export default function LandingPage({ onLoginClick }) {
         </div>
       </header>
 
-      <main className="max-w-[1200px] mx-auto px-6 md:px-12 pt-24 pb-24 space-y-40">
+      <main className="max-w-[1200px] mx-auto px-6 md:px-12 pt-24 pb-24 space-y-24 md:space-y-32">
         
         {/* HERO SECTION */}
         <section className="flex flex-col items-center text-center mt-8">
@@ -199,7 +199,7 @@ export default function LandingPage({ onLoginClick }) {
         </section>
 
         {/* FEATURES INTERACTIVE SECTION */}
-        <section id="features" className="flex flex-col xl:flex-row gap-16 items-center pt-24 mt-24">
+        <section id="features" className="flex flex-col xl:flex-row gap-16 items-center">
           <div className="flex-1 max-w-xl">
             <FadeIn>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4 flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function LandingPage({ onLoginClick }) {
         </section>
 
         {/* PRICING TABLE */}
-        <section id="pricing" className="mt-40 max-w-4xl mx-auto">
+        <section id="pricing" className="max-w-4xl mx-auto">
           <FadeIn>
             <div className="text-center mb-16">
               <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6 text-gray-900 dark:text-white">Start free.<br/>Unlock Super Recall.</h2>
@@ -388,7 +388,7 @@ export default function LandingPage({ onLoginClick }) {
         </section>
 
         {/* FAQ SECTION */}
-        <section className="mt-32 max-w-3xl mx-auto space-y-6">
+        <section className="max-w-3xl mx-auto space-y-6">
           <FadeIn>
             <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-12 text-gray-900 dark:text-white">Frequently asked questions.</h2>
           </FadeIn>
@@ -415,7 +415,7 @@ export default function LandingPage({ onLoginClick }) {
         </section>
 
         {/* CLOSING CTA */}
-        <section className="mt-40 mb-16 flex flex-col items-center text-center">
+        <section className="mb-16 flex flex-col items-center text-center">
           <FadeIn className="flex flex-col items-center">
             <div className="flex items-center gap-2 font-bold text-gray-900 dark:text-white mb-8">
                <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-12 h-12 object-contain" />
