@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+const fs = require('fs');
+
+const file = 'C:\\Users\\kolaw\\recall-app\\src\\LandingPage.jsx';
+
+const content = `import React, { useEffect, useState } from 'react';
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 ml-2 shrink-0">
@@ -69,11 +73,11 @@ export default function LandingPage({ onLoginClick }) {
     <div className="min-h-screen w-full overflow-x-hidden font-['Manrope',_Arial,_sans-serif] bg-[#0a0a0a] text-[#F8FAFC] selection:bg-[#FF6B00] selection:text-white">
       
       {/* HEADER */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
+      <header className={\`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 \${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}\`}>
         <div className="flex justify-between items-center py-4 px-6 md:px-12 max-w-[1400px] mx-auto opacity-0 animate-hero-arrive">
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight">
             <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
-            Recall
+            recall
           </div>
           <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-300">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -142,20 +146,20 @@ export default function LandingPage({ onLoginClick }) {
                 <div 
                   key={idx} 
                   onClick={() => setActiveFeature(idx)}
-                  className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
+                  className={\`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 \${
                     activeFeature === idx 
                       ? 'bg-[#1A1412] border-[#FF6B00]/40 shadow-[0_0_20px_rgba(255,107,0,0.1)]' 
                       : 'bg-transparent border-transparent hover:border-gray-800 hover:bg-white/5'
-                  }`}
+                  }\`}
                 >
                    <div className={activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}>
                      {feature.icon}
                    </div>
                    <div>
-                     <h3 className={`font-bold mb-1 ${activeFeature === idx ? 'text-white' : 'text-gray-400'}`}>
+                     <h3 className={\`font-bold mb-1 \${activeFeature === idx ? 'text-white' : 'text-gray-400'}\`}>
                        {feature.title}
                      </h3>
-                     <p className={`text-sm ${activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}`}>
+                     <p className={\`text-sm \${activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}\`}>
                        {feature.desc}
                      </p>
                    </div>
@@ -164,18 +168,17 @@ export default function LandingPage({ onLoginClick }) {
             </div>
           </div>
           
-          <div className="flex-1 w-full flex justify-center items-center relative py-12">
-             <div className="relative w-64 md:w-80 flex items-center justify-center">
+          <div className="flex-1 w-full flex justify-center items-center h-[500px] md:h-[700px]">
+             <div className="relative w-64 md:w-80 h-full flex items-center justify-center">
                <div className="absolute inset-0 bg-[#FF6B00]/20 blur-[100px] rounded-full scale-110 pointer-events-none"></div>
-               <img src={features[0].img} className="w-full h-auto invisible" aria-hidden="true" />
                {features.map((feature, idx) => (
                  <img 
                    key={idx}
                    src={feature.img} 
                    alt={feature.title} 
-                   className={`absolute top-0 left-0 w-full h-full object-contain drop-shadow-2xl transition-all duration-700 ${
+                   className={\`absolute top-1/2 -translate-y-1/2 left-0 w-full h-auto object-contain drop-shadow-2xl transition-all duration-700 \${
                      activeFeature === idx ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 translate-y-8 z-0 pointer-events-none'
-                   }`} 
+                   }\`} 
                  />
                ))}
              </div>
@@ -247,11 +250,8 @@ export default function LandingPage({ onLoginClick }) {
                 </button>
              </div>
              
-             <div className="flex-1 w-full flex justify-center items-center relative">
-                <div className="relative w-full max-w-[450px]">
-                  <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full h-auto object-contain drop-shadow-2xl transform md:rotate-[-5deg]" />
-                  <div className="absolute bottom-[-10px] left-[-20px] right-[-20px] h-48 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pointer-events-none transform md:rotate-[-5deg]"></div>
-                </div>
+             <div className="flex-1 w-full flex justify-center items-center">
+                <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full max-w-[450px] h-auto object-contain drop-shadow-2xl transform md:rotate-[-5deg]" />
              </div>
           </div>
         </section>
@@ -346,7 +346,7 @@ export default function LandingPage({ onLoginClick }) {
           <div className="max-w-xs">
             <div className="flex items-center gap-2 font-bold text-white text-xl mb-4">
               <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
-              Recall
+              recall
             </div>
             <p className="text-gray-400 text-sm mb-6">Master your exams. Outperform the curve.</p>
           </div>
@@ -382,7 +382,7 @@ export default function LandingPage({ onLoginClick }) {
         
         {/* Giant footer logo */}
         <div className="max-w-[1400px] mx-auto flex justify-center mb-16 overflow-hidden">
-           <h1 className="text-[15vw] font-bold leading-none tracking-tighter text-[#FF6B00]/10 select-none">Recall</h1>
+           <h1 className="text-[15vw] font-bold leading-none tracking-tighter text-[#FF6B00]/10 select-none">recall</h1>
         </div>
 
         <div className="max-w-[1400px] mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold text-gray-600">
@@ -392,3 +392,5 @@ export default function LandingPage({ onLoginClick }) {
     </div>
   );
 }
+`;
+fs.writeFileSync(file, content);
