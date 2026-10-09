@@ -23,12 +23,12 @@ const GlowingEffect = memo(
     borderWidth = 1,
     disabled = true,
   }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef(null);
     const lastPosition = useRef({ x: 0, y: 0 });
-    const animationFrameRef = useRef<number>(0);
+    const animationFrameRef = useRef(0);
 
     const handleMove = useCallback(
-      (e?: MouseEvent | { x: number; y: number }) => {
+      (e) => {
         if (!containerRef.current) return;
 
         if (animationFrameRef.current) {
@@ -95,7 +95,7 @@ const GlowingEffect = memo(
       if (disabled) return;
 
       const handleScroll = () => handleMove();
-      const handlePointerMove = (e: PointerEvent) => handleMove(e);
+      const handlePointerMove = (e) => handleMove(e);
 
       window.addEventListener("scroll", handleScroll, { passive: true });
       document.body.addEventListener("pointermove", handlePointerMove, {
@@ -150,7 +150,7 @@ const GlowingEffect = memo(
                   #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
                   #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
                 )`,
-            } as React.CSSProperties
+            }
           }
           className={cn(
             "pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity",
