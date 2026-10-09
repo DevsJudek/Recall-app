@@ -1,5 +1,7 @@
 // src/pages/Profile.jsx
 
+import { GlowingEffect } from "../components/ui/glowing-effect";
+
 export default function Profile({
   displayName, avatarUrl, followersCount, followingCount, streakCount,
   setCurrentView, claimStreak, canClaim, leaderboardData, currentUserDbId, openNetworkView,
