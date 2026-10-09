@@ -223,9 +223,9 @@ export default function LandingPage({ onLoginClick }) {
                   <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm text-gray-500 dark:text-gray-400 font-medium mb-16 mt-6">
                     <div className="flex items-center gap-2">
                       <div className="flex -space-x-2 mr-1">
-                        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1bf38c?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
+                        <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
                         <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
-                        <img src="https://images.unsplash.com/photo-1506869640319-fea1a2ab8e40?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
                       </div>
                       <span className="font-bold text-gray-900 dark:text-white">{stats.students.toLocaleString()}</span> Students
                     </div>
