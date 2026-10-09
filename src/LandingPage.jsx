@@ -110,7 +110,7 @@ export default function LandingPage({ onLoginClick }) {
 
           {/* Hero Mockup Composition */}
           <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000 overflow-hidden md:overflow-visible" style={{ animationDelay: '0.4s' }}>
-             <div className="absolute inset-0 bg-gradient-to-b from-[#FF6B00]/10 to-transparent rounded-full blur-3xl opacity-50 -top-32 pointer-events-none"></div>
+             
              
              {/* Left Phone */}
              <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 drop-shadow-2xl z-10">
@@ -166,7 +166,7 @@ export default function LandingPage({ onLoginClick }) {
           
           <div className="flex-1 w-full flex justify-center items-center relative py-12">
              <div className="relative w-64 md:w-80 flex items-center justify-center">
-               <div className="absolute inset-0 bg-[#FF6B00]/20 blur-[100px] rounded-full scale-110 pointer-events-none"></div>
+               
                <img src={features[0].img} className="w-full h-auto invisible" aria-hidden="true" />
                {features.map((feature, idx) => (
                  <img 
