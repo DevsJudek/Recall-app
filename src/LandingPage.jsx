@@ -190,7 +190,13 @@ export default function LandingPage({ onLoginClick }) {
         <section className="flex flex-col items-center text-center mt-8">
           <div className="max-w-4xl">
             <FadeIn delay={100}>
-            <p className="text-[15px] font-medium tracking-tight text-[#FF6B00] mb-6">Recall Beta is Live</p>
+            <div className="flex justify-center items-center gap-2 mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B00] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B00] shadow-[0_0_8px_#FF6B00]"></span>
+                </span>
+                <p className="text-[15px] font-medium tracking-tight text-[#FF6B00]">Recall Beta is Live</p>
+              </div>
             </FadeIn>
             <FadeIn delay={200}>
               <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
