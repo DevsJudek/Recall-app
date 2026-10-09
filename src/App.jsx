@@ -411,12 +411,14 @@ function AppContent() {
 
     const userLevelNum = parseInt(level, 10) || 0;
 
-    // Strict filter: Students can ONLY see courses specifically for their current level.
-      const validEnrolled = enrolledCourses.filter(code => {
-        const c = coursesList.find(x => x.code === code);
-        if (!c) return true;
-        return c.level === level;
-      });
+    // Filter enrolled courses so a 200L student never has 300L+ courses in their active list!
+    const validEnrolled = enrolledCourses.filter(code => {
+      const c = coursesList.find(x => x.code === code);
+      if (!c) return true;
+      const cLvlNum = parseInt(c.level, 10) || 0;
+      if (userLevelNum > 0 && cLvlNum > userLevelNum) return false;
+      return true;
+    });
 
     const mandatoryMainCodes = coursesList
       .filter(c => c.type === 'Main' && c.level === level && (c.department === department || c.department === 'Law') && c.semester === currentSemester)

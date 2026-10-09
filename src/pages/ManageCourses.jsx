@@ -1,7 +1,5 @@
-              // STRICT RULE: A student ONLY sees courses for their current level!
-              if (course.level !== level) {
-                  return false;
-              } from 'react';
+// src/pages/ManageCourses.jsx
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '../supabase';
 
 export default function ManageCourses({ allCourses = [], enrolledCourses = [], setEnrolledCourses, level, department, currentUserDbId, goBack, currentSemester = '1st Semester' }) {
