@@ -160,15 +160,22 @@ export default function LandingPage({ onLoginClick }) {
         
         {/* HERO SECTION */}
         <section className="flex flex-col items-center text-center mt-8">
-          <FadeIn delay={100} className="max-w-4xl">
+          <div className="max-w-4xl">
+            <FadeIn delay={100}>
             <p className="text-sm font-semibold tracking-wider text-[#FF6B00] uppercase mb-6">Interactive Study & Quiz Platform</p>
-            <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
+            </FadeIn>
+            <FadeIn delay={200}>
+              <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
               Read exactly what will drop.<br />Avoid premium tears.
             </h1>
-            <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
+            </FadeIn>
+            <FadeIn delay={300}>
+              <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
               Whether you are writing JAMB, surviving your undergrad, or preparing for Law School, stop reading off-point. Recall gives you hyper-tailored notes mapped perfectly to your exact syllabus, paired with an AI tutor and addictive gamification.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
+            </FadeIn>
+            <FadeIn delay={400}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
               <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg">
                 Start studying for free <ArrowUpRight />
               </button>
@@ -176,7 +183,8 @@ export default function LandingPage({ onLoginClick }) {
                 Explore the library
               </button>
             </div>
-          </FadeIn>
+            </FadeIn>
+          </div>
 
           {/* Hero Mockup Composition */}
           <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
