@@ -160,7 +160,7 @@ export default function LandingPage({ onLoginClick }) {
       
       {/* HEADER */}
       <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-[1100px] px-4 transition-all duration-300">
-        <div className={`flex justify-between items-center py-3 px-6 md:px-8 mx-auto opacity-0 animate-hero-arrive relative rounded-full backdrop-blur-lg border transition-all duration-300 ${scrolled ? 'bg-white/70 dark:bg-black/40 border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]' : 'bg-white/40 dark:bg-black/20 border-white/20 dark:border-white/5 shadow-lg'}`}>
+        <div className={`flex justify-between items-center py-3 px-6 md:px-8 mx-auto opacity-0 animate-hero-arrive relative rounded-[14px] backdrop-blur-lg border transition-all duration-300 ${scrolled ? 'bg-white/70 dark:bg-black/40 border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]' : 'bg-white/40 dark:bg-black/20 border-white/20 dark:border-white/5 shadow-lg'}`}>
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
             Recall
