@@ -106,39 +106,6 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                 return false;
             }
 
-            // 1. Electives (Core and Restricted) must ONLY be for the student's current level!
-            // A 200L student can NEVER take 300L electives.
-            if (course.type === 'Core' || course.type === 'Restricted') {
-                if (courseLevelNum > 0 && userLevelNum > 0 && courseLevelNum !== userLevelNum) {
-                    return false;
-                }
-            }
-
-            // 2. Carryovers (Main courses): Can ONLY be from strictly LOWER levels!
-            // A 300L carryover is NOT possible in 200L!
-            if (course.type === 'Main') {
-                if (userLevelNum > 0 && (courseLevelNum >= userLevelNum || courseLevelNum === 0)) {
-                    return false;
-                }
-            }
-
-            // Special electives shouldn't be seen by students of the originating department
-            if (course.type === 'Special Elective' && (course.department === department || course.department === 'Law')) return false;
-
-            const isOwnDept = (course.department === department || course.department === 'Law');
-
-            // Non-own-dept courses should only be visible if they are NOT Main courses
-            if (course.type === 'Main' && !isOwnDept) return false;
-            if (course.semester !== activeSemester) return false;
-
-            // Pill filter
-            if (activeLevel === 'Special' && course.type !== 'Special Elective') return false;
-            if (activeLevel !== 'All' && activeLevel !== 'Special' && course.level !== activeLevel && course.level !== 'Any') return false;
-
-            if (searchQuery && !course.title.toLowerCase().includes(searchQuery.toLowerCase()) && !course.code.toLowerCase().includes(searchQuery.toLowerCase())) {
-                return false;
-            }
-
             return true;
         });
 
@@ -152,10 +119,10 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
     }, [allCourses, department, activeLevel, activeSemester, searchQuery, isCourseLocked, userLevelNum]);
 
     const groupedCourses = {
-        'Core Electives': filteredCourses.filter(c => c.type === 'Core'),
-        'Restricted Electives': filteredCourses.filter(c => c.type === 'Restricted'),
-        'Special Electives': filteredCourses.filter(c => c.type === 'Special Elective'),
-        'Carryovers': filteredCourses.filter(c => c.type === 'Main')
+        'Core Electives': filteredCourses.filter(c => c.type === 'Core' && parseLevelNum(c.level) === userLevelNum),
+        'Restricted Electives': filteredCourses.filter(c => c.type === 'Restricted' && parseLevelNum(c.level) === userLevelNum),
+        'Special Electives': filteredCourses.filter(c => c.type === 'Special Elective' && parseLevelNum(c.level) === userLevelNum),
+        'Carryovers': filteredCourses.filter(c => parseLevelNum(c.level) < userLevelNum && userLevelNum > 0)
     };
 
     const handleSave = async () => {
