@@ -57,8 +57,8 @@ const FadeIn = ({ children, delay = 0, className = "", threshold = 0.1 }) => {
   return (
     <div
       ref={domRef}
-      className={\`transition-all duration-1000 ease-out \${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} \${className}\`}
-      style={{ transitionDelay: \`\${delay}ms\` }}
+      className={`transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
     </div>
@@ -100,7 +100,7 @@ export default function LandingPage({ onLoginClick }) {
     <div className="min-h-screen w-full overflow-x-hidden font-['Manrope',_Arial,_sans-serif] bg-[#0a0a0a] text-[#F8FAFC] selection:bg-[#FF6B00] selection:text-white">
       
       {/* HEADER */}
-      <header className={\`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 \${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}\`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
         <div className="flex justify-between items-center py-4 px-6 md:px-12 max-w-[1400px] mx-auto opacity-0 animate-hero-arrive">
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight">
             <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
@@ -174,20 +174,20 @@ export default function LandingPage({ onLoginClick }) {
                 <FadeIn key={idx} delay={idx * 150}>
                   <div 
                     onClick={() => setActiveFeature(idx)}
-                    className={\`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 \${
+                    className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
                       activeFeature === idx 
                         ? 'bg-[#1A1412] border-[#FF6B00]/40 shadow-md' 
                         : 'bg-transparent border-transparent hover:border-gray-800 hover:bg-white/5'
-                    }\`}
+                    }`}
                   >
                      <div className={activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}>
                        {feature.icon}
                      </div>
                      <div>
-                       <h3 className={\`font-bold mb-1 \${activeFeature === idx ? 'text-white' : 'text-gray-400'}\`}>
+                       <h3 className={`font-bold mb-1 ${activeFeature === idx ? 'text-white' : 'text-gray-400'}`}>
                          {feature.title}
                        </h3>
-                       <p className={\`text-sm \${activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}\`}>
+                       <p className={`text-sm ${activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-600'}`}>
                          {feature.desc}
                        </p>
                      </div>
@@ -205,9 +205,9 @@ export default function LandingPage({ onLoginClick }) {
                    key={idx}
                    src={feature.img} 
                    alt={feature.title} 
-                   className={\`absolute top-0 left-0 w-full h-full object-contain transition-all duration-700 \${
+                   className={`absolute top-0 left-0 w-full h-full object-contain transition-all duration-700 ${
                      activeFeature === idx ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 translate-y-8 z-0 pointer-events-none'
-                   }\`} 
+                   }`} 
                  />
                ))}
              </div>
