@@ -198,61 +198,6 @@ export default function LandingPage({ onLoginClick }) {
           </div>
         </section>
 
-        {/* FEATURES INTERACTIVE SECTION */}
-        <section id="features" className="flex flex-col xl:flex-row gap-16 items-center">
-          <div className="flex-1 max-w-xl">
-            <FadeIn>
-              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4 flex items-center gap-2">
-                <ZapIcon /> Built for better recall
-              </p>
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Exactly what you need to pass. Nothing you don't.</h2>
-            </FadeIn>
-            
-            <div className="mt-12 space-y-2">
-              {features.map((feature, idx) => (
-                <FadeIn key={idx} delay={idx * 150}>
-                  <div 
-                    onClick={() => setActiveFeature(idx)}
-                    className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
-                      activeFeature === idx 
-                        ? 'bg-white dark:bg-[#1A1412] border-[#FF6B00]/40 shadow-md' 
-                        : 'bg-transparent border-transparent hover:border-gray-200 dark:hover:border-gray-800 hover:bg-black/5 dark:hover:bg-white/5'
-                    }`}
-                  >
-                     <div className={activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-500 dark:text-gray-600'}>
-                       {feature.icon}
-                     </div>
-                     <div>
-                       <h3 className={`font-bold mb-1 ${activeFeature === idx ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                         {feature.title}
-                       </h3>
-                       <p className={`text-sm ${activeFeature === idx ? 'text-[#FF6B00]' : 'text-gray-500 dark:text-gray-600'}`}>
-                         {feature.desc}
-                       </p>
-                     </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
-          
-          <div className="flex-1 w-full flex justify-center items-center relative">
-             <div className="relative w-48 md:w-64 flex items-center justify-center">
-               <img src={features[0].img} className="w-full h-auto invisible" aria-hidden="true" />
-               {features.map((feature, idx) => (
-                 <img 
-                   key={idx}
-                   src={feature.img} 
-                   alt={feature.title} 
-                   className={`absolute top-0 left-0 w-full h-full object-contain transition-all duration-700 ${
-                     activeFeature === idx ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 translate-y-8 z-0 pointer-events-none'
-                   }`} 
-                 />
-               ))}
-             </div>
-          </div>
-        </section>
-
         {/* TOPICS SECTION */}
         <section id="courses" className="space-y-12">
           <FadeIn>
