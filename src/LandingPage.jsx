@@ -259,7 +259,7 @@ export default function LandingPage({ onLoginClick }) {
             </FadeIn>
           </div>
 
-          <div className="flex flex-col xl:flex-row items-center justify-between gap-16 mt-32 relative">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-16 mt-32 relative">
              <div className="flex-1 z-10 max-w-xl">
                 <FadeIn>
                   <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night-before<br/>lifesaver.</h2>
