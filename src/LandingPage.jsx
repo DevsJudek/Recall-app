@@ -201,9 +201,7 @@ export default function LandingPage({ onLoginClick }) {
               </div>
             </FadeIn>
             <FadeIn delay={200}>
-              <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
-              Read exactly what will drop.<br />Avoid <span className="text-[#FF6B00]">premium tears.</span>
-            </h1>
+              <TextGenerateEffect className="mb-8" words="Read exactly what will drop. <br/> Avoid premium tears." />
             </FadeIn>
             <FadeIn delay={300}>
               <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
