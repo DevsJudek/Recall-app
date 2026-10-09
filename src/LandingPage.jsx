@@ -284,7 +284,7 @@ export default function LandingPage({ onLoginClick }) {
             <FadeIn delay={0}>
               <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><DocumentIcon /></div>
               <h3 className="text-[22px] font-semibold tracking-[-0.01em] mb-3 text-gray-900 dark:text-white">Study</h3>
-              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Read through high yield summaries that cut out the noise and focus strictly on what is tested.</p>
+              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Read through course notes that cut out the noise and focus strictly on what is tested.</p>
             </FadeIn>
             <FadeIn delay={150}>
               <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><ZapIcon /></div>
@@ -432,7 +432,7 @@ export default function LandingPage({ onLoginClick }) {
               ['Is Recall free to use?', 'Yes! You can sign up and access a limited set of daily quizzes and notes for free. For unlimited access to all courses, analytics, and offline mode, you can upgrade to Super Recall.'],
               ['How do the ranked tests work?', 'Ranked tests simulate real exam conditions under time pressure. Your performance earns you points, which determines your position on the weekly global leaderboard.'],
               ['Can I use Recall offline?', 'Offline access is available for Super Recall members. You can download courses and quizzes to your device and sync your progress when you reconnect to the internet.'],
-              ['What courses are available?', 'We currently support a wide range of university-level courses including Law, Medicine, Sciences, and General Studies. We are constantly expanding our library.']
+              ['What courses are available?', 'We currently support a wide range of university level courses including Law, Medicine, Sciences, and General Studies. We are constantly expanding our library.']
             ].map(([q, a], i) => (
               <FadeIn key={i} delay={i * 100}>
                 <details className="group py-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
