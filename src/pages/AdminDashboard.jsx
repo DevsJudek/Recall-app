@@ -628,23 +628,6 @@ export default function AdminDashboard({ goBack }) {
                                       </div>
                                   </div>
                               ))}
-                                            <div>
-                                                <p className="font-bold text-[#1A1A1A] text-sm">{user.name}</p>
-                                                <p className="text-[10px] font-bold text-gray-500">{user.email || 'No email'}</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-6 text-right">
-                                            <div>
-                                                <p className="text-sm font-black text-[#FF6B00]">🔥 {user.current_streak || 0}</p>
-                                                <p className="text-[8px] font-black tracking-widest text-gray-400 uppercase mt-0.5">Streak</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-black text-[#1A1A1A]">{user.points || 0}</p>
-                                                <p className="text-[8px] font-black tracking-widest text-gray-400 uppercase mt-0.5">XP</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     )}
