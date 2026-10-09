@@ -623,7 +623,15 @@ function AppContent() {
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0]; if (!file) return; setIsUploading(true);
+    const file = e.target.files[0]; if (!file) return; 
+    
+    if (file.size > 1024 * 1024) {
+      alert("your image is larger than 1mb, please select another image");
+      e.target.value = null;
+      return;
+    }
+    
+    setIsUploading(true);
 
     if (editAvatarUrl && editAvatarUrl !== avatarUrl && editAvatarUrl.includes('/storage/v1/object/public/avatars/')) {
       const oldTempFileName = editAvatarUrl.split('/avatars/')[1];
