@@ -193,7 +193,7 @@ export default function LandingPage({ onLoginClick }) {
 
              {/* Right Phone */}
              <div className="absolute right-[-20px] sm:right-0 md:right-[10%] top-16 md:top-24 w-32 sm:w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-20">
-               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain animate-float-breathe-slow" />
+               <img src="/mockups/reading.png" alt="Reading" className="w-full h-auto object-contain animate-float-breathe-slow" />
              </div>
           </div>
         </section>
