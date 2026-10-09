@@ -47,7 +47,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                             <p className="text-sm text-[#666666] dark:text-gray-400 font-medium leading-snug mb-3">Test your speed and accuracy to climb the leaderboard.</p>
                             <div className="px-3 py-1 bg-[#FFF9F5] dark:bg-orange-950/30 text-[#FF6B00] text-[10px] font-extrabold uppercase tracking-wider rounded-lg mb-5">Includes 15s timer</div>
 
-                            <div className="flex flex-col items-center gap-1.5 text-xs font-bold text-gray-400 dark:text-gray-500 mb-5 mt-auto w-full">
+                            <div className="mt-auto w-full flex flex-col justify-end h-full"><div className="flex flex-col items-center gap-1.5 text-xs font-bold text-gray-400 dark:text-gray-500 mb-5 w-full">
                                 <span className="flex items-center gap-1.5">❓ 15 Questions</span>
                                 <span className="flex items-center gap-1.5 text-[#FF6B00]">🏆 +XP Bonus</span>
                             </div>
@@ -73,7 +73,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                             <p className="text-sm text-[#666666] dark:text-gray-400 font-medium leading-snug mb-3">Perfect for learning. Take your time to read each question.</p>
                             <div className="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[10px] font-extrabold uppercase tracking-wider rounded-lg mb-5">No timer included</div>
 
-                            <div className="flex flex-col items-center gap-1.5 text-xs font-bold text-gray-400 dark:text-gray-500 mb-5 mt-auto w-full">
+                            <div className="mt-auto w-full flex flex-col justify-end h-full"><div className="flex flex-col items-center gap-1.5 text-xs font-bold text-gray-400 dark:text-gray-500 mb-5 w-full">
                                 <span className="flex items-center gap-1.5">❓ 30 Questions</span>
                                 <span className="flex items-center gap-1.5">⭐ Learn mode</span>
                             </div>
@@ -110,11 +110,12 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                             <p className="text-sm text-[#666666] dark:text-gray-400 font-medium leading-snug mb-3">Challenge up to 4 classmates simultaneously in a private live arena.</p>
                             <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-[10px] font-extrabold uppercase tracking-wider rounded-lg mb-5">Multiplayer</div>
 
-                            <div className="flex items-center justify-center w-full text-xs font-bold text-gray-400 dark:text-gray-500 mb-5 mt-auto">
+                            <div className="mt-auto w-full flex flex-col justify-end h-full"><div className="flex items-center justify-center w-full text-xs font-bold text-gray-400 dark:text-gray-500 mb-5">
                                 <span className="flex items-center gap-1.5">👥 2-4 Players</span>
                             </div>
 
-                            <button disabled className="w-full py-3 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-[14px] font-bold text-sm border border-gray-200 dark:border-gray-700 cursor-not-allowed flex items-center justify-center gap-2 mt-auto">
+                            <div className="w-full h-[68px] mb-4 invisible" aria-hidden="true"></div>
+                              <button disabled className="w-full py-3 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-[14px] font-bold text-sm border border-gray-200 dark:border-gray-700 cursor-not-allowed flex items-center justify-center gap-2 mt-auto">
                                 Coming Soon 🔒
                             </button>
                         </div>
