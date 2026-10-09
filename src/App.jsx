@@ -965,8 +965,6 @@ function AppContent() {
               <button onClick={goBack} disabled={viewHistory.length === 0 || currentView === 'practice_setup'} className={`text-sm font-bold transition-colors flex items-center gap-2 ${(viewHistory.length > 0 && currentView !== 'practice_setup') ? 'text-[#666666] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white' : 'text-transparent cursor-default select-none pointer-events-none'}`}>{(currentView !== 'practice_setup') ? '← Back' : ' '}</button>
 
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest hidden sm:inline">{activeCourse?.code || 'RECALL'}</span>
-
                 {currentView === 'leaderboard' && (
                   <div className="flex items-center gap-1 text-[10px] font-black text-[#FF6B00] uppercase tracking-widest bg-[#FFF2EC] dark:bg-orange-950/30 border border-[#FFD5C2] dark:border-orange-900/50 px-2 py-1.5 rounded-full shadow-sm whitespace-nowrap">
                       <span className="text-xs">⏰</span> {resetString}
