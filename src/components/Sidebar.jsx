@@ -46,11 +46,7 @@ export default function Sidebar({ currentView, setCurrentView, openLeaderboard, 
                 </nav>
             </div>
 
-            <div className="p-4 bg-[#FFF9F5] dark:bg-orange-950/20 border border-[#FFD5C2] dark:border-orange-900/50 rounded-2xl text-center shadow-sm">
-                <p className="text-[10px] font-extrabold text-[#FF6B00] leading-relaxed">
-                    Tip: Updating your profile increases motivation by 2x.
-                </p>
-            </div>
+            
         </aside>
     );
 }
