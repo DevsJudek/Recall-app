@@ -38,7 +38,7 @@ export default function TestResult({ activeCourse, score, questions, practiceMod
 
             <button
                 onClick={() => startPractice(activeCourse, practiceMode)}
-                className="w-full bg-[#1A1A1A] dark:bg-gray-200 text-white dark:text-[#1A1A1A] py-4 rounded-xl text-sm font-black tracking-wide uppercase hover:bg-black dark:hover:bg-white shadow-md transition-all"
+                className="w-full bg-[#1A1A1A] dark:bg-gray-200 text-white dark:text-[#1A1A1A] py-3 rounded-[14px] text-sm font-black tracking-wide uppercase hover:bg-black dark:hover:bg-white shadow-md transition-all"
             >
                 {buttonText}
             </button>

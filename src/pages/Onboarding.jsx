@@ -159,7 +159,7 @@ export default function Onboarding({ firstName, handleCompleteOnboarding, isUplo
                                 <button
                                     key={l}
                                     onClick={() => setLevel(l)}
-                                    className={`flex-1 py-2 md:py-2.5 text-[10px] md:text-xs font-bold rounded-lg transition-all min-w-[45px] ${level === l ? 'bg-white dark:bg-gray-700 shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                    className={`flex-1 py-2 md:py-2.5 text-[10px] md:text-xs font-bold rounded-[14px] transition-all min-w-[45px] ${level === l ? 'bg-white dark:bg-gray-700 shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                                 >
                                     {l}
                                 </button>
@@ -189,7 +189,7 @@ export default function Onboarding({ firstName, handleCompleteOnboarding, isUplo
                         <button
                             onClick={handleSubmit}
                             disabled={isUploading}
-                            className="w-full bg-[#FF6B00] hover:bg-[#E05D00] text-white py-3.5 md:py-4 rounded-xl font-bold text-sm shadow-md shadow-[#FF6B00]/20 transition-all active:scale-[0.98] flex justify-center items-center gap-2 disabled:opacity-70"
+                            className="w-full bg-[#FF6B00] hover:bg-[#E05D00] text-white py-3 md:py-3 rounded-[14px] font-bold text-sm shadow-md shadow-[#FF6B00]/20 transition-all active:scale-[0.98] flex justify-center items-center gap-2 disabled:opacity-70"
                         >
                             {isUploading ? (
                                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

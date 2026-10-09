@@ -48,7 +48,7 @@ export default function ShareTopic({ sharedCourse, sharedTopic, goBack }) {
                     />
                     <button
                         onClick={handleCopy}
-                        className="bg-white dark:bg-[#242424] border border-[#E5E5E5] dark:border-gray-700 text-[#1A1A1A] dark:text-white text-xs font-bold px-4 py-2 rounded-lg hover:border-[#FF6B00] dark:hover:border-[#FF6B00] transition-colors shadow-sm whitespace-nowrap"
+                        className="bg-white dark:bg-[#242424] border border-[#E5E5E5] dark:border-gray-700 text-[#1A1A1A] dark:text-white text-xs font-bold px-4 py-2 rounded-[14px] hover:border-[#FF6B00] dark:hover:border-[#FF6B00] transition-colors shadow-sm whitespace-nowrap"
                     >
                         {copied ? '✓ Copied' : 'Copy'}
                     </button>

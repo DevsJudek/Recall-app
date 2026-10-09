@@ -147,7 +147,7 @@ export default function Profile({
                 You have full access to unlimited practice, deep explanations, and the complete course library.
               </p>
             </div>
-            <button className="w-fit mt-2 px-6 py-3 bg-[#FF6B00] hover:bg-[#E56000] text-white font-bold text-sm rounded-xl transition-colors shadow-sm relative z-20">
+            <button className="w-fit mt-2 px-6 py-3 bg-[#FF6B00] hover:bg-[#E05D00] text-white font-bold text-sm rounded-[14px] transition-colors shadow-sm relative z-20">
               Manage Subscription
             </button>
           </div>

@@ -13,28 +13,28 @@ export default function Sidebar({ currentView, setCurrentView, openLeaderboard, 
                 </div>
 
                 <nav className="flex flex-col gap-1">
-                    <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === 'dashboard' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
+                    <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm font-bold transition-all ${currentView === 'dashboard' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
                         <span className="text-lg">🏠</span> Home
                     </button>
 
                     {/* 🚀 ONLY SHOW THESE IF THE USER IS IN A SUPPORTED DEPARTMENT */}
                     {isSupported && (
                         <>
-                            <button onClick={() => setCurrentView('courses')} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === 'courses' || currentView === 'course_topics' || currentView === 'reading' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
+                            <button onClick={() => setCurrentView('courses')} className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm font-bold transition-all ${currentView === 'courses' || currentView === 'course_topics' || currentView === 'reading' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
                                 <span className="text-lg">📚</span> Courses
                             </button>
 
-                            <button onClick={() => setCurrentView('practice_setup')} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === 'practice_setup' || currentView === 'quiz' || currentView === 'results' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
+                            <button onClick={() => setCurrentView('practice_setup')} className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm font-bold transition-all ${currentView === 'practice_setup' || currentView === 'quiz' || currentView === 'results' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
                                 <span className="text-lg">⚡</span> Tests
                             </button>
 
-                            <button onClick={openLeaderboard} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === 'leaderboard' || currentView === 'peer_profile' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
+                            <button onClick={openLeaderboard} className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm font-bold transition-all ${currentView === 'leaderboard' || currentView === 'peer_profile' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
                                 <span className="text-lg">🏆</span> Rank
                             </button>
                         </>
                     )}
 
-                    <button onClick={() => setCurrentView('profile')} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === 'profile' || currentView === 'edit_profile' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
+                    <button onClick={() => setCurrentView('profile')} className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm font-bold transition-all ${currentView === 'profile' || currentView === 'edit_profile' ? 'bg-[#FFF2EC] dark:bg-orange-950/30 text-[#FF6B00]' : 'text-[#666666] dark:text-gray-400 hover:bg-[#F8F9FA] dark:hover:bg-[#242424]'}`}>
                         <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden border border-[#E5E5E5] dark:border-gray-600">
                             <img src="https://i.pravatar.cc/150?u=judek" alt="Avatar" className="w-full h-full object-cover" />
                         </div>

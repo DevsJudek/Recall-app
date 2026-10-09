@@ -31,7 +31,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                         Select how you want to practice your questions today.
                     </p>
                     </div>
-                    <button type="button" onClick={(e) => { e.preventDefault(); setCurrentView('test_history'); }} className="px-4 py-2 bg-white dark:bg-[#242424] text-[#1A1A1A] dark:text-white border border-[#E5E5E5] dark:border-gray-700 rounded-xl text-sm font-bold flex items-center gap-1.5 hover:border-[#FF6B00] dark:hover:border-[#FF6B00] hover:text-[#FF6B00] dark:hover:text-[#FF6B00] shadow-sm transition-all whitespace-nowrap shrink-0"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>History</button>
+                    <button type="button" onClick={(e) => { e.preventDefault(); setCurrentView('test_history'); }} className="px-4 py-2 bg-white dark:bg-[#242424] text-[#1A1A1A] dark:text-white border border-[#E5E5E5] dark:border-gray-700 rounded-[14px] text-sm font-bold flex items-center gap-1.5 hover:border-[#FF6B00] dark:hover:border-[#FF6B00] hover:text-[#FF6B00] dark:hover:text-[#FF6B00] shadow-sm transition-all whitespace-nowrap shrink-0"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>History</button>
                 </div>
 
                 {/* CARDS CONTAINER */}
@@ -60,7 +60,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                                 </div>
                             </div>
 
-                            <button onClick={handleRanked} className="w-full py-3.5 bg-[#FF6B00] text-white rounded-xl font-bold text-sm shadow-md shadow-[#FF6B00]/20 hover:bg-[#E05D00] transition-colors flex items-center justify-center gap-2 active:scale-95">
+                            <button onClick={handleRanked} className="w-full py-3 bg-[#FF6B00] text-white rounded-[14px] font-bold text-sm shadow-md shadow-[#FF6B00]/20 hover:bg-[#E05D00] transition-colors flex items-center justify-center gap-2 active:scale-95">
                                 Start Ranked Test →
                             </button>
                         </div>
@@ -97,7 +97,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                                 </div>
                             </div>
 
-                            <button onClick={handleNormal} className="w-full py-3.5 bg-[#111827] dark:bg-white text-white dark:text-[#111827] rounded-xl font-bold text-sm shadow-md hover:bg-black dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 active:scale-95">
+                            <button onClick={handleNormal} className="w-full py-3 bg-[#111827] dark:bg-white text-white dark:text-[#111827] rounded-[14px] font-bold text-sm shadow-md hover:bg-black dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 active:scale-95">
                                 Start Normal Test →
                             </button>
                         </div>
@@ -114,7 +114,7 @@ export default function PracticeSetup({ startPractice, courses, setCurrentView }
                                 <span className="flex items-center gap-1.5">👥 2-4 Players</span>
                             </div>
 
-                            <button disabled className="w-full py-3.5 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-xl font-bold text-sm border border-gray-200 dark:border-gray-700 cursor-not-allowed flex items-center justify-center gap-2 mt-auto">
+                            <button disabled className="w-full py-3 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-[14px] font-bold text-sm border border-gray-200 dark:border-gray-700 cursor-not-allowed flex items-center justify-center gap-2 mt-auto">
                                 Coming Soon 🔒
                             </button>
                         </div>

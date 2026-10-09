@@ -105,7 +105,7 @@ export default function EditProfile({
                 <button
                     onClick={onSaveClick}
                     disabled={isUploading || isSaving}
-                    className="flex items-center gap-2 px-4 py-[14px] md:px-6 md:py-[18px] bg-[#FF6B00] text-white text-xs md:text-sm font-bold rounded-xl shadow-md shadow-[#FF6B00]/20 hover:bg-[#E05D00] transition-all active:scale-95 disabled:opacity-70"
+                    className="flex items-center gap-2 px-4 py-[14px] md:px-6 md:py-[18px] bg-[#FF6B00] text-white text-xs md:text-sm font-bold rounded-[14px] shadow-md shadow-[#FF6B00]/20 hover:bg-[#E05D00] transition-all active:scale-95 disabled:opacity-70"
                 >
                     {(isUploading || isSaving) && (
                         <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ export default function EditProfile({
                                 <button
                                     key={lvl}
                                     onClick={() => setEditLevel(lvl)}
-                                    className={`flex-1 py-2 md:py-2.5 text-[10px] md:text-xs font-bold rounded-lg transition-all min-w-[45px] ${editLevel === lvl ? 'bg-white dark:bg-gray-700 shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                    className={`flex-1 py-2 md:py-2.5 text-[10px] md:text-xs font-bold rounded-[14px] transition-all min-w-[45px] ${editLevel === lvl ? 'bg-white dark:bg-gray-700 shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                                 >
                                     {lvl}
                                 </button>
@@ -224,29 +224,29 @@ export default function EditProfile({
                         <div className="flex bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-xl border border-[#E5E5E5] dark:border-gray-800 w-full sm:w-auto shrink-0">
                             <button
                                 onClick={() => setIsDarkMode(false)}
-                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-lg transition-all ${!isDarkMode ? 'bg-white shadow-sm text-[#1A1A1A]' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-[14px] transition-all ${!isDarkMode ? 'bg-white shadow-sm text-[#1A1A1A]' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                             >
                                 ☀️ Light
                             </button>
                             <button
                                 onClick={() => setIsDarkMode(true)}
-                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-lg transition-all ${isDarkMode ? 'bg-[#2A2A2A] shadow-sm text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-[14px] transition-all ${isDarkMode ? 'bg-[#2A2A2A] shadow-sm text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                             >
                                 🌙 Dark
                             </button>
                         </div>
 
                         {/* 🔊 SOUND ENABLE/DISABLE TOGGLE */}
-                        <div className="flex bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-xl border border-[#E5E5E5] dark:border-gray-800 w-full sm:w-auto shrink-0">
+                        <div className="flex bg-[#F8F9FA] dark:bg-[#1A1A1A] p-1 rounded-[14px] border border-[#E5E5E5] dark:border-gray-800 w-full sm:w-auto shrink-0">
                             <button
                                 onClick={() => setIsSoundEnabled(true)}
-                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-lg transition-all ${isSoundEnabled ? 'bg-white dark:bg-[#2A2A2A] shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-[14px] transition-all ${isSoundEnabled ? 'bg-white dark:bg-[#2A2A2A] shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                             >
                                 🔊 Sounds
                             </button>
                             <button
                                 onClick={() => setIsSoundEnabled(false)}
-                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-lg transition-all ${!isSoundEnabled ? 'bg-white dark:bg-[#2A2A2A] shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
+                                className={`flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-[14px] transition-all ${!isSoundEnabled ? 'bg-white dark:bg-[#2A2A2A] shadow-sm text-[#1A1A1A] dark:text-white' : 'text-gray-400 hover:text-[#1A1A1A] dark:hover:text-white'}`}
                             >
                                 🔇 Muted
                             </button>
@@ -264,7 +264,7 @@ export default function EditProfile({
                     {window.location.hostname === 'localhost' && (
                         <button
                             onClick={() => setCurrentView('onboarding')}
-                            className="w-full sm:w-auto px-4 py-3 text-xs font-bold text-gray-500 hover:text-blue-500 transition-colors uppercase tracking-widest shrink-0 border border-gray-300 rounded-xl"
+                            className="w-full sm:w-auto px-4 py-3 text-xs font-bold text-gray-500 hover:text-blue-500 transition-colors uppercase tracking-widest shrink-0 border border-gray-300 rounded-[14px]"
                         >
                             Redo Onboarding (Dev)
                         </button>

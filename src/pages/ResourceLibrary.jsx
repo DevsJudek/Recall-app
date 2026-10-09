@@ -41,7 +41,7 @@ export default function ResourceLibrary({ onSuggestMaterial }) {
             <button
                 type="button"
                 onClick={(e) => { e.preventDefault(); onSuggestMaterial(); }}
-                className="md:hidden w-full py-3.5 mb-6 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-gray-800 rounded-[14px] flex items-center justify-center gap-2 text-sm font-bold text-[#1A1A1A] dark:text-white shadow-[0_2px_8px_rgba(0,0,0,0.02)] active:scale-95 transition-transform"
+                className="md:hidden w-full py-3 mb-6 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-gray-800 rounded-[14px] flex items-center justify-center gap-2 text-sm font-bold text-[#1A1A1A] dark:text-white shadow-[0_2px_8px_rgba(0,0,0,0.02)] active:scale-95 transition-transform"
             >
                 <svg className="w-4 h-4 text-[#FF6B00]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"></path></svg>
                 Suggest Material

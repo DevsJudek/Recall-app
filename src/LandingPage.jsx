@@ -183,7 +183,7 @@ export default function LandingPage({ onLoginClick }) {
               {isDark ? <SunIcon /> : <MoonIcon />}
             </button>
             <button onClick={onLoginClick} className="text-[15px] font-semibold text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Sign In</button>
-            <button onClick={onLoginClick} className="hidden sm:flex items-center bg-[#FF6B00] text-white px-4 py-2 rounded-lg font-semibold text-[14px] hover:bg-[#E56000] transition-colors shadow-sm">
+            <button onClick={onLoginClick} className="hidden sm:flex items-center bg-[#FF6B00] text-white px-4 py-2 rounded-[14px] font-semibold text-[14px] hover:bg-[#E56000] transition-colors shadow-sm">
               Get Started <ArrowUpRight />
             </button>
           </div>

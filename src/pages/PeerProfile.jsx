@@ -76,7 +76,7 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                 </p>
 
                 {!isSelf ? (
-                    <button onClick={handleFollowToggle} className={`w-full max-w-[280px] py-4 rounded-xl text-sm font-bold shadow-sm transition-all mb-12 ${isFollowing ? 'bg-gray-100 dark:bg-[#242424] text-[#1A1A1A] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-[#FF6B00] text-white hover:bg-[#e05d00]'}`}>
+                    <button onClick={handleFollowToggle} className={`w-full max-w-[280px] py-3 rounded-[14px] text-sm font-bold shadow-sm transition-all mb-12 ${isFollowing ? 'bg-gray-100 dark:bg-[#242424] text-[#1A1A1A] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-[#FF6B00] text-white hover:bg-[#e05d00]'}`}>
                         {isFollowing ? 'Following ✓' : 'Follow'}
                     </button>
                 ) : <div className="mb-12"></div>}

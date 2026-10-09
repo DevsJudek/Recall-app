@@ -214,7 +214,7 @@ export default function Dashboard({
               <button
                 onClick={updateServiceWorker}
                 disabled={isUpdating}
-                className="px-5 py-2.5 bg-[#FF6B00] hover:bg-[#E05D00] text-white text-xs font-bold rounded-xl transition-all shadow-sm shrink-0 flex items-center gap-2 cursor-pointer disabled:opacity-75"
+                className="px-5 py-2.5 bg-[#FF6B00] hover:bg-[#E05D00] text-white text-xs font-bold rounded-[14px] transition-all shadow-sm shrink-0 flex items-center gap-2 cursor-pointer disabled:opacity-75"
               >
                 {isUpdating ? (
                   <>
@@ -265,7 +265,7 @@ export default function Dashboard({
                 <div className="bg-[#F8F9FA] dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-gray-800 rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col gap-4 shadow-sm relative overflow-hidden group">
                   <div className="flex justify-between items-start w-full">
                     <img src="/app-icon.png" alt="Recall Icon" className="w-14 h-14 md:w-16 md:h-16 rounded-[14px] object-cover shadow-sm transition-transform group-hover:scale-105" />
-                    <button onClick={handleInstallClick} className="bg-[#FF6B00] hover:bg-[#E05D00] text-white px-5 py-2.5 md:px-6 rounded-xl md:rounded-[14px] font-bold text-sm transition-all shadow-sm active:scale-95">Install</button>
+                    <button onClick={handleInstallClick} className="bg-[#FF6B00] hover:bg-[#E05D00] text-white px-5 py-2.5 md:px-6 rounded-[14px] md:rounded-[14px] font-bold text-sm transition-all shadow-sm active:scale-95">Install</button>
                   </div>
                   <div className="mt-1">
                     <h3 className="text-xl md:text-2xl font-black text-[#1A1A1A] dark:text-white mb-1">Install the Recall App</h3>
@@ -292,7 +292,7 @@ export default function Dashboard({
                     </button>
                   ))}
                 </div>
-                <button onClick={() => startPractice(selectedTopic, practiceMode)} className="w-full bg-[#FF6B00] text-white py-4 rounded-xl text-sm font-black tracking-wide hover:bg-[#E05D00] hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                <button onClick={() => startPractice(selectedTopic, practiceMode)} className="w-full bg-[#FF6B00] text-white py-3 rounded-[14px] text-sm font-black tracking-wide hover:bg-[#E05D00] hover:shadow-lg hover:-translate-y-0.5 transition-all">
                   Start {practiceMode === 'ranked' ? 'ranked test' : 'normal test'} →
                 </button>
               </div>
@@ -326,7 +326,7 @@ export default function Dashboard({
                     <div className="mt-2">
                       <p className="text-xs text-[#666666] dark:text-gray-400 mb-4 font-medium">Last Studied: {continueCourse.last_studied || 'Just now'}</p>
 
-                      <button onClick={(e) => { e.stopPropagation(); openCourseTopics(continueCourse); }} className="w-full py-3.5 bg-white dark:bg-[#242424] border border-[#E5E5E5] dark:border-gray-700 hover:border-[#FF6B00] dark:hover:border-[#FF6B00] text-[#1A1A1A] dark:text-white text-sm font-bold rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2">
+                      <button onClick={(e) => { e.stopPropagation(); openCourseTopics(continueCourse); }} className="w-full py-3 bg-white dark:bg-[#242424] border border-[#E5E5E5] dark:border-gray-700 hover:border-[#FF6B00] dark:hover:border-[#FF6B00] text-[#1A1A1A] dark:text-white text-sm font-bold rounded-[14px] transition-all shadow-sm flex items-center justify-center gap-2">
                         Resume course →
                       </button>
                     </div>

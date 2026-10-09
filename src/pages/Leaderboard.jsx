@@ -182,7 +182,7 @@ const getRankTrend = (currentRank, previousRank) => {
                         <div className="w-px h-6 bg-gray-700"></div>
                         <div className="text-center"><p className="text-[8px] text-gray-400 font-black uppercase tracking-widest mb-1">Points</p><p className="text-xl font-black text-[#FF6B00] leading-none">{formatPoints(currentUser?.points)}</p></div>
                     </div>
-                    <button onClick={() => startPractice(null, 'ranked')} className="w-full mt-1 py-2.5 bg-[#FF6B00] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#e05d00] transition-colors shadow-lg shadow-[#FF6B00]/20 flex items-center justify-center gap-1.5">
+                    <button onClick={() => startPractice(null, 'ranked')} className="w-full mt-1 py-2.5 bg-[#FF6B00] text-white text-[10px] font-black uppercase tracking-widest rounded-[14px] hover:bg-[#e05d00] transition-colors shadow-lg shadow-[#FF6B00]/20 flex items-center justify-center gap-1.5">
                         Take a ranked test →
                     </button>
                 </div>

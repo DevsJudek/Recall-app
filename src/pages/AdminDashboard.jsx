@@ -316,7 +316,7 @@ export default function AdminDashboard({ goBack }) {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={fetchAllData}
-                        className="px-4 py-2 bg-white border border-[#E5E5E5] rounded-xl text-xs font-bold shadow-sm hover:border-[#FF6B00] transition-colors flex items-center gap-2 cursor-pointer"
+                        className="px-4 py-2 bg-white border border-[#E5E5E5] rounded-[14px] text-xs font-bold shadow-sm hover:border-[#FF6B00] transition-colors flex items-center gap-2 cursor-pointer"
                     >
                         <span>🔄</span> Refresh Database
                     </button>
@@ -394,13 +394,13 @@ export default function AdminDashboard({ goBack }) {
                                     <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
                                         <button
                                             onClick={expandAllOverview}
-                                            className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl text-[11px] font-bold hover:bg-gray-100 transition-colors cursor-pointer"
+                                            className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 text-gray-700 rounded-[14px] text-[11px] font-bold hover:bg-gray-100 transition-colors cursor-pointer"
                                         >
                                             Expand All
                                         </button>
                                         <button
                                             onClick={collapseAllOverview}
-                                            className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl text-[11px] font-bold hover:bg-gray-100 transition-colors cursor-pointer"
+                                            className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 text-gray-700 rounded-[14px] text-[11px] font-bold hover:bg-gray-100 transition-colors cursor-pointer"
                                         >
                                             Collapse All
                                         </button>
@@ -545,7 +545,7 @@ export default function AdminDashboard({ goBack }) {
                                                                         <div className="shrink-0 self-end sm:self-center">
                                                                             <button
                                                                                 onClick={() => openTopicInspector(topic.name, course)}
-                                                                                className="px-2.5 py-1.5 bg-white border border-gray-200 text-[#1A1A1A] hover:text-[#FF6B00] hover:border-[#FF6B00] rounded-lg text-[10px] font-black shadow-xs transition-colors cursor-pointer"
+                                                                                className="px-2.5 py-1.5 bg-white border border-gray-200 text-[#1A1A1A] hover:text-[#FF6B00] hover:border-[#FF6B00] rounded-[14px] text-[10px] font-black shadow-xs transition-colors cursor-pointer"
                                                                             >
                                                                                 Inspect →
                                                                             </button>
@@ -866,7 +866,7 @@ export default function AdminDashboard({ goBack }) {
                                                             <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
                                                                 <button
                                                                     onClick={() => openTopicInspector(topic.name, selectedCourse)}
-                                                                    className="px-3.5 py-2 bg-white border border-[#E5E5E5] text-[#1A1A1A] hover:border-[#FF6B00] hover:text-[#FF6B00] rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                                                                    className="px-3.5 py-2 bg-white border border-[#E5E5E5] text-[#1A1A1A] hover:border-[#FF6B00] hover:text-[#FF6B00] rounded-[14px] text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
                                                                 >
                                                                     <span>Inspect Content</span>
                                                                     <span>→</span>
@@ -914,13 +914,13 @@ export default function AdminDashboard({ goBack }) {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={expandAllCourses}
-                                                className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-xl text-xs font-bold hover:border-gray-400 transition-colors cursor-pointer"
+                                                className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-[14px] text-xs font-bold hover:border-gray-400 transition-colors cursor-pointer"
                                             >
                                                 Expand All
                                             </button>
                                             <button
                                                 onClick={collapseAllCourses}
-                                                className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-xl text-xs font-bold hover:border-gray-400 transition-colors cursor-pointer"
+                                                className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-[14px] text-xs font-bold hover:border-gray-400 transition-colors cursor-pointer"
                                             >
                                                 Collapse All
                                             </button>
@@ -1009,7 +1009,7 @@ export default function AdminDashboard({ goBack }) {
                                                                                     e.stopPropagation();
                                                                                     openTopicInspector(topic.name, course);
                                                                                 }}
-                                                                                className="px-2.5 py-1 bg-[#FFF9F5] border border-[#FFD5C2] text-[#FF6B00] rounded-lg text-[10px] font-black hover:bg-[#FF6B00] hover:text-white transition-colors cursor-pointer"
+                                                                                className="px-2.5 py-1 bg-[#FFF9F5] border border-[#FFD5C2] text-[#FF6B00] rounded-[14px] text-[10px] font-black hover:bg-[#FF6B00] hover:text-white transition-colors cursor-pointer"
                                                                             >
                                                                                 View
                                                                             </button>
@@ -1201,7 +1201,7 @@ export default function AdminDashboard({ goBack }) {
                         <div className="p-4 border-t border-gray-100 bg-[#F8F9FA] flex justify-end">
                             <button
                                 onClick={closeTopicInspector}
-                                className="px-5 py-2 bg-[#1A1A1A] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors cursor-pointer"
+                                className="px-5 py-2 bg-[#1A1A1A] text-white rounded-[14px] text-xs font-bold hover:bg-black transition-colors cursor-pointer"
                             >
                                 Close Inspector
                             </button>
