@@ -42,9 +42,22 @@ export function SearchableDropdown({ options, value, onChange, placeholder, inpu
                 placeholder={placeholder || "Search..."}
                 className={inputClassName}
             />
-            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
+            <div 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-[#FF6B00] transition-colors p-2 flex items-center justify-center z-10"
+                  onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (isOpen) {
+                          setIsOpen(false);
+                          setSearch('');
+                      } else {
+                          setSearch('');
+                          setIsOpen(true);
+                      }
+                  }}
+              >
+                  <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
             {isOpen && (
                 <div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-gray-800 rounded-xl shadow-lg max-h-64 overflow-y-auto">
                     {filtered.length > 0 ? filtered.map((opt, i) => (
