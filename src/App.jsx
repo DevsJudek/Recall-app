@@ -231,9 +231,9 @@ function AppContent() {
           type = 'Core'; semester = '1st Semester';
         } else if (['BUL 304', 'PUL 304', 'JPL 304'].includes(code)) {
           type = 'Core'; semester = '2nd Semester';
-        } else if (['PHL 319', 'PUB 301'].includes(code)) {
+        } else if (['PHL 319', 'PUB 301', 'SOC 201'].includes(code)) {
           type = 'Restricted'; semester = '1st Semester';
-        } else if (['PHL 320', 'PUB 302'].includes(code)) {
+        } else if (['PHL 320', 'PUB 302', 'SOC 202'].includes(code)) {
           type = 'Restricted'; semester = '2nd Semester';
         } else if (['SEL 001', 'SEH 301'].includes(code)) {
           type = 'Special Elective'; semester = '1st Semester';
