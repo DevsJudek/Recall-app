@@ -421,7 +421,7 @@ export default function LandingPage({ onLoginClick }) {
           </section>
 
           {/* FAQ SECTION */}
-        <section className="max-w-3xl mx-auto space-y-6">
+        <section className="max-w-5xl mx-auto mt-32 mb-16 space-y-6">
           <FadeIn>
             <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-12 text-gray-900 dark:text-white">Frequently asked questions.</h2>
           </FadeIn>
