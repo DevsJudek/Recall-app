@@ -158,12 +158,12 @@ export default function LandingPage({ onLoginClick }) {
       
       {/* HEADER */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled ? 'bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-200 dark:border-white/5' : 'bg-transparent'}`}>
-        <div className="flex justify-between items-center py-4 px-6 md:px-12 max-w-[1400px] mx-auto opacity-0 animate-hero-arrive">
+        <div className="flex justify-between items-center py-4 px-6 md:px-12 max-w-[1200px] mx-auto opacity-0 animate-hero-arrive relative">
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
             Recall
           </div>
-          <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-600 dark:text-gray-300">
+          <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-600 dark:text-gray-300 absolute left-1/2 -translate-x-1/2">
             <a href="#features" className="hover:text-black dark:hover:text-white transition-colors">Features</a>
             <a href="#courses" className="hover:text-black dark:hover:text-white transition-colors">Courses</a>
             <a href="#pricing" className="hover:text-black dark:hover:text-white transition-colors">Pricing</a>
