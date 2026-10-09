@@ -401,12 +401,12 @@ export default function LandingPage({ onLoginClick }) {
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                     {[
-                      ['Access to Library', 'Limited', 'Unlimited'],
+                      ['Access to Library', 'Unlimited', 'Unlimited'],
                       ['Daily Ranked Tests', '3 / day', 'Unlimited'],
-                      ['High yield summaries', 'Limited', 'Full Access'],
+                      ['Course notes', 'Limited', 'Full Access'],
                       ['Global Leaderboard', 'Included', 'Included'],
                       ['Performance Analytics', 'Basic', 'Advanced'],
-                      ['Offline Mode', 'No', 'Yes']
+                      ['Atlas AI Tutor', 'No', 'Yes']
                     ].map(([label, free, plus], i) => (
                       <tr key={i} className="hover:bg-white dark:hover:bg-[#141414] transition-colors">
                         <td className="p-4 pl-8 py-5 font-medium text-gray-800 dark:text-gray-200">{label}</td>
