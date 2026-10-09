@@ -225,7 +225,7 @@ export default function LandingPage({ onLoginClick }) {
                       <div className="flex -space-x-2 mr-1">
                         <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
                         <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
+                        <img src="https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&w=100&h=100&q=80" alt="Student" className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0a0a0a] object-cover" />
                       </div>
                       <span className="font-bold text-gray-900 dark:text-white">{stats.students.toLocaleString()}</span> Students
                     </div>
