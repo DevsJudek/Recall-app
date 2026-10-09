@@ -254,19 +254,19 @@ export default function LandingPage({ onLoginClick }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <FadeIn delay={0}>
-              <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><DocumentIcon /></div>
-              <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Study</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Read through high yield summaries that cut out the noise and focus strictly on what is tested.</p>
+              <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><DocumentIcon /></div>
+              <h3 className="text-[22px] font-semibold tracking-[-0.01em] mb-3 text-gray-900 dark:text-white">Study</h3>
+              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Read through high yield summaries that cut out the noise and focus strictly on what is tested.</p>
             </FadeIn>
             <FadeIn delay={150}>
-              <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><ZapIcon /></div>
-              <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Practice</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Take timed quizzes that simulate the real exam environment and adapt to your knowledge gaps.</p>
+              <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><ZapIcon /></div>
+              <h3 className="text-[22px] font-semibold tracking-[-0.01em] mb-3 text-gray-900 dark:text-white">Practice</h3>
+              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Take timed quizzes that simulate the real exam environment and adapt to your knowledge gaps.</p>
             </FadeIn>
             <FadeIn delay={300}>
-              <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><TrophyIcon /></div>
-              <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Compete</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Climb the ranks on the localized leaderboard and secure your bragging rights.</p>
+              <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><TrophyIcon /></div>
+              <h3 className="text-[22px] font-semibold tracking-[-0.01em] mb-3 text-gray-900 dark:text-white">Compete</h3>
+              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Climb the ranks on the localized leaderboard and secure your bragging rights.</p>
             </FadeIn>
           </div>
 
