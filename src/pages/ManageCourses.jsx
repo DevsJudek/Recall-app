@@ -345,7 +345,7 @@ export default function ManageCourses({ allCourses = [], enrolledCourses = [], s
                 )}
             </div>
 
-            <div className="fixed bottom-[92px] md:bottom-8 left-0 right-0 z-50 pointer-events-none px-4 flex justify-center pb-safe">
+            <div className="fixed bottom-[92px] md:bottom-8 left-0 md:left-64 right-0 z-50 pointer-events-none px-4 flex justify-center pb-safe">
                 <div className="bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-md rounded-[20px] shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] p-2 pl-6 flex justify-between items-center w-full max-w-[420px] pointer-events-auto border border-[#E5E5E5] dark:border-gray-800 transition-all">
                     <div>
                         <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-0.5">Enrolling</span>
