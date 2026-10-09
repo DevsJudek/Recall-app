@@ -163,18 +163,7 @@ export default function AdminDashboard({ goBack }) {
                 const levelA = a.level || '999';
                 const levelB = b.level || '999';
                 if (levelA !== levelB) return levelA.localeCompare(levelB);
-                const groupedProfiles = useMemo(() => {
-        return profiles.reduce((acc, user) => {
-            let rawCampus = user.campus || 'Unknown School';
-            if (rawCampus.toLowerCase().includes('oau') || rawCampus.toLowerCase().includes('obafemi')) {
-                rawCampus = 'Obafemi Awolowo University (OAU)';
-            }
-            const group = `${rawCampus} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
-            if (!acc[group]) acc[group] = [];
-            acc[group].push(user);
-            return acc;
-        }, {});
-    }, [profiles]);
+                return (a.code || '').localeCompare(b.code || '');
 
     return (a.code || '').localeCompare(b.code || '');
             });
@@ -308,6 +297,19 @@ export default function AdminDashboard({ goBack }) {
             (r.topic || '').trim() === inspectingTopic.trim()
         );
     }, [inspectingTopic, inspectingCourse, readings]);
+    const groupedProfiles = useMemo(() => {
+        return profiles.reduce((acc, user) => {
+            let rawCampus = user.campus || 'Unknown School';
+            if (rawCampus.toLowerCase().includes('oau') || rawCampus.toLowerCase().includes('obafemi')) {
+                rawCampus = 'Obafemi Awolowo University (OAU)';
+            }
+            const group = `${rawCampus} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
+            if (!acc[group]) acc[group] = [];
+            acc[group].push(user);
+            return acc;
+        }, {});
+    }, [profiles]);
+
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8 animate-fade-in font-sans pb-32">
