@@ -102,7 +102,7 @@ export default function LandingPage({ onLoginClick }) {
               Your ultimate study companion. Access high-yield summaries, practice with exam-style quizzes, and compete on the leaderboard to secure that A.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
-              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,107,0,0.2)]">
+              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg">
                 Start studying for free <ArrowUpRight />
               </button>
             </div>
@@ -113,18 +113,18 @@ export default function LandingPage({ onLoginClick }) {
              
              
              {/* Left Phone */}
-             <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 drop-shadow-2xl z-10">
-               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
+             <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700  z-10">
+               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto object-contain " />
              </div>
 
              {/* Center Phone */}
              <div className="absolute left-1/2 -translate-x-1/2 top-0 w-44 sm:w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30">
-               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(255,107,0,0.3)]" />
+               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain " />
              </div>
 
              {/* Right Phone */}
-             <div className="absolute right-[-20px] sm:right-0 md:right-[10%] top-16 md:top-24 w-32 sm:w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 drop-shadow-2xl z-20">
-               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
+             <div className="absolute right-[-20px] sm:right-0 md:right-[10%] top-16 md:top-24 w-32 sm:w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700  z-20">
+               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain " />
              </div>
           </div>
         </section>
@@ -144,7 +144,7 @@ export default function LandingPage({ onLoginClick }) {
                   onClick={() => setActiveFeature(idx)}
                   className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
                     activeFeature === idx 
-                      ? 'bg-[#1A1412] border-[#FF6B00]/40 shadow-[0_0_20px_rgba(255,107,0,0.1)]' 
+                      ? 'bg-[#1A1412] border-[#FF6B00]/40 shadow-md' 
                       : 'bg-transparent border-transparent hover:border-gray-800 hover:bg-white/5'
                   }`}
                 >
@@ -173,7 +173,7 @@ export default function LandingPage({ onLoginClick }) {
                    key={idx}
                    src={feature.img} 
                    alt={feature.title} 
-                   className={`absolute top-0 left-0 w-full h-full object-contain drop-shadow-2xl transition-all duration-700 ${
+                   className={`absolute top-0 left-0 w-full h-full object-contain  transition-all duration-700 ${
                      activeFeature === idx ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 translate-y-8 z-0 pointer-events-none'
                    }`} 
                  />
@@ -242,14 +242,14 @@ export default function LandingPage({ onLoginClick }) {
                 <p className="text-gray-400 text-lg leading-relaxed mb-10">
                   Study on the go. Whether you're commuting, waiting for a lecture, or relaxing at home, your entire curriculum is right in your pocket. Track your daily streaks and never miss a day of learning.
                 </p>
-                <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,107,0,0.2)] w-max">
+                <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg w-max">
                   Create your profile <ArrowUpRight />
                 </button>
              </div>
              
              <div className="flex-1 w-full flex justify-center items-center relative">
                 <div className="relative w-full max-w-[450px]">
-                  <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full h-auto object-contain drop-shadow-2xl transform md:rotate-[-5deg]" />
+                  <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full h-auto object-contain  transform md:rotate-[-5deg]" />
                   <div className="absolute bottom-[-10px] left-[-20px] right-[-20px] h-48 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pointer-events-none transform md:rotate-[-5deg]"></div>
                 </div>
              </div>
@@ -334,7 +334,7 @@ export default function LandingPage({ onLoginClick }) {
           <p className="text-gray-400 text-lg mb-10 max-w-sm">
             Join thousands of students crushing their exams with Recall.
           </p>
-          <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-[0_0_30px_rgba(255,107,0,0.2)] w-max">
+          <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-lg w-max">
             Get Started <ArrowUpRight />
           </button>
         </section>
