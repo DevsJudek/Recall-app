@@ -204,10 +204,10 @@ export default function LandingPage({ onLoginClick }) {
             </FadeIn>
             <FadeIn delay={400}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg">
+              <button onClick={onLoginClick} className="w-full sm:w-max flex items-center justify-center gap-2 bg-[#FF6B00] text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-[#E56000] transition-colors shadow-sm">
                 Start studying for free <ArrowUpRight />
               </button>
-              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-transparent text-[#FF6B00] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#FF6B00]/10 transition-colors shadow-sm">
+              <button onClick={onLoginClick} className="w-full sm:w-max flex items-center justify-center gap-2 bg-transparent text-gray-700 dark:text-gray-300 px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
                 Explore the library
               </button>
             </div>
@@ -261,7 +261,7 @@ export default function LandingPage({ onLoginClick }) {
           </FadeIn>
 
           <FadeIn delay={400}>
-            <button onClick={onLoginClick} className="flex items-center gap-2 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-[16px] font-medium text-[15px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors mt-8">
+            <button onClick={onLoginClick} className="flex items-center gap-2 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors mt-8 w-max">
               Explore 100 topics <ArrowUpRight size={18} />
             </button>
           </FadeIn>
@@ -305,7 +305,7 @@ export default function LandingPage({ onLoginClick }) {
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
                     Forgot a handout or past question? No problem. Your entire curriculum—from foundational courses to advanced postgraduate materials—is perfectly organized right in your pocket. Track your streaks, hit your target, and never study blindly again.
                   </p>
-                  <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg w-max">
+                  <button onClick={onLoginClick} className="w-max flex items-center justify-center gap-2 bg-[#FF6B00] text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-[#E56000] transition-colors shadow-sm">
                     Create your profile <ArrowUpRight />
                   </button>
                 </FadeIn>
@@ -459,7 +459,7 @@ export default function LandingPage({ onLoginClick }) {
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-10 max-w-sm">
               Join thousands of applicants, students, and professionals dominating their exams with the right materials. Create your account and build your first streak.
             </p>
-            <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#E56000] transition-colors shadow-lg w-max border border-gray-200 dark:border-none">
+            <button onClick={onLoginClick} className="w-max flex items-center justify-center gap-2 bg-[#FF6B00] text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-[#E56000] transition-colors shadow-sm">
               Get Started <ArrowUpRight />
             </button>
           </FadeIn>
