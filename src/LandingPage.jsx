@@ -88,7 +88,7 @@ const FadeIn = ({ children, delay = 0, className = "", threshold = 0.1 }) => {
 export default function LandingPage({ onLoginClick }) {
   const [scrolled, setScrolled] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -182,18 +182,18 @@ export default function LandingPage({ onLoginClick }) {
           <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
              
              {/* Left Phone */}
-             <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-10 animate-float-breathe-delayed">
-               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto object-contain" />
+             <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-10">
+               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto object-contain animate-float-breathe-delayed" />
              </div>
 
              {/* Center Phone */}
-             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-44 sm:w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30 animate-float-breathe">
-               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain" />
+             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-44 sm:w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30">
+               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain animate-float-breathe" />
              </div>
 
              {/* Right Phone */}
-             <div className="absolute right-[-20px] sm:right-0 md:right-[10%] top-16 md:top-24 w-32 sm:w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-20 animate-float-breathe-slow">
-               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain" />
+             <div className="absolute right-[-20px] sm:right-0 md:right-[10%] top-16 md:top-24 w-32 sm:w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-20">
+               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain animate-float-breathe-slow" />
              </div>
           </div>
         </section>
