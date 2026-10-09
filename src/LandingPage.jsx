@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { CardSpotlight } from "./components/ui/card-spotlight";
+import { TextGenerateEffect } from "./components/ui/text-generate-effect";
 import { supabase } from './supabase';
 
 const ArrowUpRight = () => (
