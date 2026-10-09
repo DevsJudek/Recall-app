@@ -580,23 +580,26 @@ export default function AdminDashboard({ goBack }) {
                     {/* ================= PROFILES TAB ================= */}
                     {activeTab === 'profiles' && (
                         <div className="bg-white border border-[#E5E5E5] rounded-[32px] p-6 shadow-sm overflow-hidden">
-                            <div className="flex items-center justify-between mb-6 px-2">
+                            <div className="flex items-center justify-between mb-4 px-2">
                                 <div>
                                     <h2 className="text-xl font-black text-[#1A1A1A]">User Database</h2>
                                     <p className="text-xs text-gray-400 font-medium">{profiles.length} registered students</p>
                                 </div>
                             </div>
+                            
+                            {/* OVERVIEW PILLS */}
+                            <div className="flex flex-wrap gap-2 px-2 mb-8">
+                                {Object.entries(groupedProfiles).sort((a, b) => b[1].length - a[1].length).map(([groupName, users]) => (
+                                    <div key={groupName} className="flex items-center bg-[#F8F9FA] border border-[#E5E5E5] rounded-full px-3 py-1.5 shadow-sm">
+                                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mr-2">{groupName}</span>
+                                        <span className="text-[10px] font-black text-[#FF6B00] bg-[#FFF5F0] px-2 py-0.5 rounded-full border border-[#FFD5C2]">
+                                            {users.length} {users.length === 1 ? 'Student' : 'Students'}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
                             <div className="space-y-3">
-                                {Object.entries(profiles.reduce((acc, user) => {
-                                    let rawCampus = user.campus || 'Unknown School';
-                                      if (rawCampus.toLowerCase().includes('oau') || rawCampus.toLowerCase().includes('obafemi')) {
-                                          rawCampus = 'Obafemi Awolowo University (OAU)';
-                                      }
-                                      const group = `${rawCampus} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
-                                    if (!acc[group]) acc[group] = [];
-                                    acc[group].push(user);
-                                    return acc;
-                                }, {})).map(([groupName, usersInGroup]) => (
+                                {Object.entries(groupedProfiles).map(([groupName, usersInGroup]) => (
                                     <div key={groupName} className="mb-8">
                                         <h3 className="text-sm font-black text-[#FF6B00] uppercase tracking-widest mb-4 bg-[#FFF5F0] inline-block px-3 py-1.5 rounded-lg border border-[#FFD5C2]">
                                             {groupName} <span className="text-[#1A1A1A] ml-2">({usersInGroup.length} Students)</span>
