@@ -132,13 +132,13 @@ export default function Profile({
                 <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Active</div>
               </div>
               <div className="relative z-20 flex-1">
-                <h3 className="text-2xl font-black tracking-tight text-white mb-2 flex items-center gap-2">Super Recall <span className="text-[8px] font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-1.5 py-0 rounded-md uppercase leading-[1.2] flex items-center h-fit">BETA</span></h3>
+                <h3 className="text-2xl font-black tracking-tight text-white mb-2 flex items-center gap-2">Super Recall <span className="text-[8px] font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-1.5 py-[2px] rounded-md uppercase leading-none flex items-center h-fit">BETA</span></h3>
                 <p className="text-sm font-medium text-gray-400">
                   You have full access to unlimited practice and explanations.
                 </p>
               </div>
               <button className="w-fit mt-2 px-6 py-3 bg-[#FF6B00] hover:bg-[#E05D00] text-white font-bold text-sm rounded-[14px] transition-colors shadow-sm relative z-20">
-                Manage Sub
+                Manage
               </button>
             </div>
           </div>
