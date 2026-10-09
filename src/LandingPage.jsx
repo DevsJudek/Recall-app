@@ -247,14 +247,13 @@ export default function LandingPage({ onLoginClick }) {
           <FadeIn delay={200}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-[24px] overflow-hidden mt-8">
               {['Commercial Law', 'Criminal Law', 'Law of Torts', 'Anatomy', 'Physiology', 'GST 101'].map((topic, idx) => (
-                <div key={topic} onClick={onLoginClick} className="group flex justify-between items-center p-6 md:p-8 bg-[#f8f9fa] dark:bg-[#0a0a0a] hover:bg-white dark:hover:bg-[#141414] transition-colors cursor-pointer">
+                <div key={topic} className="flex items-center p-6 md:p-8 bg-[#f8f9fa] dark:bg-[#0a0a0a]">
                   <div className="flex items-center gap-4">
-                    <div className="text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    <div className="text-gray-400">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="10" x2="15" y2="10"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
                     </div>
-                    <span className="font-medium text-[17px] text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors">{topic}</span>
+                    <span className="font-medium text-[17px] text-gray-900 dark:text-gray-100">{topic}</span>
                   </div>
-                  <ArrowUpRight size={20} className="text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" />
                 </div>
               ))}
             </div>
