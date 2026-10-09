@@ -588,14 +588,14 @@ export default function AdminDashboard({ goBack }) {
                             </div>
                             <div className="space-y-3">
                                 {Object.entries(profiles.reduce((acc, user) => {
-                                    const group = `${user.level || 'Unknown'} ${user.department || 'Unknown'}`;
+                                    const group = `${user.campus || 'Unknown School'} • ${user.department || 'Unknown Dept'} • ${user.level || 'Unknown Class'}`;
                                     if (!acc[group]) acc[group] = [];
                                     acc[group].push(user);
                                     return acc;
                                 }, {})).map(([groupName, usersInGroup]) => (
                                     <div key={groupName} className="mb-8">
                                         <h3 className="text-sm font-black text-[#FF6B00] uppercase tracking-widest mb-4 bg-[#FFF5F0] inline-block px-3 py-1.5 rounded-lg border border-[#FFD5C2]">
-                                            {groupName} <span className="text-[#1A1A1A] ml-2">{usersInGroup.length}</span>
+                                            {groupName} <span className="text-[#1A1A1A] ml-2">({usersInGroup.length} Students)</span>
                                         </h3>
                                         <div className="space-y-3">
                                             {usersInGroup.map((user, idx) => (
