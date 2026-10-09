@@ -160,9 +160,9 @@ export default function LandingPage({ onLoginClick }) {
         
         {/* HERO SECTION */}
         <section className="flex flex-col items-center text-center mt-8">
-          <div className="opacity-0 animate-center-arrive max-w-4xl" style={{ animationDelay: '0.1s' }}>
+          <FadeIn delay={100} className="max-w-4xl">
             <p className="text-sm font-semibold tracking-wider text-[#FF6B00] uppercase mb-6">Interactive Study & Quiz Platform</p>
-            <h1 className="text-[48px] md:text-[80px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
+            <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
               Read exactly what will drop.<br />Avoid premium tears.
             </h1>
             <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
@@ -176,7 +176,7 @@ export default function LandingPage({ onLoginClick }) {
                 Explore the library
               </button>
             </div>
-          </div>
+          </FadeIn>
 
           {/* Hero Mockup Composition */}
           <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
