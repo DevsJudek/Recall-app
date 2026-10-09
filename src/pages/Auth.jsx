@@ -45,7 +45,7 @@ export default function Auth() {
                 // 🚀 FORGOT PASSWORD LOGIC
                 if (!email) throw new Error('Please enter your email address.');
                 const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin,
+                    redirectTo: window.location.origin + "/app.html",
                 });
                 if (error) throw error;
                 setMessage('Password reset link sent! Please check your email.');
@@ -82,7 +82,7 @@ export default function Auth() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin
+                redirectTo: window.location.origin + "/app.html"
             }
         });
 
