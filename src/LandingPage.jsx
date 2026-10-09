@@ -72,11 +72,7 @@ export default function LandingPage({ onLoginClick }) {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
         <div className="flex justify-between items-center py-4 px-6 md:px-12 max-w-[1400px] mx-auto opacity-0 animate-hero-arrive">
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight">
-            <svg viewBox="0 0 32 32" className="w-6 h-6 text-[#FF6B00]" fill="currentColor">
-              <path d="M6 13a7 7 0 0 1 7-7h7a6 6 0 0 1 6 6v7a7 7 0 0 1-7 7H6l4-6H6z"></path>
-              <circle cx="14" cy="14" r="2" fill="#FFF2EC"></circle>
-              <circle cx="21" cy="14" r="2" fill="#FFF2EC"></circle>
-            </svg>
+            <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
             recall
           </div>
           <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-300">
@@ -113,28 +109,28 @@ export default function LandingPage({ onLoginClick }) {
           </div>
 
           {/* Hero Mockup Composition */}
-          <div className="relative w-full max-w-5xl h-[600px] opacity-0 animate-world-arrive mt-12 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
-             <div className="absolute inset-0 bg-gradient-to-b from-[#FF6B00]/10 to-transparent rounded-full blur-3xl opacity-50 -top-32"></div>
+          <div className="relative w-full max-w-5xl h-[500px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
+             <div className="absolute inset-0 bg-gradient-to-b from-[#FF6B00]/10 to-transparent rounded-full blur-3xl opacity-50 -top-32 pointer-events-none"></div>
              
              {/* Left Phone */}
-             <div className="absolute left-[10%] top-12 w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 shadow-2xl z-10 hidden md:block">
-               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto rounded-[2rem] border-[6px] border-[#1A1412] shadow-[0_20px_50px_rgba(0,0,0,0.5)]" />
+             <div className="absolute left-0 md:left-[10%] top-12 w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 drop-shadow-2xl z-10 hidden sm:block">
+               <img src="/mockups/courses.png" alt="Courses" className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
              </div>
 
              {/* Center Phone */}
-             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[300px] md:w-80 transform hover:-translate-y-6 transition-transform duration-700 shadow-[0_30px_60px_rgba(255,107,0,0.2)] z-30">
-               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto rounded-[2.5rem] border-[8px] border-[#1A1412] bg-[#0a0a0a]" />
+             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30">
+               <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(255,107,0,0.3)]" />
              </div>
 
              {/* Right Phone */}
-             <div className="absolute right-[10%] top-24 w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 shadow-2xl z-20 hidden md:block">
-               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto rounded-[2rem] border-[6px] border-[#1A1412] shadow-[0_20px_50px_rgba(0,0,0,0.5)]" />
+             <div className="absolute right-0 md:right-[10%] top-24 w-48 md:w-64 transform rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 drop-shadow-2xl z-20 hidden sm:block">
+               <img src="/mockups/leaderboard.png" alt="Leaderboard" className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
              </div>
           </div>
         </section>
 
         {/* FEATURES INTERACTIVE SECTION */}
-        <section id="features" className="flex flex-col xl:flex-row gap-16 items-center pt-24">
+        <section id="features" className="flex flex-col xl:flex-row gap-16 items-center pt-24 mt-24">
           <div className="flex-1 max-w-xl">
             <p className="text-sm font-semibold text-gray-400 uppercase mb-4 flex items-center gap-2">
               <ZapIcon /> Built for better recall
@@ -168,17 +164,16 @@ export default function LandingPage({ onLoginClick }) {
             </div>
           </div>
           
-          <div className="flex-1 w-full relative flex justify-center items-center h-[700px]">
-             {/* Mockup Display Container */}
-             <div className="relative w-[320px] h-auto">
-               <div className="absolute inset-0 bg-[#FF6B00]/20 blur-[100px] rounded-full scale-110"></div>
+          <div className="flex-1 w-full flex justify-center items-center h-[500px] md:h-[700px]">
+             <div className="relative w-64 md:w-80 h-full flex items-center justify-center">
+               <div className="absolute inset-0 bg-[#FF6B00]/20 blur-[100px] rounded-full scale-110 pointer-events-none"></div>
                {features.map((feature, idx) => (
                  <img 
                    key={idx}
                    src={feature.img} 
                    alt={feature.title} 
-                   className={`absolute top-0 left-0 w-full h-auto rounded-[2.5rem] border-[8px] border-[#1A1412] shadow-2xl transition-all duration-700 ${
-                     activeFeature === idx ? 'opacity-100 scale-100 translate-y-0 z-20' : 'opacity-0 scale-95 translate-y-8 z-0'
+                   className={`absolute top-1/2 -translate-y-1/2 left-0 w-full h-auto object-contain drop-shadow-2xl transition-all duration-700 ${
+                     activeFeature === idx ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 translate-y-8 z-0 pointer-events-none'
                    }`} 
                  />
                ))}
@@ -239,26 +234,26 @@ export default function LandingPage({ onLoginClick }) {
             </div>
           </div>
 
-          <div className="bg-[#120d0a] border border-[#2a1a10] rounded-[40px] p-0 flex flex-col xl:flex-row items-center overflow-hidden relative">
-             <div className="flex-1 p-12 md:p-16 z-10">
-                <h2 className="text-[40px] md:text-[48px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em]">Your pocket<br/>study companion.</h2>
-                <p className="text-gray-400 text-lg leading-relaxed max-w-md mb-8">
+          {/* Pocket Companion (No Background) */}
+          <div className="flex flex-col xl:flex-row items-center justify-between gap-16 mt-32 relative">
+             <div className="flex-1 z-10 max-w-xl">
+                <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em]">Your pocket<br/>study companion.</h2>
+                <p className="text-gray-400 text-lg leading-relaxed mb-10">
                   Study on the go. Whether you're commuting, waiting for a lecture, or relaxing at home, your entire curriculum is right in your pocket. Track your daily streaks and never miss a day of learning.
                 </p>
-                <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-white transition-colors w-max shadow-[0_0_20px_rgba(255,107,0,0.2)]">
+                <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,107,0,0.2)] w-max">
                   Create your profile <ArrowUpRight />
                 </button>
              </div>
              
-             <div className="flex-[1.2] relative w-full h-[500px] xl:h-[600px] flex justify-end xl:justify-center items-end mt-12 xl:mt-0 xl:-mr-20">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#120d0a] via-transparent to-transparent z-10"></div>
-                <img src="/mockups/profile.png" alt="Recall App on Mobile" className="h-[120%] object-cover object-left-top max-w-none transform translate-y-[10%] translate-x-[10%] rotate-[-5deg]" />
+             <div className="flex-1 w-full flex justify-center items-center">
+                <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full max-w-[450px] h-auto object-contain drop-shadow-2xl transform md:rotate-[-5deg]" />
              </div>
           </div>
         </section>
 
         {/* PRICING TABLE */}
-        <section id="pricing" className="mt-32 max-w-4xl mx-auto">
+        <section id="pricing" className="mt-40 max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6">Start free.<br/>Unlock Plus.</h2>
             <p className="text-gray-400 text-lg">Master your courses for free, or get Plus for unlimited practice.</p>
@@ -302,10 +297,32 @@ export default function LandingPage({ onLoginClick }) {
           </div>
         </section>
 
+        {/* FAQ SECTION */}
+        <section className="mt-32 max-w-3xl mx-auto space-y-6">
+          <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-12">Frequently asked questions.</h2>
+          <div className="divide-y divide-gray-800 border-y border-gray-800">
+            {[
+              ['What is Recall?', 'Recall is an interactive study platform designed specifically for university students. It provides high-yield notes, exam-style quizzes, and a global leaderboard to help you prepare effectively.'],
+              ['Is Recall free to use?', 'Yes! You can sign up and access a limited set of daily quizzes and notes for free. For unlimited access to all courses, analytics, and offline mode, you can upgrade to Recall Plus.'],
+              ['How do the ranked tests work?', 'Ranked tests simulate real exam conditions under time pressure. Your performance earns you points, which determines your position on the weekly global leaderboard.'],
+              ['Can I use Recall offline?', 'Offline access is available for Recall Plus members. You can download courses and quizzes to your device and sync your progress when you reconnect to the internet.'],
+              ['What courses are available?', 'We currently support a wide range of university-level courses including Law, Medicine, Sciences, and General Studies. We are constantly expanding our library.']
+            ].map(([q, a], i) => (
+              <details key={i} className="group py-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                <summary className="flex items-center justify-between font-bold text-lg text-gray-200 outline-none">
+                  {q}
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-45 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"></path></svg>
+                </summary>
+                <p className="mt-4 text-gray-400 leading-relaxed text-[15px]">{a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CLOSING CTA */}
         <section className="mt-40 mb-16 flex flex-col items-center text-center">
           <div className="flex items-center gap-2 font-bold text-white mb-8">
-            <svg viewBox="0 0 32 32" className="w-12 h-12 text-[#FF6B00]" fill="currentColor"><path d="M6 13a7 7 0 0 1 7-7h7a6 6 0 0 1 6 6v7a7 7 0 0 1-7 7H6l4-6H6z"></path><circle cx="14" cy="14" r="2" fill="#FFF2EC"></circle><circle cx="21" cy="14" r="2" fill="#FFF2EC"></circle></svg>
+             <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-12 h-12 object-contain" />
           </div>
           <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6">
             Ready to secure<br />that A?
@@ -324,7 +341,7 @@ export default function LandingPage({ onLoginClick }) {
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between gap-16 lg:gap-8 mb-24">
           <div className="max-w-xs">
             <div className="flex items-center gap-2 font-bold text-white text-xl mb-4">
-              <svg viewBox="0 0 32 32" className="w-6 h-6 text-[#FF6B00]" fill="currentColor"><path d="M6 13a7 7 0 0 1 7-7h7a6 6 0 0 1 6 6v7a7 7 0 0 1-7 7H6l4-6H6z"></path><circle cx="14" cy="14" r="2" fill="#FFF2EC"></circle><circle cx="21" cy="14" r="2" fill="#FFF2EC"></circle></svg>
+              <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-6 h-6 object-contain" />
               recall
             </div>
             <p className="text-gray-400 text-sm mb-6">Master your exams. Outperform the curve.</p>
