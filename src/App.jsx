@@ -897,8 +897,10 @@ function AppContent() {
 
   const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin', 'test_history'].includes(currentView)
     ? 'p-0 pb-24 md:pb-8 bg-white dark:bg-[#121212]'
-    : ['reading', 'practice_setup', 'quiz', 'share_topic', 'manage_courses'].includes(currentView)
+    : ['reading', 'quiz', 'share_topic', 'manage_courses'].includes(currentView)
       ? 'p-0 bg-white dark:bg-[#121212]'
+      : currentView === 'practice_setup'
+        ? 'p-0 bg-[#f8fafc] dark:bg-[#0a0a0a]'
       : 'p-4 pb-28 md:p-8 md:pb-8';
 
   if (publicData.isPublic) return <PublicShareView course={publicData.course} topic={publicData.topic} />;
