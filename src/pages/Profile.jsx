@@ -128,7 +128,7 @@ export default function Profile({
         </div>
             </div>
       <div className="mt-6 max-w-3xl mx-auto w-full relative">
-        <div className="relative h-full rounded-[32px] border border-[#E5E5E5] dark:border-gray-800 p-2 md:p-3">
+        <div className="relative h-full rounded-[32px] border border-[#E5E5E5] dark:border-gray-800 p-1 md:p-1.5">
           <GlowingEffect
             spread={40}
             glow={true}
@@ -136,7 +136,7 @@ export default function Profile({
             proximity={64}
             inactiveZone={0.01}
           />
-          <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[24px] bg-[#0a0a0a] p-6 md:p-8 shadow-lg">
+          <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[24px] bg-[#0a0a0a] p-5 md:p-6 shadow-lg">
             <div className="flex items-center justify-between relative z-20">
               <div className="text-[11px] font-bold tracking-[0.15em] uppercase text-gray-500">Subscription</div>
               <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Active</div>
