@@ -157,10 +157,10 @@ export default function LandingPage({ onLoginClick }) {
   ];
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden font-['Manrope',_Arial,_sans-serif] bg-[#f8f9fa] dark:bg-[#0a0a0a] text-gray-900 dark:text-[#F8FAFC] selection:bg-[#FF6B00] selection:text-white transition-colors duration-300">
+    <div className="relative min-h-screen w-full overflow-x-clip font-['Manrope',_Arial,_sans-serif] bg-[#f8f9fa] dark:bg-[#0a0a0a] text-gray-900 dark:text-[#F8FAFC] selection:bg-[#FF6B00] selection:text-white transition-colors duration-300">
       
       {/* SPOTLIGHT */}
-        <div className="hidden dark:block"><Spotlight /></div>
+        <div className="hidden dark:block absolute inset-0 overflow-hidden pointer-events-none z-0"><Spotlight /></div>
 
         {/* HEADER */}
       <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-[1100px] px-4 transition-all duration-300">
