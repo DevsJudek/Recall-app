@@ -294,7 +294,7 @@ export default function LandingPage({ onLoginClick }) {
             <FadeIn delay={300}>
               <div className="w-[52px] h-[52px] rounded-[16px] bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center mb-6"><TrophyIcon /></div>
               <h3 className="text-[22px] font-semibold tracking-[-0.01em] mb-3 text-gray-900 dark:text-white">Compete</h3>
-              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Climb the ranks on the localized leaderboard and secure your bragging rights.</p>
+              <p className="text-[15px] text-gray-600 dark:text-gray-400 leading-[1.6]">Climb the ranks on the localized leaderboard, secure bragging rights, and challenge course mates to private rooms.</p>
             </FadeIn>
           </div>
 
