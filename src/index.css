@@ -441,3 +441,26 @@
 .animate-world-link-pulse {
   animation: world-link-pulse 3s ease-in-out infinite;
 }
+
+@keyframes float-breathe {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes float-breathe-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float-breathe-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-breathe {
+  animation: float-breathe 6s ease-in-out infinite;
+}
+.animate-float-breathe-delayed {
+  animation: float-breathe-delayed 7s ease-in-out infinite 1s;
+}
+.animate-float-breathe-slow {
+  animation: float-breathe-slow 8s ease-in-out infinite 2s;
+}

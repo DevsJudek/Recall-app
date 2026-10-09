@@ -118,7 +118,7 @@ export default function LandingPage({ onLoginClick }) {
              </div>
 
              {/* Center Phone */}
-             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-44 sm:w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30">
+             <div className="absolute left-1/2 -translate-x-1/2 top-0 w-44 sm:w-64 md:w-80 transform hover:-translate-y-6 transition-transform duration-700 z-30 animate-float-breathe">
                <img src="/mockups/quiz.png" alt="Quiz" className="w-full h-auto object-contain " />
              </div>
 
@@ -248,7 +248,7 @@ export default function LandingPage({ onLoginClick }) {
              </div>
              
              <div className="flex-1 w-full flex justify-center items-center relative">
-                <div className="relative w-full max-w-[450px]">
+                <div className="relative w-full max-w-[450px] animate-float-breathe-slow">
                   <img src="/mockups/profile.png" alt="Recall App on Mobile" className="w-full h-auto object-contain  transform md:rotate-[-5deg]" />
                   <div className="absolute bottom-[-10px] left-[-20px] right-[-20px] h-48 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pointer-events-none transform md:rotate-[-5deg]"></div>
                 </div>
