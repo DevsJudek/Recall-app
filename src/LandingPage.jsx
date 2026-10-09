@@ -159,7 +159,10 @@ export default function LandingPage({ onLoginClick }) {
   return (
     <div className="min-h-screen w-full overflow-x-hidden font-['Manrope',_Arial,_sans-serif] bg-[#f8f9fa] dark:bg-[#0a0a0a] text-gray-900 dark:text-[#F8FAFC] selection:bg-[#FF6B00] selection:text-white transition-colors duration-300">
       
-      {/* HEADER */}
+      {/* SPOTLIGHT */}
+        <div className="hidden dark:block"><Spotlight /></div>
+
+        {/* HEADER */}
       <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-[1100px] px-4 transition-all duration-300">
         <div className={`flex justify-between items-center py-3 px-6 md:px-8 mx-auto opacity-0 animate-hero-arrive relative rounded-[14px] backdrop-blur-lg border transition-all duration-300 ${scrolled ? 'bg-white/70 dark:bg-black/40 border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]' : 'bg-white/40 dark:bg-black/20 border-white/20 dark:border-white/5 shadow-lg'}`}>
           <div className="flex items-center gap-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
