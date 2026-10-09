@@ -14,9 +14,9 @@ export default function Profile({
   const classRank = userRankIndex !== -1 ? `#${userRankIndex + 1}` : 'Unranked';
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 relative animate-fade-in">
+    <div className="max-w-5xl mx-auto px-4 pt-4 md:pt-8 pb-8 relative animate-fade-in">
 
-      <div className="flex justify-end gap-2 mb-4 md:absolute md:top-8 md:right-8 z-10">
+      <div className="flex justify-end gap-2 mb-2 md:mb-4 md:absolute md:top-8 md:right-8 z-10">
 
         {session?.user?.email === 'kolawolejude0@gmail.com' && (
           <button
@@ -35,7 +35,7 @@ export default function Profile({
         </button>
       </div>
 
-      <div className="flex flex-col items-center mb-12 mt-4 md:mt-0 text-center">
+      <div className="flex flex-col items-center mb-6 md:mb-8 text-center">
         <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white dark:border-[#121212] shadow-lg overflow-hidden bg-gradient-to-br from-[#FFD5C2] to-[#FF6B00] mb-4 flex items-center justify-center text-5xl font-black text-white">
           {avatarUrl ? (
             <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
@@ -132,7 +132,7 @@ export default function Profile({
                 <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Active</div>
               </div>
               <div className="relative z-20 flex-1">
-                <h3 className="text-2xl font-black tracking-tight text-white mb-2 flex items-center gap-2">Super Recall <span className="text-[8px] font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-1.5 py-0.5 rounded-md uppercase">BETA</span></h3>
+                <h3 className="text-2xl font-black tracking-tight text-white mb-2 flex items-center gap-2">Super Recall <span className="text-[8px] font-black tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/30 px-1.5 py-0 rounded-md uppercase leading-[1.2] flex items-center h-fit">BETA</span></h3>
                 <p className="text-sm font-medium text-gray-400">
                   You have full access to unlimited practice and explanations.
                 </p>
