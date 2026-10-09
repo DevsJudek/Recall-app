@@ -176,7 +176,7 @@ export default function LandingPage({ onLoginClick }) {
           </div>
 
           {/* Hero Mockup Composition */}
-          <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000 overflow-hidden md:overflow-visible" style={{ animationDelay: '0.4s' }}>
+          <div className="relative w-full max-w-5xl h-[350px] sm:h-[450px] md:h-[700px] opacity-0 animate-world-arrive mt-4 flex justify-center items-start perspective-1000" style={{ animationDelay: '0.4s' }}>
              
              {/* Left Phone */}
              <div className="absolute left-[-20px] sm:left-0 md:left-[10%] top-8 md:top-12 w-32 sm:w-48 md:w-64 transform -rotate-12 translate-y-12 hover:-translate-y-4 transition-transform duration-700 z-10 animate-float-breathe-delayed">
