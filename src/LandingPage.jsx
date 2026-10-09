@@ -200,7 +200,7 @@ export default function LandingPage({ onLoginClick }) {
             </FadeIn>
             <FadeIn delay={200}>
               <h1 className="text-[40px] md:text-[72px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
-              Read exactly what will drop.<br />Avoid premium tears.
+              Read exactly what will drop.<br />Avoid <span className="text-[#FF6B00]">premium tears</span>.
             </h1>
             </FadeIn>
             <FadeIn delay={300}>
@@ -244,7 +244,7 @@ export default function LandingPage({ onLoginClick }) {
         <section id="courses" className="space-y-12">
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-8 justify-between items-end border-b border-gray-200 dark:border-gray-800 pb-12">
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-lg text-gray-900 dark:text-white">Find courses by what you study.</h2>
+              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-lg text-gray-900 dark:text-white">Find courses by what <span className="text-[#FF6B00]">you study</span>.</h2>
               <p className="text-[18px] text-gray-600 dark:text-gray-400 max-w-sm">Law, Sciences, Arts, and General Studies. Explore hundreds of curated topics built specifically for University Applicants, Undergraduates, and Postgraduate professional exams.</p>
             </div>
           </FadeIn>
@@ -252,7 +252,7 @@ export default function LandingPage({ onLoginClick }) {
           
           <FadeIn delay={200}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-[24px] overflow-hidden mt-8">
-              {['Commercial Law', 'Criminal Law', 'Law of Torts', 'Anatomy', 'Physiology', 'GST 101'].map((topic, idx) => (
+              {['Commercial Law', 'Criminal Law', 'Law of Torts', 'Legal System', 'Contract', 'Constitutional Law'].map((topic, idx) => (
                 <div key={topic} className="flex items-center p-6 md:p-8 bg-[#f8f9fa] dark:bg-[#0a0a0a]">
                   <div className="flex items-center gap-4">
                     <div className="text-gray-400">
@@ -277,7 +277,7 @@ export default function LandingPage({ onLoginClick }) {
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-16">
               <div className="flex-1">
-                <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study right. Test yourself. Dominate.</h2>
+                <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study right. Test yourself. <span className="text-[#FF6B00]">Dominate.</span></h2>
               </div>
               <div className="flex-[2]">
                 <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff and save you from the night before panic. Scattered handouts, missing PDFs, and unorganized Google Drive links are now a thing of the past.</p>
@@ -306,7 +306,7 @@ export default function LandingPage({ onLoginClick }) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-16 mt-32 relative">
              <div className="flex-1 z-10 max-w-xl">
                 <FadeIn>
-                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night before<br/>lifesaver.</h2>
+                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night before<br/><span className="text-[#FF6B00]">lifesaver</span>.</h2>
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
                     Forgot a handout or past question? No problem. Your entire curriculum—from foundational courses to advanced postgraduate materials—is perfectly organized right in your pocket. Track your streaks, hit your target, and never study blindly again.
                   </p>
@@ -331,7 +331,7 @@ export default function LandingPage({ onLoginClick }) {
             <FadeIn>
               <div className="flex flex-col md:flex-row gap-16 items-start">
                 <div className="flex-1">
-                  <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Start free.<br/>Do more with Super Recall.</h2>
+                  <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Start free.<br/>Do more with <span className="text-[#FF6B00]">Super Recall</span>.</h2>
                 </div>
                 <div className="flex-[1.2]">
                   <p className="text-[18px] text-gray-600 dark:text-gray-400">Join thousands of students and start studying for free. Super Recall gives you full access to unlimited practice and explanations to maximize your grades.</p>
