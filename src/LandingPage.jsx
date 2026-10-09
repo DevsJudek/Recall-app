@@ -164,8 +164,8 @@ export default function LandingPage({ onLoginClick }) {
             </div>
           </div>
           
-          <div className="flex-1 w-full flex justify-center items-center relative py-12">
-             <div className="relative w-64 md:w-80 flex items-center justify-center">
+          <div className="flex-1 w-full flex justify-center items-center relative">
+             <div className="relative w-48 md:w-64 flex items-center justify-center">
                
                <img src={features[0].img} className="w-full h-auto invisible" aria-hidden="true" />
                {features.map((feature, idx) => (
