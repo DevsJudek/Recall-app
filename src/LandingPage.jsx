@@ -385,7 +385,7 @@ export default function LandingPage({ onLoginClick }) {
                   <p className="mt-5 text-[12px] text-gray-500 dark:text-gray-500 max-w-[250px] leading-relaxed">
                     Offline mode comes with our native Android and iOS builds which will be in development soon.
                   </p>
-                </div>
+                </CardSpotlight>
               </FadeIn>
             </div>
 
