@@ -301,8 +301,8 @@ export default function LandingPage({ onLoginClick }) {
         <section id="pricing" className="mt-40 max-w-4xl mx-auto">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6">Start free.<br/>Unlock Plus.</h2>
-              <p className="text-gray-400 text-lg">Master your courses for free, or get Plus for unlimited practice.</p>
+              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6">Start free.<br/>Unlock Super Recall.</h2>
+              <p className="text-gray-400 text-lg">Master your courses for free, or get Super Recall for unlimited practice.</p>
             </div>
           </FadeIn>
           
@@ -316,7 +316,7 @@ export default function LandingPage({ onLoginClick }) {
                   <tr>
                     <th className="font-semibold p-4 pl-8">Features</th>
                     <th className="font-semibold p-4 text-center">Free</th>
-                    <th className="font-semibold p-4 text-center">Recall Plus</th>
+                    <th className="font-semibold p-4 text-center">Super Recall</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-800">
@@ -357,9 +357,9 @@ export default function LandingPage({ onLoginClick }) {
           <div className="divide-y divide-gray-800 border-y border-gray-800">
             {[
               ['What is Recall?', 'Recall is an interactive study platform designed specifically for university students. It provides high-yield notes, exam-style quizzes, and a global leaderboard to help you prepare effectively.'],
-              ['Is Recall free to use?', 'Yes! You can sign up and access a limited set of daily quizzes and notes for free. For unlimited access to all courses, analytics, and offline mode, you can upgrade to Recall Plus.'],
+              ['Is Recall free to use?', 'Yes! You can sign up and access a limited set of daily quizzes and notes for free. For unlimited access to all courses, analytics, and offline mode, you can upgrade to Super Recall.'],
               ['How do the ranked tests work?', 'Ranked tests simulate real exam conditions under time pressure. Your performance earns you points, which determines your position on the weekly global leaderboard.'],
-              ['Can I use Recall offline?', 'Offline access is available for Recall Plus members. You can download courses and quizzes to your device and sync your progress when you reconnect to the internet.'],
+              ['Can I use Recall offline?', 'Offline access is available for Super Recall members. You can download courses and quizzes to your device and sync your progress when you reconnect to the internet.'],
               ['What courses are available?', 'We currently support a wide range of university-level courses including Law, Medicine, Sciences, and General Studies. We are constantly expanding our library.']
             ].map(([q, a], i) => (
               <FadeIn key={i} delay={i * 100}>
@@ -439,7 +439,7 @@ export default function LandingPage({ onLoginClick }) {
         {/* Giant footer logo */}
         <FadeIn delay={200}>
           <div className="max-w-[1400px] mx-auto flex justify-center mb-16 overflow-hidden">
-             <h1 className="text-[15vw] font-bold leading-none tracking-tighter text-[#FF6B00]/10 select-none">Recall</h1>
+             <h1 className="text-[25vw] font-bold leading-none tracking-tighter text-[#FF6B00]/10 select-none">Recall</h1>
           </div>
         </FadeIn>
 
