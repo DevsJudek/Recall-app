@@ -149,7 +149,7 @@ export default function LandingPage({ onLoginClick }) {
               {isDark ? <SunIcon /> : <MoonIcon />}
             </button>
             <button onClick={onLoginClick} className="text-[15px] font-semibold text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Sign In</button>
-            <button onClick={onLoginClick} className="hidden sm:flex items-center bg-[#FFF2EC] text-[#0a0a0a] px-4 py-2 rounded-lg font-semibold text-[14px] hover:bg-white transition-colors shadow-sm">
+            <button onClick={onLoginClick} className="hidden sm:flex items-center bg-[#FF6B00] text-white px-4 py-2 rounded-lg font-semibold text-[14px] hover:bg-[#E56000] transition-colors shadow-sm">
               Get Started <ArrowUpRight />
             </button>
           </div>
@@ -169,10 +169,10 @@ export default function LandingPage({ onLoginClick }) {
               Whether you are writing JAMB, surviving your undergrad, or preparing for Law School, stop reading off-point. Recall gives you hyper-tailored notes mapped perfectly to your exact syllabus, paired with an AI tutor and addictive gamification.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
-              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg">
+              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg">
                 Start studying for free <ArrowUpRight />
               </button>
-              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-transparent border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors shadow-sm">
+              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-transparent border-2 border-[#FF6B00] text-[#FF6B00] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#FF6B00]/10 transition-colors shadow-sm">
                 Explore the library
               </button>
             </div>
@@ -277,7 +277,7 @@ export default function LandingPage({ onLoginClick }) {
           </div>
 
           <FadeIn delay={400}>
-            <button onClick={onLoginClick} className="flex items-center justify-center bg-transparent border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors mt-8">
+            <button onClick={onLoginClick} className="flex items-center justify-center bg-transparent border border-[#FF6B00] text-[#FF6B00] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#FF6B00]/10 transition-colors mt-8">
               Explore Library <ArrowUpRight />
             </button>
           </FadeIn>
@@ -321,7 +321,7 @@ export default function LandingPage({ onLoginClick }) {
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
                     Forgot a handout or past question? No problem. Your entire curriculum—from foundational courses to advanced postgraduate materials—is perfectly organized right in your pocket. Track your streaks, hit your target, and never study blindly again.
                   </p>
-                  <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg w-max">
+                  <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-[#E56000] transition-colors shadow-lg w-max">
                     Create your profile <ArrowUpRight />
                   </button>
                 </FadeIn>
@@ -426,7 +426,7 @@ export default function LandingPage({ onLoginClick }) {
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-10 max-w-sm">
               Join thousands of applicants, students, and professionals dominating their exams with the right materials. Create your account and build your first streak.
             </p>
-            <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-lg w-max border border-gray-200 dark:border-none">
+            <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#E56000] transition-colors shadow-lg w-max border border-gray-200 dark:border-none">
               Get Started <ArrowUpRight />
             </button>
           </FadeIn>
