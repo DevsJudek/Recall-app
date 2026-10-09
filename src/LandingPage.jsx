@@ -361,7 +361,7 @@ export default function LandingPage({ onLoginClick }) {
                 <div className="p-10 md:p-12 rounded-[32px] bg-gray-100 dark:bg-[#1a1a1a] flex flex-col h-full relative border-none">
                   <div className="flex items-center justify-between mb-8">
                     <div className="text-[11px] font-bold tracking-[0.15em] uppercase text-gray-500">Super Recall</div>
-                    <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Unlimited</div>
+                    <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-[#FF6B00] border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 rounded-full">Recommended</div>
                   </div>
                   <div className="text-[64px] font-medium leading-none tracking-[-0.04em] text-gray-900 dark:text-white mb-2">₦3,500</div>
                   <div className="text-[14px] font-medium text-gray-500 mb-6">Per semester</div>
