@@ -175,7 +175,7 @@ const getRankTrend = (currentRank, previousRank) => {
             )}
 
             {/* Adjusted bottom margin by 3px (bottom-[93px]) and reduced padding on the inner card */}
-            <div className="fixed bottom-[93px] md:bottom-[21px] left-0 w-full px-4 z-40 pointer-events-none">
+            <div className="fixed bottom-[93px] md:bottom-[21px] left-0 md:left-64 right-0 px-4 z-40 pointer-events-none">
                 <div className="max-w-[280px] mx-auto bg-[#111827] dark:bg-[#1A1A1A] rounded-3xl px-4 py-3 flex flex-col items-center gap-2.5 shadow-2xl border border-gray-800 dark:border-gray-700 pointer-events-auto">
                     <div className="flex items-center gap-8 w-full justify-center">
                         <div className="text-center"><p className="text-[8px] text-gray-400 font-black uppercase tracking-widest mb-1">Your Rank</p><p className="text-xl font-black text-white leading-none">#{currentUserRank}</p></div>
