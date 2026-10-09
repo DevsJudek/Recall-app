@@ -106,20 +106,20 @@ export default function LandingPage({ onLoginClick }) {
 
   const features = [
     {
-      title: "High-yield summaries",
-      desc: "Master complex topics with concise, expert-curated notes.",
+      title: "The Exact AOC",
+      desc: "Stop wasting time on 500-page textbooks. Get bite-sized notes tailored perfectly to your specific exam—from university entrance tests to postgraduate Bar finals.",
       icon: <DocumentIcon />,
       img: "/mockups/reading.png"
     },
     {
-      title: "Interactive ranked tests",
-      desc: "Test your knowledge with exam-style questions under pressure.",
+      title: "Interactive Ranked Tests",
+      desc: "Ditch passive reading. Test your recall under pressure and see if you are actually ready for the exam hall.",
       icon: <ZapIcon />,
       img: "/mockups/quiz.png"
     },
     {
-      title: "Climb the leaderboard",
-      desc: "Compete with peers and track your progress globally.",
+      title: "Climb the Leaderboard",
+      desc: "Compete with peers, track your daily streaks, and stay motivated by studying with a community that pushes you.",
       icon: <TrophyIcon />,
       img: "/mockups/leaderboard.png"
     }
@@ -163,14 +163,17 @@ export default function LandingPage({ onLoginClick }) {
           <div className="opacity-0 animate-center-arrive max-w-4xl" style={{ animationDelay: '0.1s' }}>
             <p className="text-sm font-semibold tracking-wider text-[#FF6B00] uppercase mb-6">Interactive Study & Quiz Platform</p>
             <h1 className="text-[48px] md:text-[80px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em] text-gray-900 dark:text-white">
-              Master your exams.<br />Outperform the curve.
+              Read exactly what will drop.<br />Avoid premium tears.
             </h1>
             <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
-              Your ultimate study companion. Access high-yield summaries, practice with exam-style quizzes, and compete on the leaderboard to secure that A.
+              Whether you are writing JAMB, surviving your undergrad, or preparing for Law School, stop reading off-point. Recall gives you hyper-tailored notes mapped perfectly to your exact syllabus, paired with an AI tutor and addictive gamification.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
               <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg">
                 Start studying for free <ArrowUpRight />
+              </button>
+              <button onClick={onLoginClick} className="w-full sm:w-auto flex items-center justify-center bg-transparent border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors shadow-sm">
+                Explore the library
               </button>
             </div>
           </div>
@@ -202,7 +205,7 @@ export default function LandingPage({ onLoginClick }) {
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4 flex items-center gap-2">
                 <ZapIcon /> Built for better recall
               </p>
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Everything you need to secure that A.</h2>
+              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Exactly what you need to pass. Nothing you don't.</h2>
             </FadeIn>
             
             <div className="mt-12 space-y-2">
@@ -254,8 +257,8 @@ export default function LandingPage({ onLoginClick }) {
         <section id="courses" className="space-y-12">
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-8 justify-between items-end border-b border-gray-200 dark:border-gray-800 pb-12">
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-lg text-gray-900 dark:text-white">Recall is available for Law, Agriculture, Sciences, etc.</h2>
-              <p className="text-[18px] text-gray-600 dark:text-gray-400 max-w-sm">Law, Sciences, Arts, and General Studies. Explore hundreds of curated topics tailored to your university curriculum.</p>
+              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-lg text-gray-900 dark:text-white">Find courses by what you study.</h2>
+              <p className="text-[18px] text-gray-600 dark:text-gray-400 max-w-sm">Law, Sciences, Arts, and General Studies. Explore hundreds of curated topics built specifically for University Applicants, Undergraduates, and Postgraduate professional exams.</p>
             </div>
           </FadeIn>
           
@@ -285,10 +288,10 @@ export default function LandingPage({ onLoginClick }) {
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-16">
               <div className="flex-1">
-                <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study. Practice. Compete.</h2>
+                <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study right. Test yourself. Dominate.</h2>
               </div>
               <div className="flex-[2]">
-                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete ecosystem designed to help you absorb knowledge faster and retain it longer.</p>
+                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff, save you from the night-before panic, and help you secure your admission, grades, or professional license.</p>
               </div>
             </div>
           </FadeIn>
@@ -297,26 +300,26 @@ export default function LandingPage({ onLoginClick }) {
             <FadeIn delay={0}>
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><DocumentIcon /></div>
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Study</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Read through high-yield summaries that cut out the fluff and focus on what's tested.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Read through high-yield summaries that cut out the noise and focus strictly on what is tested.</p>
             </FadeIn>
             <FadeIn delay={150}>
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><ZapIcon /></div>
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Practice</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Take timed quizzes that simulate the real exam environment and adapt to your weaknesses.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Take timed quizzes that simulate the real exam environment and adapt to your knowledge gaps.</p>
             </FadeIn>
             <FadeIn delay={300}>
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><TrophyIcon /></div>
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Compete</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Climb the ranks on the global leaderboard and stay motivated by studying with peers.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Climb the ranks on the localized leaderboard and secure your bragging rights.</p>
             </FadeIn>
           </div>
 
           <div className="flex flex-col xl:flex-row items-center justify-between gap-16 mt-32 relative">
              <div className="flex-1 z-10 max-w-xl">
                 <FadeIn>
-                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Your pocket<br/>study companion.</h2>
+                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night-before<br/>lifesaver.</h2>
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
-                    Study on the go. Whether you're commuting, waiting for a lecture, or relaxing at home, your entire curriculum is right in your pocket. Track your daily streaks and never miss a day of learning.
+                    Forgot a handout or past question? No problem. Your entire curriculum—from foundational courses to advanced postgraduate materials—is perfectly organized right in your pocket. Track your streaks, hit your target, and never study blindly again.
                   </p>
                   <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-[16px] hover:bg-white transition-colors shadow-lg w-max">
                     Create your profile <ArrowUpRight />
@@ -418,10 +421,10 @@ export default function LandingPage({ onLoginClick }) {
                <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-12 h-12 object-contain" />
             </div>
             <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6 text-gray-900 dark:text-white">
-              Ready to secure<br />that A?
+              Ready to pass without<br />the exam-week panic?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-10 max-w-sm">
-              Join thousands of students crushing their exams with Recall.
+              Join thousands of applicants, students, and professionals dominating their exams with the right materials. Create your account and build your first streak.
             </p>
             <button onClick={onLoginClick} className="flex items-center justify-center bg-[#FFF2EC] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-lg w-max border border-gray-200 dark:border-none">
               Get Started <ArrowUpRight />
