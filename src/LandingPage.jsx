@@ -107,7 +107,7 @@ export default function LandingPage({ onLoginClick }) {
   const features = [
     {
       title: "The Exact AOC",
-      desc: "Stop wasting time on 500-page textbooks. Get bite-sized notes tailored perfectly to your specific exam—from university entrance tests to postgraduate Bar finals.",
+      desc: "Stop wasting time on 500 page textbooks. Get bite sized notes tailored perfectly to your specific exam—from university entrance tests to postgraduate Bar finals.",
       icon: <DocumentIcon />,
       img: "/mockups/reading.png"
     },
@@ -171,7 +171,7 @@ export default function LandingPage({ onLoginClick }) {
             </FadeIn>
             <FadeIn delay={300}>
               <p className="text-[18px] md:text-[22px] leading-[1.5] font-medium max-w-2xl mx-auto text-gray-600 dark:text-gray-400 mb-10">
-              Whether you are writing JAMB, surviving your undergrad, or preparing for Law School, stop reading off-point. Recall gives you hyper-tailored notes mapped perfectly to your exact syllabus, paired with an AI tutor and addictive gamification.
+              Whether you are writing JAMB, surviving your undergrad, or preparing for Law School, stop reading off point. Recall gives you hyper tailored notes mapped perfectly to your exact syllabus, paired with an AI tutor and addictive gamification.
             </p>
             </FadeIn>
             <FadeIn delay={400}>
@@ -244,7 +244,7 @@ export default function LandingPage({ onLoginClick }) {
                 <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">Study right. Test yourself. Dominate.</h2>
               </div>
               <div className="flex-[2]">
-                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff, save you from the night-before panic, and help you secure your admission, grades, or professional license.</p>
+                <p className="text-[20px] text-gray-600 dark:text-gray-300 max-w-xl">A complete study ecosystem designed to cut out the fluff, save you from the night before panic, and help you secure your admission, grades, or professional license.</p>
               </div>
             </div>
           </FadeIn>
@@ -253,7 +253,7 @@ export default function LandingPage({ onLoginClick }) {
             <FadeIn delay={0}>
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><DocumentIcon /></div>
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Study</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Read through high-yield summaries that cut out the noise and focus strictly on what is tested.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Read through high yield summaries that cut out the noise and focus strictly on what is tested.</p>
             </FadeIn>
             <FadeIn delay={150}>
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1A1412] border border-gray-200 dark:border-gray-800 flex items-center justify-center mb-6"><ZapIcon /></div>
@@ -270,7 +270,7 @@ export default function LandingPage({ onLoginClick }) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-16 mt-32 relative">
              <div className="flex-1 z-10 max-w-xl">
                 <FadeIn>
-                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night-before<br/>lifesaver.</h2>
+                  <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold mb-6 tracking-[-0.03em] text-gray-900 dark:text-white">The ultimate night before<br/>lifesaver.</h2>
                   <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
                     Forgot a handout or past question? No problem. Your entire curriculum—from foundational courses to advanced postgraduate materials—is perfectly organized right in your pocket. Track your streaks, hit your target, and never study blindly again.
                   </p>
@@ -348,7 +348,7 @@ export default function LandingPage({ onLoginClick }) {
           
           <div className="divide-y divide-gray-200 dark:divide-gray-800 border-y border-gray-200 dark:border-gray-800">
             {[
-              ['What is Recall?', 'Recall is an interactive study platform designed specifically for university students. It provides high-yield notes, exam-style quizzes, and a global leaderboard to help you prepare effectively.'],
+              ['What is Recall?', 'Recall is an interactive study platform designed specifically for university students. It provides high yield notes, exam style quizzes, and a global leaderboard to help you prepare effectively.'],
               ['Is Recall free to use?', 'Yes! You can sign up and access a limited set of daily quizzes and notes for free. For unlimited access to all courses, analytics, and offline mode, you can upgrade to Super Recall.'],
               ['How do the ranked tests work?', 'Ranked tests simulate real exam conditions under time pressure. Your performance earns you points, which determines your position on the weekly global leaderboard.'],
               ['Can I use Recall offline?', 'Offline access is available for Super Recall members. You can download courses and quizzes to your device and sync your progress when you reconnect to the internet.'],
@@ -374,7 +374,7 @@ export default function LandingPage({ onLoginClick }) {
                <img src="/mockups/recall-logo.png" alt="Recall Logo" className="w-12 h-12 object-contain" />
             </div>
             <h2 className="text-[40px] md:text-[56px] leading-[1.05] font-semibold tracking-[-0.03em] mb-6 text-gray-900 dark:text-white">
-              Ready to pass without<br />the exam-week panic?
+              Ready to pass without<br />the exam week panic?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-10 max-w-sm">
               Join thousands of applicants, students, and professionals dominating their exams with the right materials. Create your account and build your first streak.
