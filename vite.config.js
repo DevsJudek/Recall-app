@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vite.dev/config/
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -22,6 +21,7 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: false,
         globIgnores: ['**/OneSignalSDKWorker.js*'],
+        navigateFallbackDenylist: [/^\/app(\.html)?$/]
       },
     })
   ],
