@@ -120,10 +120,10 @@ export default function LandingPage({ onLoginClick }) {
         </div>
       </header>
 
-      <main className="max-w-[1200px] mx-auto px-6 md:px-12 pt-32 pb-24 space-y-40">
+      <main className="max-w-[1200px] mx-auto px-6 md:px-12 pt-24 pb-24 space-y-40">
         
         {/* HERO SECTION */}
-        <section className="flex flex-col items-center text-center mt-12 md:mt-24">
+        <section className="flex flex-col items-center text-center mt-8">
           <div className="opacity-0 animate-center-arrive max-w-4xl" style={{ animationDelay: '0.1s' }}>
             <p className="text-sm font-semibold tracking-wider text-[#FF6B00] uppercase mb-6">Interactive Study & Quiz Platform</p>
             <h1 className="text-[48px] md:text-[80px] leading-[1.05] font-[550] mb-8 tracking-[-0.04em]">
