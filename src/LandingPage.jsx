@@ -218,7 +218,7 @@ export default function LandingPage({ onLoginClick }) {
         <section id="courses" className="space-y-12">
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-8 justify-between items-end border-b border-gray-800 pb-12">
-              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-md">Find courses by what you study.</h2>
+              <h2 className="text-[40px] md:text-[52px] leading-[1.05] font-semibold tracking-[-0.03em] max-w-lg">Recall is available for Law, Agriculture, Sciences, etc.</h2>
               <p className="text-[18px] text-gray-400 max-w-sm">Law, Sciences, Arts, and General Studies. Explore hundreds of curated topics tailored to your university curriculum.</p>
             </div>
           </FadeIn>
