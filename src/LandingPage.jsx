@@ -263,7 +263,7 @@ export default function LandingPage({ onLoginClick }) {
           </FadeIn>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-            {['Commercial Law', 'Criminal Law', 'Law of Torts', 'Constitutional Law', 'Contract Law', 'GST 101', 'Anatomy', 'Physiology', 'Sociology', 'Jurisprudence', 'Company Law', 'Evidence Law'].map((topic, idx) => (
+            {['Commercial Law', 'Criminal Law', 'Law of Torts', 'Anatomy', 'Physiology', 'GST 101'].map((topic, idx) => (
               <FadeIn key={topic} delay={idx * 50}>
                 <div className="group flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-[#1A1412] hover:border-[#FF6B00]/30 transition-all cursor-pointer rounded-xl">
                   <div className="flex items-center gap-3">
