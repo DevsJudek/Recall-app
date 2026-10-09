@@ -199,7 +199,8 @@ function AppContent() {
         { code: 'JPL 305', title: 'Family Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
         { code: 'BUL 305', title: 'Labour Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
         { code: 'BUL 303', title: 'Banking Law I', level: '300L', department: 'Law', type: 'Core', semester: '1st Semester', is_available: true },
-        { code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted', semester: '1st Semester', is_available: true }
+        { code: 'PHL 319', title: 'Philosophy of Law I', level: '300L', department: 'Philosophy', type: 'Restricted', semester: '1st Semester', is_available: true },
+          { code: 'SOC 201', title: 'Sociology I', level: '200L', department: 'Sociology', type: 'Restricted', semester: '1st Semester', is_available: true }
       ];
 
       const allRaw = [...(coursesData || [])];
