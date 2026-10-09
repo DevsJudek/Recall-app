@@ -213,9 +213,7 @@ export default function LandingPage({ onLoginClick }) {
               <button onClick={onLoginClick} className="w-full sm:w-max flex items-center justify-center gap-2 bg-[#FF6B00] text-white px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-[#E56000] transition-colors shadow-sm">
                 Start studying for free <ArrowUpRight />
               </button>
-              <button onClick={onLoginClick} className="w-full sm:w-max flex items-center justify-center gap-2 bg-transparent text-gray-700 dark:text-gray-300 px-6 py-3 rounded-[14px] font-medium text-[15px] hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
-                Explore the library
-              </button>
+              
             </div>
             </FadeIn>
           </div>
