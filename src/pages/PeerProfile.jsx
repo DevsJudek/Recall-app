@@ -4,16 +4,12 @@ import { supabase } from '../supabase';
 
 
 const VerifiedBadge = () => (
-    <svg viewBox="0 0 24 24" className="w-[16px] h-[16px] md:w-[20px] md:h-[20px] text-blue-500 fill-current inline-block ml-1.5" style={{ marginTop: '-2px' }}>
+    <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] md:w-[22px] md:h-[22px] text-blue-500 fill-current inline-block ml-1.5" style={{ marginTop: '-2px' }}>
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
     </svg>
 );
 
-const TeamBadge = () => (
-    <span className="ml-2 text-[9px] md:text-[10px] font-black tracking-widest text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded uppercase leading-none h-fit flex items-center align-middle">
-        TEAM
-    </span>
-);
+
 
 export default function PeerProfile({ selectedPeer, isFollowing, handleFollowToggle, currentUserDbId, openNetwork }) {
     const [peerRank, setPeerRank] = useState('...');
@@ -58,7 +54,7 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                     {selectedPeer.name && selectedPeer.name.toLowerCase().includes('jude') && (
                         <>
                             <VerifiedBadge />
-                            <TeamBadge />
+                            
                         </>
                     )}
                 </h2>
