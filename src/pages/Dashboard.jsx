@@ -307,7 +307,7 @@ export default function Dashboard({
                   <h2 className="text-xl md:text-2xl font-black text-[#1A1A1A] dark:text-white">Continue Studying</h2>
                   <button onClick={() => setCurrentView('courses')} className="text-xs font-bold text-[#FF6B00] hover:text-[#E05D00] transition-colors">View All →</button>
                 </div>
-                <div className="w-full md:w-2/3 lg:w-1/2">
+                <div className="w-full">
                     <div className="bg-white dark:bg-[#1A1A1A] rounded-[28px] p-5 md:p-6 border border-[#E5E5E5] dark:border-gray-800 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#FFD5C2] dark:hover:border-[#FF6B00] transition-all flex flex-col group cursor-pointer" onClick={() => { if (continueCourse.is_available !== false) openCourseTopics(continueCourse); }}>
                         <div className="flex justify-between items-center mb-5">
                             <span className={`px-3 py-1 rounded-[8px] text-[10px] font-black uppercase tracking-widest border ${continueCourse.type === 'Apex' ? 'bg-[#FFF5F0] dark:bg-[#FF6B00]/10 text-[#FF6B00] border-[#FFD5C2] dark:border-[#FF6B00]/20' : 'bg-[#F8F9FA] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700'}`}>
