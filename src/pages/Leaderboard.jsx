@@ -34,8 +34,7 @@ const PodiumCard = ({ user, rank, isFirst, viewPeerProfile }) => {
                 </div>
             </div>
 
-            {/* Subtle Pedestal Base */}
-            <div className={`absolute bottom-0 w-full rounded-t-[12px] ${isFirst ? 'h-10 bg-gradient-to-t from-[#FF6B00]/15 to-transparent' : 'h-6 bg-gradient-to-t from-gray-200/50 dark:from-gray-800/50 to-transparent'} -z-10`} />
+            
         </div>
     );
 };
