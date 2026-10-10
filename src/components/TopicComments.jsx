@@ -50,7 +50,23 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 setComments([]);
             } else {
                 
-                const loadedComments = data || [];
+                let loadedComments = data || [];
+                
+                // Fetch live profile data to keep avatars and names perfectly synced
+                const profileIds = [...new Set(loadedComments.map(c => c.profile_id).filter(Boolean))];
+                if (profileIds.length > 0) {
+                    const { data: profilesData } = await supabase.from('profiles').select('id, name, avatar').in('id', profileIds);
+                    if (profilesData) {
+                        const profileMap = {};
+                        profilesData.forEach(p => profileMap[p.id] = p);
+                        loadedComments = loadedComments.map(c => {
+                            if (c.profile_id && profileMap[c.profile_id]) {
+                                return { ...c, user_name: profileMap[c.profile_id].name, user_avatar: profileMap[c.profile_id].avatar };
+                            }
+                            return c;
+                        });
+                    }
+                }
                 // Sort by most liked first, then by newest
                 loadedComments.sort((a, b) => {
                     const likesA = Array.isArray(a.liked_by) ? a.liked_by.length : 0;
