@@ -299,7 +299,15 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                         </span>
                                     </div>
                                     <p className="text-[14px] text-gray-700 dark:text-gray-300 leading-[1.6] whitespace-pre-wrap mb-4">
-                                        {comment.content}
+                                        {comment.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, i) => 
+                                            part.startsWith('@') ? (
+                                                <span key={i} className="text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-md cursor-pointer hover:underline">
+                                                    {part}
+                                                </span>
+                                            ) : (
+                                                <span key={i}>{part}</span>
+                                            )
+                                        )}
                                     </p>
                                     <div className="flex items-center gap-6 text-[11px] font-bold text-gray-500">
                                         <button 
