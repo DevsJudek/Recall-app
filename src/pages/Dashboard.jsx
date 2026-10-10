@@ -302,8 +302,8 @@ export default function Dashboard({
                 </button>
               </div>
 
-              <div className="bg-white dark:bg-[#121212] border border-[#E5E5E5] dark:border-gray-800 rounded-[24px] md:rounded-[32px] p-6 md:p-8 shadow-sm">
-                <div className="flex justify-between items-center mb-6">
+              <div className="mt-4 md:mt-8">
+                  <div className="flex justify-between items-center mb-6 px-1 md:px-2">
                   <h2 className="text-xl md:text-2xl font-black text-[#1A1A1A] dark:text-white">Continue Studying</h2>
                   <button onClick={() => setCurrentView('courses')} className="text-xs font-bold text-[#FF6B00] hover:text-[#E05D00] transition-colors">View All →</button>
                 </div>
