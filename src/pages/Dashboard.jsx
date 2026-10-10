@@ -131,12 +131,17 @@ export default function Dashboard({
     <div className="max-w-7xl mx-auto space-y-6 md:space-y-8 animate-fade-in pb-16">
 
       {/* Header */}
-      <div>
-        <h1 className="text-2xl md:text-4xl font-black tracking-tight text-[#1A1A1A] dark:text-white mb-1">
-          Welcome back, {firstName || 'Student'}! 👋
-        </h1>
-        <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400">Ready to ace your exams today?</p>
-      </div>
+        <div className="flex flex-col items-center justify-center text-center mt-2 mb-6">
+          <h1 className="text-2xl md:text-4xl font-black tracking-tight text-[#1A1A1A] dark:text-white mb-3">
+            Welcome, {firstName || 'Student'} <span className="inline-block animate-wave origin-bottom-right">👋</span>
+          </h1>
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F3F4F6] dark:bg-[#1A1A1A] border border-[#E5E7EB] dark:border-gray-800 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></span>
+            <span className="text-xs md:text-sm font-bold text-gray-600 dark:text-gray-400">
+              <span className="text-gray-900 dark:text-white">{onlineUsersCount || 1}</span> students currently studying now
+            </span>
+          </div>
+        </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
 
