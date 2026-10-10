@@ -99,7 +99,7 @@ function AppContent() {
     room.on('presence', { event: 'sync' }, () => {
       const newState = room.presenceState();
       // Add a small baseline so it never looks completely dead, plus actual users
-      setOnlineUsersCount(Object.keys(newState).length + 6);
+      setOnlineUsersCount(Object.keys(newState).length + 7);
     }).subscribe(async (status) => {
       if (status === 'SUBSCRIBED') {
         await room.track({ online_at: new Date().toISOString() });
