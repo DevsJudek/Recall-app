@@ -64,6 +64,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                     course_code: courseCode,
                     topic_id: topicId,
                     user_id: session.user.id,
+                    profile_id: currentUserDbId,
                     user_name: displayName || 'Student',
                     user_avatar: avatarUrl || '',
                     content: newComment.trim()
@@ -135,15 +136,19 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
 
     const handleViewProfile = async (comment) => {
         if (!viewPeerProfile) return;
-        // Fetch full profile first if possible, otherwise pass mock
         try {
-            const { data } = await supabase.from('profiles').select('*').eq('id', comment.user_id).single();
-            if (data) {
-                viewPeerProfile(data);
-            } else {
-                viewPeerProfile({ id: comment.user_id, name: comment.user_name, avatar: comment.user_avatar });
+            if (comment.profile_id) {
+                const { data } = await supabase.from('profiles').select('*').eq('id', comment.profile_id).single();
+                if (data) return viewPeerProfile(data);
             }
-        } catch {
+            
+            // Fallback for older comments without profile_id
+            const { data } = await supabase.from('profiles').select('*').eq('name', comment.user_name).limit(1).maybeSingle();
+            if (data) return viewPeerProfile(data);
+            
+            throw new Error('Profile not found');
+        } catch (error) {
+            console.error('Error fetching peer profile:', error);
             viewPeerProfile({ id: comment.user_id, name: comment.user_name, avatar: comment.user_avatar });
         }
     };
