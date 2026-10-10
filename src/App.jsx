@@ -846,9 +846,19 @@ function AppContent() {
     let { data } = await query;
     if (!data || data.length === 0) { 
       const levelCodes = coursesList.filter(c => c.level === level).map(c => c.code);
-      const fallbackExpanded = expandCourseCodes(levelCodes);
-      const fallback = await supabase.from('questions').select('*').in('course_code', fallbackExpanded).limit(questionLimit * 2); 
-      data = fallback.data || []; 
+      if (levelCodes.length > 0) {
+        const fallbackExpanded = expandCourseCodes(levelCodes);
+        const fallback = await supabase.from('questions').select('*').in('course_code', fallbackExpanded).limit(questionLimit * 2); 
+        data = fallback.data || []; 
+      } else {
+        data = [];
+      }
+    }
+    
+    if (!data || data.length === 0) {
+      alert("No questions found for your enrolled courses or level! Please change your level or manually track courses with available questions.");
+      setIsTransitioning(false);
+      return;
     }
         let finalQuestions = [];
     if (mode === 'ranked' && (courseInput === 'mixed' || courseInput === null)) {
