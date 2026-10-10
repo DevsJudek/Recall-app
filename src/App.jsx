@@ -66,6 +66,7 @@ function AppContent() {
   const { playSound } = useSound();
 
   const [session, setSession] = useState(null);
+  const [onlineUsersCount, setOnlineUsersCount] = useState(1);
 
   const {
     needRefresh,
@@ -90,6 +91,22 @@ function AppContent() {
     }
     return false;
   });
+
+    useEffect(() => {
+    const room = supabase.channel('online-users', {
+      config: { presence: { key: session?.user?.id || Math.random().toString(36).substring(7) } }
+    });
+    room.on('presence', { event: 'sync' }, () => {
+      const newState = room.presenceState();
+      // Add a small baseline so it never looks completely dead, plus actual users
+      setOnlineUsersCount(Math.max(1, Object.keys(newState).length));
+    }).subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await room.track({ online_at: new Date().toISOString() });
+      }
+    });
+    return () => { supabase.removeChannel(room); };
+  }, [session?.user?.id]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -928,7 +945,7 @@ function AppContent() {
     session, setSession, currentView, setCurrentView: smartSetCurrentView, goBack, activeCourse, setActiveCourse, defaultCourses: processedCoursesList, courses: processedCoursesList,
     allCourses: coursesList, enrolledCourses: activeEnrolledCourses, setEnrolledCourses, currentSemester,
     topicStatus, readingData, questions, currentIndex, timeLeft, selectedOption, isLocked, score, practiceMode, setPracticeMode, currentUserDbId, displayName, avatarUrl, department, level, bio, joinDate, leaderboardData, selectedPeer, dailyTarget, dailyProgress, followersCount, followingCount, followingList, isFollowing,
-    streakCount, canClaimStreak, streakCalendar, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
+    streakCount, canClaimStreak, streakCalendar, onlineUsersCount, handleImageUpload, handleSaveProfile, handleClaimStreak, handleFollowToggle, handleSignOut, openLeaderboard, viewPeerProfile, openCourseTopics, getCourseMastery, openReadingScreen, markTopicCompleted, startPractice, openPracticeSetup, handleSelect, handleLockAnswer, handleNextQuestion, lostStreak, restoresLeft, handleRestoreStreak,
     firstName, editName, setEditName, editDepartment, setEditDepartment, editLevel, setEditLevel, editCampus, setEditCampus, editDailyTarget, setEditDailyTarget, editAvatarUrl, setEditAvatarUrl, editBio, setEditBio, isUploading, claimStreak: handleClaimStreak, onClaimStreak: handleClaimStreak, canClaim: canClaimStreak, currentProgress: dailyProgress, topStudents: topStudents, openNetworkView, openNetwork: openNetworkView, networkUsers, isOwnProfileNetwork, openShareTopic,
     handleCompleteOnboarding, isSupported, isPushEnabled, togglePush,
     isDarkMode, setIsDarkMode, campus,

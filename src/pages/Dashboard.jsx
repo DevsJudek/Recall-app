@@ -13,7 +13,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 export default function Dashboard({
   firstName, streakCount, dailyTarget, dailyProgress, level, department, openLeaderboard,
   setCurrentView, startPractice, courses, openCourseTopics, practiceMode, setPracticeMode, topStudents, canClaimStreak, getCourseMastery,
-  isSupported, session, isPushEnabled, togglePush,
+  isSupported, session, isPushEnabled, togglePush, onlineUsersCount,
   needRefresh, updateServiceWorker, isUpdating
 }) {
 
