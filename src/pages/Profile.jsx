@@ -2,6 +2,20 @@
 
 import { GlowingEffect } from "../components/ui/glowing-effect";
 
+
+const VerifiedBadge = () => (
+    <svg viewBox="0 0 24 24" className="w-[20px] h-[20px] md:w-[24px] md:h-[24px] text-[#FFB800] fill-current inline-block ml-2" style={{ marginTop: '-4px' }}>
+        <path d="M12 2l2.4 2.4 3.4-.6.6 3.4 2.4 2.4-2.4 2.4-.6 3.4-3.4.6L12 22l-2.4-2.4-3.4.6-.6-3.4-2.4-2.4 2.4-2.4.6-3.4 3.4-.6L12 2z" />
+        <path fill="#FFF" d="M10.5 15.5l-3-3 1.4-1.4 1.6 1.6 4.6-4.6 1.4 1.4-6 6z" />
+    </svg>
+);
+
+const TeamBadge = () => (
+    <span className="ml-3 text-[10px] md:text-xs font-black tracking-widest text-[#FF6B00] bg-[#FF6B00]/10 border border-[#FF6B00]/20 px-2 py-1 rounded uppercase leading-none h-fit flex items-center align-middle">
+        TEAM
+    </span>
+);
+
 export default function Profile({
   displayName, avatarUrl, followersCount, followingCount, streakCount,
   setCurrentView, claimStreak, canClaim, leaderboardData, currentUserDbId, openNetworkView,
@@ -44,7 +58,16 @@ export default function Profile({
           )}
         </div>
 
-        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-[#1A1A1A] dark:text-white mb-3">{displayName || 'Student'}</h2>
+        
+        <h2 className="text-3xl md:text-4xl font-black tracking-tight text-[#1A1A1A] dark:text-white mb-3 flex items-center justify-center flex-wrap">
+          {displayName || 'Student'}
+          {(session?.user?.email === 'kolawolejude0@gmail.com' || (displayName && displayName.toLowerCase().includes('jude'))) && (
+              <>
+                  <VerifiedBadge />
+                  <TeamBadge />
+              </>
+          )}
+        </h2>
 
         {/* 🚀 NEW: DEPARTMENT BOX */}
         <div className="bg-[#FFF9F5] dark:bg-orange-950/20 border border-[#FFD5C2] dark:border-orange-900/50 text-[#FF6B00] px-4 py-1.5 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest mb-5 shadow-sm">

@@ -2,6 +2,20 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 
+
+const VerifiedBadge = () => (
+    <svg viewBox="0 0 24 24" className="w-[20px] h-[20px] md:w-[24px] md:h-[24px] text-[#FFB800] fill-current inline-block ml-2" style={{ marginTop: '-4px' }}>
+        <path d="M12 2l2.4 2.4 3.4-.6.6 3.4 2.4 2.4-2.4 2.4-.6 3.4-3.4.6L12 22l-2.4-2.4-3.4.6-.6-3.4-2.4-2.4 2.4-2.4.6-3.4 3.4-.6L12 2z" />
+        <path fill="#FFF" d="M10.5 15.5l-3-3 1.4-1.4 1.6 1.6 4.6-4.6 1.4 1.4-6 6z" />
+    </svg>
+);
+
+const TeamBadge = () => (
+    <span className="ml-3 text-[10px] md:text-xs font-black tracking-widest text-[#FF6B00] bg-[#FF6B00]/10 border border-[#FF6B00]/20 px-2 py-1 rounded uppercase leading-none h-fit flex items-center align-middle">
+        TEAM
+    </span>
+);
+
 export default function PeerProfile({ selectedPeer, isFollowing, handleFollowToggle, currentUserDbId, openNetwork }) {
     const [peerRank, setPeerRank] = useState('...');
 
@@ -38,9 +52,16 @@ export default function PeerProfile({ selectedPeer, isFollowing, handleFollowTog
                     {selectedPeer.avatar && selectedPeer.avatar.startsWith('http') ? <img src={selectedPeer.avatar} alt="Avatar" className="w-full h-full object-cover" /> : (selectedPeer.name?.charAt(0).toUpperCase() || '?')}
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-black text-[#1A1A1A] dark:text-white mb-3 flex items-center justify-center gap-2">
+                
+                <h2 className="text-3xl md:text-4xl font-black text-[#1A1A1A] dark:text-white mb-3 flex items-center justify-center gap-2 flex-wrap">
                     {selectedPeer.name}
                     {isSelf && <span className="text-[10px] bg-gray-800 dark:bg-gray-700 text-white px-2 py-0.5 rounded-full tracking-widest align-middle">YOU</span>}
+                    {selectedPeer.name && selectedPeer.name.toLowerCase().includes('jude') && (
+                        <>
+                            <VerifiedBadge />
+                            <TeamBadge />
+                        </>
+                    )}
                 </h2>
 
                 {/* 🚀 NEW: DEPARTMENT BOX */}
