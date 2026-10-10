@@ -25,6 +25,7 @@ import Onboarding from './pages/Onboarding';
 import ManageCourses from './pages/ManageCourses';
 import SuggestMaterial from './pages/SuggestMaterial';
 import TestHistory from './pages/TestHistory';
+import Notifications from './pages/Notifications';
 import { getLookupCourseCodes, expandCourseCodes } from './utils/courseAliases';
 
 import HamsterLoader from './components/HamsterLoader';
@@ -92,7 +93,25 @@ function AppContent() {
     return false;
   });
 
-    useEffect(() => {
+      useEffect(() => {
+    if (!session?.user?.id) return;
+    // Initial fetch
+    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('user_id', session.user.id).eq('is_read', false).then(({ count }) => {
+      setUnreadNotifCount(count || 0);
+    });
+
+    // Subscribe to new notifications
+    const notifSub = supabase.channel('notif-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `user_id=eq.${session.user.id}` }, payload => {
+        supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('user_id', session.user.id).eq('is_read', false).then(({ count }) => {
+          setUnreadNotifCount(count || 0);
+        });
+      }).subscribe();
+      
+    return () => { supabase.removeChannel(notifSub); };
+  }, [session?.user?.id]);
+
+  useEffect(() => {
     const room = supabase.channel('online-users', {
       config: { presence: { key: session?.user?.id || Math.random().toString(36).substring(7) } }
     });
@@ -185,6 +204,7 @@ function AppContent() {
   const [followingList, setFollowingList] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
+  const [unreadNotifCount, setUnreadNotifCount] = useState(0);
   const [canClaimStreak, setCanClaimStreak] = useState(true);
   const [lostStreak, setLostStreak] = useState(0);
   const [restoresLeft, setRestoresLeft] = useState(4);
@@ -968,7 +988,7 @@ function AppContent() {
 
   };
 
-  const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin', 'test_history'].includes(currentView)
+  const baseMainClasses = ['onboarding', 'edit_profile', 'results', 'followers', 'following', 'admin', 'test_history', 'notifications'].includes(currentView)
     ? 'p-0 pb-24 md:pb-8 bg-white dark:bg-[#121212]'
     : ['reading', 'quiz', 'share_topic', 'manage_courses'].includes(currentView)
       ? 'p-0 bg-white dark:bg-[#121212]'
@@ -1046,7 +1066,13 @@ function AppContent() {
                   </div>
                 )}
 
-                <div className="px-3 py-1.5 bg-[#FFF2EC] dark:bg-gray-800 text-[#FF6B00] text-xs font-extrabold rounded-full border border-[#FFD5C2] dark:border-gray-700">🔥 {streakCount}</div>
+                <div className="flex items-center gap-2">
+                  <div onClick={() => setCurrentView('notifications')} className="relative p-1.5 rounded-full bg-white dark:bg-[#121212] border border-[#E5E5E5] dark:border-gray-800 text-gray-500 hover:text-[#FF6B00] hover:border-[#FFD5C2] cursor-pointer transition-colors shadow-sm">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
+                    {unreadNotifCount > 0 && <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-[9px] font-black text-white shadow-sm border border-white dark:border-[#0a0a0a] animate-bounce">{unreadNotifCount > 9 ? '9+' : unreadNotifCount}</div>}
+                  </div>
+                  <div className="px-3 py-1.5 bg-[#FFF2EC] dark:bg-gray-800 text-[#FF6B00] text-xs font-extrabold rounded-full border border-[#FFD5C2] dark:border-gray-700">🔥 {streakCount}</div>
+                </div>
               </div>
             </header>
           )}
@@ -1071,6 +1097,7 @@ function AppContent() {
               {currentView === 'manage_courses' && <ManageCourses {...globalProps} />}
               {currentView === 'suggest_material' && <SuggestMaterial {...globalProps} onBack={goBack} />}
               {currentView === 'test_history' && <TestHistory {...globalProps} />}
+                {currentView === 'notifications' && <Notifications {...globalProps} />}
             </PullToRefresh>
           </main>
 

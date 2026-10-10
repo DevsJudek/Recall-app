@@ -76,6 +76,26 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             
             if (data) {
                 setComments([data, ...comments]);
+                
+                // MENTION DETECTION & NOTIFICATION EMITTER
+                const mentionMatch = newComment.match(/@([a-zA-Z0-9_]+)/);
+                if (mentionMatch) {
+                    const mentionedName = mentionMatch[1];
+                    // Fire and forget notification lookup
+                    supabase.from('profiles').select('user_id').ilike('name', mentionedName + '%').limit(1).single().then(({ data: profileData }) => {
+                        if (profileData && profileData.user_id && profileData.user_id !== session.user.id) {
+                            supabase.from('notifications').insert([{
+                                user_id: profileData.user_id,
+                                actor_name: displayName || 'Student',
+                                actor_avatar: avatarUrl || '',
+                                type: 'mention',
+                                content: `mentioned you in a comment.`,
+                                link: `${courseCode}|${topicId}`
+                            }]).then();
+                        }
+                    });
+                }
+                
                 setNewComment('');
                 setVisibleCount(prev => prev + 1); // Ensure new comment is visible
             }
