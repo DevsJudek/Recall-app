@@ -868,8 +868,14 @@ function AppContent() {
       const levelCodes = coursesList.filter(c => c.level === level).map(c => c.code);
       if (levelCodes.length > 0) {
         const fallbackExpanded = expandCourseCodes(levelCodes);
-        const fallback = await supabase.from('questions').select('*').in('course_code', fallbackExpanded).limit(questionLimit * 2); 
-        data = fallback.data || []; 
+        const fallback = await supabase.from('questions').select('*').limit(3000); 
+        const allQuestions = fallback.data || []; 
+        // Filter in JS to bypass SQL case-sensitivity and space formatting issues (e.g. "PUL301" vs "PUL 301")
+        data = allQuestions.filter(q => {
+          if (!q.course_code) return false;
+          const qCode = q.course_code.toUpperCase().replace(/\s+/g, '');
+          return fallbackExpanded.some(fc => fc.toUpperCase().replace(/\s+/g, '') === qCode || qCode.startsWith(fc.toUpperCase().replace(/\s+/g, '')));
+        }); 
       } else {
         data = [];
       }
