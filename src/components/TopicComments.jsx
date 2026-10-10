@@ -19,7 +19,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
     // New Feature States
     const [sortOrder, setSortOrder] = useState('Newest');
     const [visibleCount, setVisibleCount] = useState(2);
-    const [likedComments, setLikedComments] = useState({});
+    
     
     const inputRef = useRef(null);
 
@@ -101,11 +101,31 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
         }
     };
 
-    const handleLike = (id) => {
-        setLikedComments(prev => ({
-            ...prev,
-            [id]: !prev[id]
-        }));
+    const handleLike = async (id) => {
+        if (!session?.user) return;
+        const comment = comments.find(c => c.id === id);
+        if (!comment) return;
+
+        const currentLikedBy = Array.isArray(comment.liked_by) ? comment.liked_by : [];
+        const hasLiked = currentLikedBy.includes(session.user.id);
+        const newLikedBy = hasLiked 
+            ? currentLikedBy.filter(uid => uid !== session.user.id)
+            : [...currentLikedBy, session.user.id];
+
+        // Optimistic update
+        setComments(comments.map(c => c.id === id ? { ...c, liked_by: newLikedBy } : c));
+
+        try {
+            const { error } = await supabase
+                .from('module_comments')
+                .update({ liked_by: newLikedBy })
+                .eq('id', id);
+            if (error) throw error;
+        } catch (error) {
+            console.error('Error updating likes:', error);
+            // Silent revert if column doesn't exist yet
+            setComments(comments.map(c => c.id === id ? { ...c, liked_by: currentLikedBy } : c));
+        }
     };
 
     const handleReply = (userName) => {
@@ -216,10 +236,9 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 <div className="space-y-8">
                     {visibleComments.map((comment) => {
                         const isJude = comment.user_name.toLowerCase().includes('jude');
-                        // Using charcode sum to seed a stable random "base" likes count for visual demo
-                        const baseLikes = comment.id.charCodeAt(0) % 20; 
-                        const hasLiked = likedComments[comment.id];
-                        const totalLikes = baseLikes + (hasLiked ? 1 : 0);
+                        const currentLikedBy = Array.isArray(comment.liked_by) ? comment.liked_by : [];
+                        const hasLiked = currentLikedBy.includes(session?.user?.id);
+                        const totalLikes = currentLikedBy.length;
 
                         return (
                             <div key={comment.id} className="flex gap-4 group">
@@ -294,7 +313,25 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                     </div>
                 </div>
             )}
-            {!hasMoreComments && comments.length > 0 && (
+            {!hasMoreComments && comments.length > 2 && (
+                <div className="flex flex-col items-center justify-center mt-12 mb-6 animate-fade-in">
+                    <button 
+                        onClick={() => {
+                            setVisibleCount(2);
+                            // Optionally scroll back up to comments start
+                            // window.scrollBy({ top: -500, behavior: 'smooth' });
+                        }}
+                        className="px-6 py-2.5 rounded-full border border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-[#1A1A1A] transition-colors mb-6 shadow-sm"
+                    >
+                        Hide comments
+                    </button>
+                    <div className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.2em] uppercase text-gray-300 dark:text-gray-600 select-none">
+                        <img src="/mockups/recall-logo.png" alt="" className="w-3 h-3 opacity-30 grayscale" />
+                        RECALL DISCUSSION
+                    </div>
+                </div>
+            )}
+            {!hasMoreComments && comments.length > 0 && comments.length <= 2 && (
                  <div className="flex flex-col items-center justify-center mt-12 mb-6">
                  <div className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.2em] uppercase text-gray-300 dark:text-gray-600 select-none">
                      <img src="/mockups/recall-logo.png" alt="" className="w-3 h-3 opacity-30 grayscale" />
