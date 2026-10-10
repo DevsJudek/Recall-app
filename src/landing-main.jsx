@@ -7,7 +7,7 @@ import './index.css';
 // This handles older installations that still have the legacy start_url cached.
 const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 if (isPWA) {
-  window.location.replace('/app.html');
+  window.location.replace('/app.html' + window.location.search + window.location.hash);
 } else {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
