@@ -240,7 +240,10 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             ) : (
                 <div className="space-y-8">
                     {visibleComments.map((comment) => {
-                        const isJude = comment.user_name.toLowerCase().includes('jude');
+                        const isCurrentUser = comment.user_id === session?.user?.id;
+                        const displayAvatar = isCurrentUser ? avatarUrl : comment.user_avatar;
+                        const displayUserName = isCurrentUser ? (displayName || 'Student') : comment.user_name;
+                        const isJude = displayUserName.toLowerCase().includes('jude');
                         const currentLikedBy = Array.isArray(comment.liked_by) ? comment.liked_by : [];
                         const hasLiked = currentLikedBy.includes(session?.user?.id);
                         const totalLikes = currentLikedBy.length;
@@ -251,11 +254,11 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                     onClick={() => handleViewProfile(comment)}
                                     className="w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 overflow-hidden bg-gray-200 border border-gray-100 dark:border-gray-800 shadow-sm cursor-pointer hover:opacity-80 transition-opacity"
                                 >
-                                    {comment.user_avatar ? (
-                                        <img src={comment.user_avatar} alt={comment.user_name} className="w-full h-full object-cover" />
+                                    {displayAvatar ? (
+                                        <img src={displayAvatar} alt={displayUserName} className="w-full h-full object-cover" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-[#FF6B00] font-black text-lg bg-gray-100">
-                                            {comment.user_name?.charAt(0)?.toUpperCase() || 'S'}
+                                            {displayUserName?.charAt(0)?.toUpperCase() || 'S'}
                                         </div>
                                     )}
                                 </div>
@@ -265,7 +268,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                             onClick={() => handleViewProfile(comment)}
                                             className="font-bold text-sm text-gray-900 dark:text-white flex items-center cursor-pointer hover:underline"
                                         >
-                                            {comment.user_name}
+                                            {displayUserName}
                                             {isJude && <VerifiedBadge />}
                                             
                                         </h4>
