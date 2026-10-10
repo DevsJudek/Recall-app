@@ -93,39 +93,9 @@ function AppContent() {
     return false;
   });
 
-      useEffect(() => {
-    if (!session?.user?.id) return;
-    // Initial fetch
-    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
-      setUnreadNotifCount(count || 0);
-    });
-
-    // Subscribe to new notifications
-    const notifSub = supabase.channel('notif-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `profile_id=eq.${currentUserDbId}` }, payload => {
-        supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
-          setUnreadNotifCount(count || 0);
-        });
-      }).subscribe();
       
-    return () => { supabase.removeChannel(notifSub); };
-  }, [currentUserDbId]);
 
-  useEffect(() => {
-    const room = supabase.channel('online-users', {
-      config: { presence: { key: session?.user?.id || Math.random().toString(36).substring(7) } }
-    });
-    room.on('presence', { event: 'sync' }, () => {
-      const newState = room.presenceState();
-      // Add a small baseline so it never looks completely dead, plus actual users
-      setOnlineUsersCount(Object.keys(newState).length + 7);
-    }).subscribe(async (status) => {
-      if (status === 'SUBSCRIBED') {
-        await room.track({ online_at: new Date().toISOString() });
-      }
-    });
-    return () => { supabase.removeChannel(room); };
-  }, [currentUserDbId]);
+  
 
   useEffect(() => {
     const root = document.documentElement;
@@ -190,6 +160,40 @@ function AppContent() {
   const [department, setDepartment] = useState('Law');
   const [level, setLevel] = useState('300L');
   const [campus, setCampus] = useState('Obafemi Awolowo University (OAU)');
+
+useEffect(() => {
+    if (!session?.user?.id) return;
+    // Initial fetch
+    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
+      setUnreadNotifCount(count || 0);
+    });
+
+    // Subscribe to new notifications
+    const notifSub = supabase.channel('notif-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `profile_id=eq.${currentUserDbId}` }, payload => {
+        supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
+          setUnreadNotifCount(count || 0);
+        });
+      }).subscribe();
+      
+    return () => { supabase.removeChannel(notifSub); };
+  }, [currentUserDbId]);
+
+useEffect(() => {
+    const room = supabase.channel('online-users', {
+      config: { presence: { key: session?.user?.id || Math.random().toString(36).substring(7) } }
+    });
+    room.on('presence', { event: 'sync' }, () => {
+      const newState = room.presenceState();
+      // Add a small baseline so it never looks completely dead, plus actual users
+      setOnlineUsersCount(Object.keys(newState).length + 7);
+    }).subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await room.track({ online_at: new Date().toISOString() });
+      }
+    });
+    return () => { supabase.removeChannel(room); };
+  }, [currentUserDbId]);
   const [bio, setBio] = useState('');
   const [joinDate, setJoinDate] = useState('');
 
