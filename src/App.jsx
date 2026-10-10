@@ -468,13 +468,14 @@ function AppContent() {
   useEffect(() => { 
     if (mainScrollRef.current) {
       const saved = window.__SCROLL_POSITIONS[currentView];
-      // Use requestAnimationFrame to ensure the new DOM is painted before scrolling
+      // Only restore scroll coordinates for the reading module to prevent disorienting jumps elsewhere
+      const shouldRestore = currentView === 'reading' && saved !== undefined;
+      
       requestAnimationFrame(() => {
-        mainScrollRef.current.scrollTop = saved !== undefined ? saved : 0;
+        mainScrollRef.current.scrollTop = shouldRestore ? saved : 0;
       });
-      // Fallback for slower renders (like Reading.jsx fetching data)
       setTimeout(() => {
-        if (mainScrollRef.current) mainScrollRef.current.scrollTop = saved !== undefined ? saved : 0;
+        if (mainScrollRef.current) mainScrollRef.current.scrollTop = shouldRestore ? saved : 0;
       }, 50);
     }
   }, [currentView, activeCourse]);
