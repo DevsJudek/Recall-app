@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabase';
 import { Loader2, ThumbsUp, MessageSquare } from 'lucide-react';
 
@@ -15,11 +15,18 @@ const TeamBadge = () => (
     </span>
 );
 
-export default function TopicComments({ courseCode, topicId, currentUserDbId, displayName, avatarUrl, session }) {
+export default function TopicComments({ courseCode, topicId, currentUserDbId, displayName, avatarUrl, session, viewPeerProfile }) {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    
+    // New Feature States
+    const [sortOrder, setSortOrder] = useState('Newest');
+    const [visibleCount, setVisibleCount] = useState(2);
+    const [likedComments, setLikedComments] = useState({});
+    
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (!courseCode || !topicId) return;
@@ -34,14 +41,11 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 .select('*')
                 .eq('course_code', courseCode)
                 .eq('topic_id', topicId)
+                // We'll fetch all and sort them in JS to avoid refetching on sort toggle
                 .order('created_at', { ascending: false });
 
             if (error) {
-                if (error.code === '42P01') {
-                    console.log('Comments table not created yet.');
-                } else {
-                    console.error('Error fetching comments:', error);
-                }
+                if (error.code === '42P01') console.log('Comments table not created yet.');
                 setComments([]);
             } else {
                 setComments(data || []);
@@ -61,16 +65,14 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
         try {
             const { data, error } = await supabase
                 .from('module_comments')
-                .insert([
-                    {
-                        course_code: courseCode,
-                        topic_id: topicId,
-                        user_id: session.user.id,
-                        user_name: displayName || 'Student',
-                        user_avatar: avatarUrl || '',
-                        content: newComment.trim()
-                    }
-                ])
+                .insert([{
+                    course_code: courseCode,
+                    topic_id: topicId,
+                    user_id: session.user.id,
+                    user_name: displayName || 'Student',
+                    user_avatar: avatarUrl || '',
+                    content: newComment.trim()
+                }])
                 .select()
                 .single();
 
@@ -79,6 +81,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             if (data) {
                 setComments([data, ...comments]);
                 setNewComment('');
+                setVisibleCount(prev => prev + 1); // Ensure new comment is visible
             }
         } catch (error) {
             console.error('Error posting comment:', error);
@@ -103,13 +106,49 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
         }
     };
 
+    const handleLike = (id) => {
+        setLikedComments(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
+
+    const handleReply = (userName) => {
+        setNewComment(`@${userName} `);
+        inputRef.current?.focus();
+    };
+
+    const handleViewProfile = async (comment) => {
+        if (!viewPeerProfile) return;
+        // Fetch full profile first if possible, otherwise pass mock
+        try {
+            const { data } = await supabase.from('profiles').select('*').eq('id', comment.user_id).single();
+            if (data) {
+                viewPeerProfile(data);
+            } else {
+                viewPeerProfile({ id: comment.user_id, name: comment.user_name, avatar: comment.user_avatar });
+            }
+        } catch {
+            viewPeerProfile({ id: comment.user_id, name: comment.user_name, avatar: comment.user_avatar });
+        }
+    };
+
     const timeAgo = (dateStr) => {
         const diff = Math.floor((new Date() - new Date(dateStr)) / 1000);
-        if (diff < 60) return `${diff} seconds ago`;
+        if (diff < 60) return `${Math.max(1, diff)} seconds ago`;
         if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
         if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
         return `${Math.floor(diff / 86400)} days ago`;
     };
+
+    const sortedComments = [...comments].sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+        return sortOrder === 'Newest' ? dateB - dateA : dateA - dateB;
+    });
+
+    const visibleComments = sortedComments.slice(0, visibleCount);
+    const hasMoreComments = visibleCount < comments.length;
 
     return (
         <div className="mt-12 pt-10 font-sans">
@@ -117,9 +156,15 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
                     Discussion ({comments.length})
                 </h3>
-                <div className="flex items-center text-xs font-medium text-gray-500">
-                    Sort by: <span className="font-bold text-gray-900 dark:text-white ml-1 cursor-pointer">Newest</span>
-                    <svg className="w-3 h-3 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                <div className="flex items-center text-xs font-medium text-gray-500 relative group">
+                    Sort by: 
+                    <button 
+                        onClick={() => setSortOrder(sortOrder === 'Newest' ? 'Oldest' : 'Newest')}
+                        className="font-bold text-gray-900 dark:text-white ml-1 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors flex items-center"
+                    >
+                        {sortOrder}
+                        <svg className={`w-3 h-3 ml-1 text-gray-400 transition-transform ${sortOrder === 'Oldest' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
                 </div>
             </div>
             
@@ -128,7 +173,10 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             {/* Comment Form */}
             <form onSubmit={handleSubmit} className="mb-12">
                 <div className="flex gap-4">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 overflow-hidden bg-gray-200 border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div 
+                        onClick={() => handleViewProfile({ user_id: session?.user?.id, user_name: displayName, user_avatar: avatarUrl })}
+                        className="w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 overflow-hidden bg-gray-200 border border-gray-100 dark:border-gray-800 shadow-sm cursor-pointer"
+                    >
                         {avatarUrl ? (
                             <img src={avatarUrl} alt="You" className="w-full h-full object-cover" />
                         ) : (
@@ -139,6 +187,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                     </div>
                     <div className="flex-1 flex flex-col">
                         <textarea
+                            ref={inputRef}
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
                             placeholder="Add to the discussion..."
@@ -170,11 +219,19 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 </div>
             ) : (
                 <div className="space-y-8">
-                    {comments.map((comment) => {
+                    {visibleComments.map((comment) => {
                         const isJude = comment.user_name.toLowerCase().includes('jude');
+                        // Using charcode sum to seed a stable random "base" likes count for visual demo
+                        const baseLikes = comment.id.charCodeAt(0) % 20; 
+                        const hasLiked = likedComments[comment.id];
+                        const totalLikes = baseLikes + (hasLiked ? 1 : 0);
+
                         return (
                             <div key={comment.id} className="flex gap-4 group">
-                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 overflow-hidden bg-gray-200 border border-gray-100 dark:border-gray-800 shadow-sm">
+                                <div 
+                                    onClick={() => handleViewProfile(comment)}
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 overflow-hidden bg-gray-200 border border-gray-100 dark:border-gray-800 shadow-sm cursor-pointer hover:opacity-80 transition-opacity"
+                                >
                                     {comment.user_avatar ? (
                                         <img src={comment.user_avatar} alt={comment.user_name} className="w-full h-full object-cover" />
                                     ) : (
@@ -185,7 +242,10 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                 </div>
                                 <div className="flex-1 pt-1">
                                     <div className="flex flex-wrap items-center mb-2 leading-none gap-2">
-                                        <h4 className="font-bold text-sm text-gray-900 dark:text-white flex items-center">
+                                        <h4 
+                                            onClick={() => handleViewProfile(comment)}
+                                            className="font-bold text-sm text-gray-900 dark:text-white flex items-center cursor-pointer hover:underline"
+                                        >
                                             {comment.user_name}
                                             {isJude && <VerifiedBadge />}
                                             {isJude && <TeamBadge />}
@@ -198,11 +258,17 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                         {comment.content}
                                     </p>
                                     <div className="flex items-center gap-6 text-[11px] font-bold text-gray-500">
-                                        <button className="flex items-center gap-1.5 hover:text-gray-800 dark:hover:text-gray-300 transition-colors">
-                                            <ThumbsUp className="w-3.5 h-3.5" />
-                                            <span>{Math.floor(Math.random() * 20)} Likes</span>
+                                        <button 
+                                            onClick={() => handleLike(comment.id)}
+                                            className={\`flex items-center gap-1.5 transition-colors \${hasLiked ? 'text-[#FF6B00]' : 'hover:text-gray-800 dark:hover:text-gray-300'}\`}
+                                        >
+                                            <ThumbsUp className={\`w-3.5 h-3.5 \${hasLiked ? 'fill-current' : ''}\`} />
+                                            <span>{totalLikes} Likes</span>
                                         </button>
-                                        <button className="flex items-center gap-1.5 hover:text-gray-800 dark:hover:text-gray-300 transition-colors">
+                                        <button 
+                                            onClick={() => handleReply(comment.user_name)}
+                                            className="flex items-center gap-1.5 hover:text-gray-800 dark:hover:text-gray-300 transition-colors"
+                                        >
                                             <MessageSquare className="w-3.5 h-3.5" />
                                             <span>Reply</span>
                                         </button>
@@ -219,9 +285,12 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 </div>
             )}
             
-            {comments.length > 0 && (
-                <div className="flex flex-col items-center justify-center mt-12 mb-6">
-                    <button className="px-6 py-2.5 rounded-full border border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-[#1A1A1A] transition-colors mb-6 shadow-sm">
+            {hasMoreComments && (
+                <div className="flex flex-col items-center justify-center mt-12 mb-6 animate-fade-in">
+                    <button 
+                        onClick={() => setVisibleCount(prev => prev + 3)}
+                        className="px-6 py-2.5 rounded-full border border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-[#1A1A1A] transition-colors mb-6 shadow-sm"
+                    >
                         Load more comments
                     </button>
                     <div className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.2em] uppercase text-gray-300 dark:text-gray-600 select-none">
@@ -229,6 +298,14 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                         RECALL DISCUSSION
                     </div>
                 </div>
+            )}
+            {!hasMoreComments && comments.length > 0 && (
+                 <div className="flex flex-col items-center justify-center mt-12 mb-6">
+                 <div className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.2em] uppercase text-gray-300 dark:text-gray-600 select-none">
+                     <img src="/mockups/recall-logo.png" alt="" className="w-3 h-3 opacity-30 grayscale" />
+                     RECALL DISCUSSION
+                 </div>
+             </div>
             )}
         </div>
     );

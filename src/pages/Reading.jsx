@@ -27,7 +27,7 @@ const LatinMaximsContent = ({ allLatinMaxims }) => (
     </>
 );
 
-export default function Reading({ activeCourse, markTopicCompleted, readingData, topicStatus = {}, currentUserDbId, displayName, avatarUrl, session }) {
+export default function Reading({ activeCourse, markTopicCompleted, readingData, topicStatus = {}, currentUserDbId, displayName, avatarUrl, session, viewPeerProfile }) {
     const { playSound } = useSound();
     const [isCompleting, setIsCompleting] = useState(false);
 
@@ -526,6 +526,7 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                         displayName={displayName} 
                         avatarUrl={avatarUrl} 
                         session={session} 
+                        viewPeerProfile={viewPeerProfile}
                     />
                 </div>
 
