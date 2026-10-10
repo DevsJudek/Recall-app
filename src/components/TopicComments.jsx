@@ -20,6 +20,12 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
     const [sortOrder, setSortOrder] = useState('Newest');
     const [visibleCount, setVisibleCount] = useState(2);
     
+    // Autocomplete States
+    const [showMentions, setShowMentions] = useState(false);
+    const [mentionQuery, setMentionQuery] = useState('');
+    const [mentionResults, setMentionResults] = useState([]);
+    const [mentionCursor, setMentionCursor] = useState(0);
+    
     
     const inputRef = useRef(null);
 
@@ -50,6 +56,37 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleTextChange = async (e) => {
+        const val = e.target.value;
+        setNewComment(val);
+        
+        const match = val.match(/@([a-zA-Z0-9_]*)$/);
+        
+        if (match) {
+            setShowMentions(true);
+            setMentionQuery(match[1]);
+            setMentionCursor(val.length - match[1].length - 1);
+            
+            if (match[1].length > 0) {
+                const { data } = await supabase.from('profiles').select('name, avatar').ilike('name', '%' + match[1] + '%').limit(4);
+                setMentionResults(data || []);
+            } else {
+                const { data } = await supabase.from('profiles').select('name, avatar').not('name', 'is', null).limit(4);
+                setMentionResults(data || []);
+            }
+        } else {
+            setShowMentions(false);
+        }
+    };
+    
+    const insertMention = (name) => {
+        const before = newComment.substring(0, mentionCursor);
+        const tag = name.split(' ')[0].replace(/\s+/g, '');
+        setNewComment(before + '@' + tag + ' ');
+        setShowMentions(false);
+        inputRef.current?.focus();
     };
 
     const handleSubmit = async (e) => {
@@ -228,14 +265,44 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                         )}
                     </div>
                     <div className="flex-1 flex flex-col">
-                        <textarea
-                            ref={inputRef}
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            placeholder="Add to the discussion..."
-                            className="w-full bg-[#F8F9FA] dark:bg-[#1A1A1A] border border-gray-200 dark:border-gray-800 rounded-[12px] p-5 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] transition-all resize-none h-28"
-                            maxLength={500}
-                        />
+                        <div className="relative">
+                            <textarea
+                                ref={inputRef}
+                                value={newComment}
+                                onChange={handleTextChange}
+                                placeholder="Add to the discussion... (Type @ to tag someone)"
+                                className="w-full bg-[#F8F9FA] dark:bg-[#1A1A1A] border border-gray-200 dark:border-gray-800 rounded-[12px] p-5 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] transition-all resize-none h-28"
+                                maxLength={500}
+                            />
+                            
+                            {showMentions && mentionResults.length > 0 && (
+                                <div className="absolute bottom-[105%] left-0 w-64 bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl overflow-hidden z-50">
+                                    <div className="px-3 py-2 bg-gray-50 dark:bg-[#121212] border-b border-gray-200 dark:border-gray-800">
+                                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Tag a user</span>
+                                    </div>
+                                    {mentionResults.map((user, idx) => (
+                                        <div 
+                                            key={idx} 
+                                            onClick={() => insertMention(user.name)}
+                                            className="flex items-center gap-3 px-3 py-2.5 hover:bg-orange-50 dark:hover:bg-orange-900/20 cursor-pointer transition-colors"
+                                        >
+                                            <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden shrink-0">
+                                                {user.avatar ? (
+                                                    <img src={user.avatar} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-[#FF6B00] font-bold text-[10px]">
+                                                        {user.name?.charAt(0)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                                                {user.name}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                         <div className="flex justify-end mt-4">
                             <button
                                 type="submit"
