@@ -5,6 +5,7 @@ import { useSound } from '../contexts/SoundContext';
 import FluidOrb from '../components/FluidOrb';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import TopicComments from '../components/TopicComments';
 
 // 🚀 SECURE API CONNECTION
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -516,6 +517,16 @@ export default function Reading({ activeCourse, markTopicCompleted, readingData,
                             {(isCompleting || isAlreadyCompleted) ? '✓ Completed!' : 'Mark as completed →'}
                         </button>
                     </div>
+                    
+                    {/* TOPIC COMMENTS SECTION */}
+                    <TopicComments 
+                        courseCode={activeCourse?.code} 
+                        topicId={rawTopicName} 
+                        currentUserDbId={currentUserDbId} 
+                        displayName={displayName} 
+                        avatarUrl={avatarUrl} 
+                        session={session} 
+                    />
                 </div>
 
                 {allLatinMaxims.length > 0 && (
