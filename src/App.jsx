@@ -821,7 +821,7 @@ function AppContent() {
     let targetCodes = [];
     if (courseInput === 'mixed' || courseInput === null) {
       setActiveCourse(null);
-      targetCodes = activeEnrolledCourses && activeEnrolledCourses.length > 0 ? [...activeEnrolledCourses] : coursesList.map(c => c.code);
+      targetCodes = activeEnrolledCourses && activeEnrolledCourses.length > 0 ? [...activeEnrolledCourses] : coursesList.filter(c => c.level === level).map(c => c.code);
       if (mode === 'ranked') {
         targetCodes = targetCodes.filter(code => {
           const c = coursesList.find(x => x.code === code);
