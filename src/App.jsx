@@ -717,6 +717,11 @@ function AppContent() {
 
     setDisplayName(editName); setAvatarUrl(editAvatarUrl); setDepartment(editDepartment); setLevel(editLevel); setBio(editBio); setCampus(editCampus); setDailyTarget(editDailyTarget);
     await supabase.from('profiles').update(updatePayload).eq('id', currentUserDbId);
+    
+    // Push updated avatar and name to all previous comments to prevent broken images
+    if (editAvatarUrl !== avatarUrl || editName !== displayName) {
+      await supabase.from('module_comments').update({ user_avatar: editAvatarUrl, user_name: editName }).eq('profile_id', currentUserDbId);
+    }
     await handleManualRefresh();
     smartSetCurrentView('profile');
   };
