@@ -62,6 +62,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             }
         } catch (error) {
             console.error('Error:', error);
+            alert("Action Error: " + JSON.stringify(error));
         } finally {
             setIsLoading(false);
         }
