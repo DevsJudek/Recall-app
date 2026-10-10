@@ -49,7 +49,16 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                 if (error.code === '42P01') console.log('Comments table not created yet.');
                 setComments([]);
             } else {
-                setComments(data || []);
+                
+                const loadedComments = data || [];
+                // Sort by most liked first, then by newest
+                loadedComments.sort((a, b) => {
+                    const likesA = Array.isArray(a.liked_by) ? a.liked_by.length : 0;
+                    const likesB = Array.isArray(b.liked_by) ? b.liked_by.length : 0;
+                    if (likesB !== likesA) return likesB - likesA;
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
+                setComments(loadedComments);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -112,7 +121,15 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             if (error) throw error;
             
             if (data) {
-                setComments([data, ...comments]);
+                
+                const updatedComments = [data, ...comments];
+                updatedComments.sort((a, b) => {
+                    const likesA = Array.isArray(a.liked_by) ? a.liked_by.length : 0;
+                    const likesB = Array.isArray(b.liked_by) ? b.liked_by.length : 0;
+                    if (likesB !== likesA) return likesB - likesA;
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
+                setComments(updatedComments);
                 
                 // MENTION DETECTION & NOTIFICATION EMITTER
                 const mentionMatches = newComment.match(/@([a-zA-Z0-9_]+)/g);
@@ -173,7 +190,16 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
             : [...currentLikedBy, session.user.id];
 
         // Optimistic update
-        setComments(comments.map(c => c.id === id ? { ...c, liked_by: newLikedBy } : c));
+        
+          // Optimistic update and re-sort
+          const updated = comments.map(c => c.id === id ? { ...c, liked_by: newLikedBy } : c);
+          updated.sort((a, b) => {
+              const likesA = Array.isArray(a.liked_by) ? a.liked_by.length : 0;
+              const likesB = Array.isArray(b.liked_by) ? b.liked_by.length : 0;
+              if (likesB !== likesA) return likesB - likesA;
+              return new Date(b.created_at) - new Date(a.created_at);
+          });
+          setComments(updated);
 
         try {
             const { error } = await supabase
