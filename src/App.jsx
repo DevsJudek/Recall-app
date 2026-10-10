@@ -804,7 +804,7 @@ function AppContent() {
     let targetCodes = [];
     if (courseInput === 'mixed' || courseInput === null) {
       setActiveCourse(null);
-      targetCodes = activeEnrolledCourses;
+      targetCodes = activeEnrolledCourses && activeEnrolledCourses.length > 0 ? [...activeEnrolledCourses] : coursesList.map(c => c.code);
       if (mode === 'ranked') {
         targetCodes = targetCodes.filter(code => {
           const c = coursesList.find(x => x.code === code);
@@ -828,7 +828,31 @@ function AppContent() {
 
     let { data } = await query;
     if (!data || data.length === 0) { const fallback = await supabase.from('questions').select('*').limit(questionLimit * 2); data = fallback.data || []; }
-    setQuestions(data.sort(() => 0.5 - Math.random()).slice(0, questionLimit));
+        let finalQuestions = [];
+    if (mode === 'ranked' && (courseInput === 'mixed' || courseInput === null)) {
+      const grouped = {};
+      data.forEach(q => {
+        let baseCode = q.course_code;
+        if (baseCode && baseCode.match(/^[A-Z]{3} \d{3}[A-Z]$/)) { baseCode = baseCode.slice(0, -1); }
+        if (!grouped[baseCode]) grouped[baseCode] = [];
+        grouped[baseCode].push(q);
+      });
+      Object.keys(grouped).forEach(k => grouped[k] = grouped[k].sort(() => 0.5 - Math.random()));
+      
+      const coursesCount = Object.keys(grouped).length;
+      if (coursesCount > 0) {
+          let i = 0;
+          while (finalQuestions.length < Math.min(questionLimit, data.length)) {
+            const keys = Object.keys(grouped);
+            const key = keys[i % coursesCount];
+            if (grouped[key].length > 0) finalQuestions.push(grouped[key].pop());
+            i++;
+            if (keys.every(k => grouped[k].length === 0)) break;
+          }
+      } else { finalQuestions = data.sort(() => 0.5 - Math.random()).slice(0, questionLimit); }
+    } else { finalQuestions = data.sort(() => 0.5 - Math.random()).slice(0, questionLimit); }
+
+    setQuestions(finalQuestions);
     setCurrentIndex(0); setTimeLeft(mode === 'normal' ? 999 : 15); setSelectedOption(null); setIsLocked(false); setScore(0);
     smartSetCurrentView('quiz'); setIsTransitioning(false);
   };
