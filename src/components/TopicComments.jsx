@@ -83,10 +83,10 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                     mentionMatches.forEach(match => {
                         const mentionedName = match.substring(1); // Strip '@'
                         // Search anywhere in the name (e.g. Kolawole Judek matches @judek)
-                        supabase.from('profiles').select('user_id').ilike('name', '%' + mentionedName + '%').limit(1).single().then(({ data: profileData }) => {
-                            if (profileData && profileData.user_id && profileData.user_id !== session.user.id) {
+                        supabase.from('profiles').select('id').ilike('name', '%' + mentionedName + '%').limit(1).single().then(({ data: profileData }) => {
+                            if (profileData && profileData.id && profileData.id !== session.user.id) {
                                 supabase.from('notifications').insert([{
-                                    user_id: profileData.user_id,
+                                    user_id: profileData.id,
                                     actor_name: displayName || 'Student',
                                     actor_avatar: avatarUrl || '',
                                     type: 'mention',
