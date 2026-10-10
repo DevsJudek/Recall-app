@@ -261,7 +261,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                             onClick={() => handleLike(comment.id)}
                                             className={\`flex items-center gap-1.5 transition-colors \${hasLiked ? 'text-[#FF6B00]' : 'hover:text-gray-800 dark:hover:text-gray-300'}\`}
                                         >
-                                            <ThumbsUp className={\`w-3.5 h-3.5 \${hasLiked ? 'fill-current' : ''}\`} />
+                                            <ThumbsUp className={`w-3.5 h-3.5 ${hasLiked ? 'fill-current' : ''}`} />
                                             <span>{totalLikes} Likes</span>
                                         </button>
                                         <button 
