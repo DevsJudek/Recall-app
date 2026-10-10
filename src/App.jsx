@@ -61,6 +61,7 @@ const GlobalStyles = () => (
 );
 
 function AppContent() {
+  window.__SCROLL_POSITIONS = window.__SCROLL_POSITIONS || {};
   const mainScrollRef = useRef(null);
   const { playSound } = useSound();
 
@@ -464,7 +465,19 @@ function AppContent() {
     }
   }, []);
 
-  useEffect(() => { if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0; }, [currentView, activeCourse]);
+  useEffect(() => { 
+    if (mainScrollRef.current) {
+      const saved = window.__SCROLL_POSITIONS[currentView];
+      // Use requestAnimationFrame to ensure the new DOM is painted before scrolling
+      requestAnimationFrame(() => {
+        mainScrollRef.current.scrollTop = saved !== undefined ? saved : 0;
+      });
+      // Fallback for slower renders (like Reading.jsx fetching data)
+      setTimeout(() => {
+        if (mainScrollRef.current) mainScrollRef.current.scrollTop = saved !== undefined ? saved : 0;
+      }, 50);
+    }
+  }, [currentView, activeCourse]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -530,6 +543,7 @@ function AppContent() {
       return;
     }
 
+    if (mainScrollRef.current) window.__SCROLL_POSITIONS[currentView] = mainScrollRef.current.scrollTop;
     const rootViews = ['dashboard', 'courses', 'leaderboard', 'profile', 'onboarding'];
     if (rootViews.includes(view)) { setViewHistory([]); setCurrentView(view); }
     else {
@@ -540,6 +554,7 @@ function AppContent() {
   };
 
   const goBack = () => {
+    if (mainScrollRef.current) window.__SCROLL_POSITIONS[currentView] = mainScrollRef.current.scrollTop;
     // Log incomplete test if leaving quiz mid-session
     if (currentView === 'quiz' && session?.user?.id && questions.length > 0) {
       const courseCode = activeCourse ? activeCourse.code : 'mixed';
