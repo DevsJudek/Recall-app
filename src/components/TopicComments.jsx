@@ -121,13 +121,13 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                         const mentionedName = match.substring(1); // Strip '@'
                         // Search anywhere in the name (e.g. Kolawole Judek matches @judek)
                         supabase.from('profiles').select('id').ilike('name', '%' + mentionedName + '%').limit(1).single().then(({ data: profileData }) => {
-                            if (profileData && profileData.id && profileData.id !== session.user.id) {
+                            if (profileData && profileData.id) {
                                 supabase.from('notifications').insert([{
                                     user_id: profileData.id,
                                     actor_name: displayName || 'Student',
                                     actor_avatar: avatarUrl || '',
                                     type: 'mention',
-                                    content: `mentioned you in a comment.`,
+                                    content: `mentioned you in ${courseCode}: ${topicId.replace(/^\d+\s*/, '')}`,
                                     link: `${courseCode}|${topicId}`
                                 }]).then();
                             }
