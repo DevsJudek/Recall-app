@@ -844,7 +844,12 @@ function AppContent() {
     }
 
     let { data } = await query;
-    if (!data || data.length === 0) { const fallback = await supabase.from('questions').select('*').limit(questionLimit * 2); data = fallback.data || []; }
+    if (!data || data.length === 0) { 
+      const levelCodes = coursesList.filter(c => c.level === level).map(c => c.code);
+      const fallbackExpanded = expandCourseCodes(levelCodes);
+      const fallback = await supabase.from('questions').select('*').in('course_code', fallbackExpanded).limit(questionLimit * 2); 
+      data = fallback.data || []; 
+    }
         let finalQuestions = [];
     if (mode === 'ranked' && (courseInput === 'mixed' || courseInput === null)) {
       const grouped = {};
