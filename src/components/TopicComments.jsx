@@ -146,7 +146,8 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                     type: 'mention',
                                     content: `mentioned you in ${courseCode}: ${topicId.replace(/^\d+\s*/, '')}`,
                                     link: `${courseCode}|${topicId}`
-                                }]).then();
+                                }])
+.then(({error}) => { if (error) alert("Supabase Error: " + JSON.stringify(error)); else console.log("Notif inserted!"); });
                             }
                         });
                     });
