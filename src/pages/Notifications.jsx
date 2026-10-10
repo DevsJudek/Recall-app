@@ -15,7 +15,7 @@ export default function Notifications({ session, currentUserDbId, setCurrentView
         const { data, error } = await supabase
             .from('notifications')
             .select('*')
-            .eq('user_id', session.user.id)
+            .eq('profile_id', currentUserDbId)
             .order('created_at', { ascending: false })
             .limit(50);
         

@@ -141,7 +141,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                         supabase.from('profiles').select('id').ilike('name', '%' + mentionedName + '%').limit(1).single().then(({ data: profileData }) => {
                             if (profileData && profileData.id) {
                                 supabase.from('notifications').insert([{
-                                    user_id: profileData.id,
+                                    profile_id: profileData.id,
                                     actor_name: displayName || 'Student',
                                     actor_avatar: avatarUrl || '',
                                     type: 'mention',
