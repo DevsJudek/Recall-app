@@ -267,7 +267,7 @@ export default function TopicComments({ courseCode, topicId, currentUserDbId, di
                                         >
                                             {comment.user_name}
                                             {isJude && <VerifiedBadge />}
-                                            {isJude && }
+                                            
                                         </h4>
                                         <span className="text-[11px] font-medium text-gray-400">
                                             {timeAgo(comment.created_at)}
