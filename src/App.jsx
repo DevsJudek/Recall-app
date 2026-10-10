@@ -96,20 +96,20 @@ function AppContent() {
       useEffect(() => {
     if (!session?.user?.id) return;
     // Initial fetch
-    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('user_id', session.user.id).eq('is_read', false).then(({ count }) => {
+    supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
       setUnreadNotifCount(count || 0);
     });
 
     // Subscribe to new notifications
     const notifSub = supabase.channel('notif-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `user_id=eq.${session.user.id}` }, payload => {
-        supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('user_id', session.user.id).eq('is_read', false).then(({ count }) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `profile_id=eq.${currentUserDbId}` }, payload => {
+        supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('profile_id', currentUserDbId).eq('is_read', false).then(({ count }) => {
           setUnreadNotifCount(count || 0);
         });
       }).subscribe();
       
     return () => { supabase.removeChannel(notifSub); };
-  }, [session?.user?.id]);
+  }, [currentUserDbId]);
 
   useEffect(() => {
     const room = supabase.channel('online-users', {
@@ -125,7 +125,7 @@ function AppContent() {
       }
     });
     return () => { supabase.removeChannel(room); };
-  }, [session?.user?.id]);
+  }, [currentUserDbId]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -605,7 +605,7 @@ function AppContent() {
         completed: false
       }).then(async (res) => {
         if (res.error) console.error("Error saving incomplete test history", res.error);
-        const { data: allHistory } = await supabase.from('test_history').select('id').eq('user_id', session.user.id).order('created_at', { ascending: false });
+        const { data: allHistory } = await supabase.from('test_history').select('id').eq('profile_id', currentUserDbId).order('created_at', { ascending: false });
         if (allHistory && allHistory.length > 30) {
           const idsToDelete = allHistory.slice(30).map(h => h.id);
           await supabase.from('test_history').delete().in('id', idsToDelete);
@@ -958,7 +958,7 @@ function AppContent() {
         }).then(async (res) => {
           if (res.error) console.error("Error saving test history", res.error);
           // Wipe oldest entries beyond 30
-          const { data: allHistory } = await supabase.from('test_history').select('id').eq('user_id', session.user.id).order('created_at', { ascending: false });
+          const { data: allHistory } = await supabase.from('test_history').select('id').eq('profile_id', currentUserDbId).order('created_at', { ascending: false });
           if (allHistory && allHistory.length > 30) {
             const idsToDelete = allHistory.slice(30).map(h => h.id);
             await supabase.from('test_history').delete().in('id', idsToDelete);
