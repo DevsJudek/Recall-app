@@ -55,7 +55,7 @@ export default function Notifications({ session, currentUserDbId, setCurrentView
     };
 
     return (
-        <div className="bg-[#f8fafc] dark:bg-[#0a0a0a] min-h-full">
+        <div className="bg-[#f8fafc] dark:bg-[#0a0a0a] min-h-[100dvh] pb-32">
             <div className="max-w-3xl mx-auto p-4 md:p-6 w-full">
                 
                 {/* Header */}
